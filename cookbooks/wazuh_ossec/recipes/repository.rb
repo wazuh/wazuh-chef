@@ -28,15 +28,15 @@ when 'debian'
   end
 
   apt_repository 'Wazuh' do
-    uri 'http://packages.wazuh.com/apt/'
+    uri 'http://packages.wazuh.com/3.x/apt-dev/'
     key 'https://packages.wazuh.com/key/GPG-KEY-WAZUH'
-    distribution lazy { node['lsb']['codename'] }
     components ['main']
+    distribution 'unstable'
   end
 when 'rhel'
   yum_repository 'Wazuh' do
     description 'WAZUH Repository - www.wazuh.com'
-    baseurl 'https://packages.wazuh.com/yum/el/$releasever/$basearch'
+    baseurl 'https://packages.wazuh.com/3.x/yum-dev/el/$releasever/$basearch'
     gpgkey 'https://packages.wazuh.com/key/GPG-KEY-WAZUH'
     action :create
   end

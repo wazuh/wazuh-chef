@@ -19,7 +19,7 @@
 # general settings
 default['ossec']['dir'] = '/var/ossec'
 default['ossec']['server_role'] = 'ossec_server'
-default['ossec']['hostname_server_ip'] = nil
+default['ossec']['address'] = nil
 # CUSTOMIZE - Below customize the URL for sending messages
 # to a specific Slack channel connection with slack
 default['ossec']['hook_url'] = 'https://hooks.slack.com/services/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'
@@ -56,20 +56,35 @@ default['ossec']['pagerduty_key'] = 'f25bc0a22b014829818f82ca33636454'
   default['ossec']['conf'][type]['auth']['force_time'] = 0
   default['ossec']['conf'][type]['auth']['purge'] = false
   default['ossec']['conf'][type]['auth']['use_password'] = false
+  default['ossec']['conf'][type]['auth']['ciphers'] = 'HIGH:!ADH:!EXP:!MD5:!RC4:!3DES:!CAMELLIA:@STRENGTH'
   #<ssl_agent_ca></ssl_agent_ca>
   default['ossec']['conf'][type]['auth']['ssl_verify_host'] = false
   default['ossec']['conf'][type]['auth']['ssl_manager_cert'] = "#{node['ossec']['dir']}/etc/sslmanager.cert"
   default['ossec']['conf'][type]['auth']['ssl_manager_key'] = "#{node['ossec']['dir']}/etc/sslmanager.key"
   default['ossec']['conf'][type]['auth']['ssl_auto_negotiate'] = false
 
+  default['ossec']['conf'][type]['cluster']['name'] = 'wazuh'
+  default['ossec']['conf'][type]['cluster']['node_name'] = 'node01'
+  default['ossec']['conf'][type]['cluster']['key'] = ''
+  default['ossec']['conf'][type]['cluster']['interval'] = '2m'
+  default['ossec']['conf'][type]['cluster']['host'] = ''
+  default['ossec']['conf'][type]['cluster']['nodes']['node'] = 'localhost'
+
   default['ossec']['conf'][type]['ruleset']['decoder_dir'] = ['ruleset/decoders', 'etc/decoders']
   default['ossec']['conf'][type]['ruleset']['rule_dir'] = ['ruleset/rules', 'etc/rules']
   default['ossec']['conf'][type]['ruleset']['rule_exclude'] = '0215-policy_rules.xml'
-  default['ossec']['conf'][type]['ruleset']['list'] = 'etc/lists/audit-keys'
+  default['ossec']['conf'][type]['ruleset']['list'] = [ 'etc/lists/audit-keys', 'etc/lists/amazon/aws-sources', 'etc/lists/amazon/aws-eventnames' ]
 
   default['ossec']['conf'][type]['remote']['connection'] = ['secure']
   default['ossec']['conf'][type]['remote']['port'] = "1514"
   default['ossec']['conf'][type]['remote']['protocol'] = "udp"
+
+  # CUSTOMIZE - set to true to disable Active Response
+
+  default['ossec']['conf'][type]['active-response']['command'] = ['host-deny']
+  default['ossec']['conf'][type]['active-response']['location'] = ['local']
+  default['ossec']['conf'][type]['active-response']['level'] = ['6']
+  default['ossec']['conf'][type]['active-response']['timeout'] = ['1800']
   # CUSTOMIZE - Here change the OSSEC alert
   # level for those alerts to be routed to Slack
   default['ossec']['conf'][type]['integration'] = [
@@ -128,12 +143,22 @@ default['ossec']['conf']['all']['command'] = [
   }
 ]
 
-# CUSTOMIZE - set to true to disable Active Response
-default['ossec']['conf']['all']['active-response']['disabled'] = true
-default['ossec']['conf']['all']['active-response']['command'] = ['host-deny']
-default['ossec']['conf']['all']['active-response']['location'] = ['local']
-default['ossec']['conf']['all']['active-response']['level'] = ['6']
-default['ossec']['conf']['all']['active-response']['timeout'] = ['1800']
+############# Specific configuration for an agent #############################
+default['ossec']['conf']['agent']['client']['server']['address'] = node['ossec']['address']
+default['ossec']['conf']['agent']['client']['server']['port'] = 1514
+default['ossec']['conf']['agent']['client']['server']['protocol'] = 'udp'
+default['ossec']['conf']['agent']['client']['notify_time'] = 10
+default['ossec']['conf']['agent']['client']['time-reconnect'] = 60
+default['ossec']['conf']['agent']['client']['auto_restart'] = true
+
+
+default['ossec']['conf']['agent']['client_buffer']['disable'] = false
+default['ossec']['conf']['agent']['client_buffer']['queue_size'] = 5000
+default['ossec']['conf']['agent']['client_buffer']['events_per_second'] = 500
+
+default['ossec']['conf']['agent']['active-response']['disabled'] = false
+default['ossec']['conf']['agent']['active-response']['ca_store'] = '/var/ossec/etc/wpk_root.pem'
+################################################################################
 
 # CUSTOMIZE - may want to add special files
 # or directories for changes (for integrity checks)
@@ -179,10 +204,37 @@ default['ossec']['conf']['all']['rootcheck']['check_if'] = true
 default['ossec']['conf']['all']['rootcheck']['frequency'] = 43200
 default['ossec']['conf']['all']['rootcheck']['rootkit_files'] = "#{node['ossec']['dir']}/etc/shared/rootkit_files.txt"
 default['ossec']['conf']['all']['rootcheck']['rootkit_trojans'] = "#{node['ossec']['dir']}/etc/shared/rootkit_trojans.txt"
-default['ossec']['conf']['all']['rootcheck']['system_audit'] = [
-  '/var/ossec/etc/shared/system_audit_rcl.txt',
-  '/var/ossec/etc/shared/system_audit_ssh.txt'
-]
+case node['platform_family']
+when 'debian'
+  default['ossec']['conf']['all']['rootcheck']['system_audit'] = [
+    '/var/ossec/etc/shared/system_audit_rcl.txt',
+    '/var/ossec/etc/shared/system_audit_ssh.txt',
+    '/var/ossec/etc/shared/cis_debian_linux_rcl.txt'
+  ]
+when 'rhel'
+  if node['platform_version'].to_i == 5
+    default['ossec']['conf']['all']['rootcheck']['system_audit'] = [
+      '/var/ossec/etc/shared/system_audit_rcl.txt',
+      '/var/ossec/etc/shared/system_audit_ssh.txt',
+      '/var/ossec/etc/shared/cis_rhel5_linux_rcl.txt'
+    ]
+  end
+  if node['platform_version'].to_i == 6
+    default['ossec']['conf']['all']['rootcheck']['system_audit'] = [
+      '/var/ossec/etc/shared/system_audit_rcl.txt',
+      '/var/ossec/etc/shared/system_audit_ssh.txt',
+      '/var/ossec/etc/shared/cis_rhel6_linux_rcl.txt'
+    ]
+  end
+  if node['platform_version'].to_i == 7
+    default['ossec']['conf']['all']['rootcheck']['system_audit'] = [
+      '/var/ossec/etc/shared/system_audit_rcl.txt',
+      '/var/ossec/etc/shared/system_audit_ssh.txt',
+      '/var/ossec/etc/shared/cis_rhel7_linux_rcl.txt'
+    ]
+  end
+end
+
 default['ossec']['conf']['all']['rootcheck']['skip_nfs'] = true
 # CUSTOMIZE - tailor the log files we would like to monitor.  Also - formart
 # must be defined.
@@ -267,7 +319,8 @@ default['ossec']['conf']['all']['localfile'] = [
   }
 ]
 
-default['ossec']['conf']['agent']['client']['server-hostname'] = node['ossec']['hostname_server_ip']
+
+
 
 # agent.conf is also populated with Gyoku but in a slightly different
 # way. We leave this blank by default because Chef is better at
@@ -278,15 +331,15 @@ default['ossec']['conf']['agent']['client']['server-hostname'] = node['ossec']['
 # Chef is responsible for configuring agents
 # in the PhishMe environments
 #
-default['ossec']['agent_conf'] = [
-   {
-         'syscheck' => { 'frequency' => 7200 },
-         'rootcheck' => { 'disabled' => true }
-       },
-       {
-         '@os' => 'Windows',
-         'content!' => {
-           'syscheck' => { 'frequency' => 7200 }
-         }
-       }
- ]
+#default['ossec']['agent_conf'] = [
+#   {
+#         'syscheck' => { 'frequency' => 7200 },
+#         'rootcheck' => { 'disabled' => true }
+#       },
+#       {
+#         '@os' => 'Windows',
+#         'content!' => {
+#           'syscheck' => { 'frequency' => 7200 }
+#         }
+#       }
+#]

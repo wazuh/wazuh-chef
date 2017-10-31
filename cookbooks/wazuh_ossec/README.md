@@ -157,7 +157,7 @@ For OSSEC agents, create a role, `wazuh_agent`.
     },
     "override_attributes": {
       "ossec": {
-        "hostname_server_ip": "manager.wazuh.com"
+        "address": "manager.wazuh.com"
       }
     },
     "chef_type": "role",

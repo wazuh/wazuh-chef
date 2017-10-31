@@ -18,7 +18,7 @@
 #
 
 default['ossec']['agent_auth']['name'] = node['hostname']
-default['ossec']['agent_auth']['host'] = node['ossec']['hostname_server_ip']
+default['ossec']['agent_auth']['host'] = node['ossec']['address']
 default['ossec']['agent_auth']['port'] = node['ossec']['conf']['server']['auth']['port']
 
 default['ossec']['agent_auth']['ca'] = nil

@@ -10,7 +10,7 @@
   },
   "override_attributes": {
     "ossec": {
-      "hostname_server_ip": "manager.wazuh-production.com"
+      "address": "manager.wazuh-production.com"
     },
     "filebeat": {
       "ossec_type": "ossec-alerts-production",
