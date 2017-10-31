@@ -1,0 +1,36 @@
+AllCops:
+  Exclude:
+    - vendor/**/*
+    - /**/files/**/*
+    - test/**/*
+    - Guardfile
+    - lib/**/*
+    - config/**/*
+
+#Style/WordArray:
+#  MinSize: 2
+# Don't force hash style
+Style/HashSyntax:
+  Enabled: false
+
+## Disabled Checks
+Encoding:
+  Enabled: false
+Style/SpaceBeforeFirtArg:
+  Enabled: false
+NumericLiterals:
+  Enabled: false
+LineLength:
+  Enabled: false
+Style/RescueModifier:
+  Enabled: false
+Style/PercentLiteralDelimiters:
+  Enabled: false
+Style/BracesAroundHashParameters:
+  Enabled: false
+Style/IndentHash:
+  Enabled: false
+Style/SignalException:
+  Enabled: false
+Style/WordArray:
+  Enabled: false

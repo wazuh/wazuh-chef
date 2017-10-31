@@ -1,0 +1,29 @@
+---
+driver:
+  name: vagrant
+  driver_config:
+    require_chef_omnibus: latest
+
+provisioner:
+  name: chef_zero
+  environments_path: "../../environments"
+  data_bags_path: "../../data_bags"
+  encrypted_data_bag_secret_key_path: "test/integration/default/encrypted_data_bag_secret"
+
+platforms:
+  - name: ubuntu-12.04
+    run_list: apt::default
+  - name: ubuntu-14.04
+    run_list: apt::default
+suites:
+  - name: default
+    driver:
+      network:
+      - ["private_network", {ip: "172.17.10.10"}]
+    run_list:
+      - recipe[wazuh_filebeat::default]
+    attributes:
+         vagrant:
+    provisioner:
+      client_rb:
+        environment: development
