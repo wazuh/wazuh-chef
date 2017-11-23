@@ -35,6 +35,7 @@ default['ossec']['pagerduty_key'] = 'f25bc0a22b014829818f82ca33636454'
   default['ossec']['conf'][type]['global']['jsonout_output'] = true
   default['ossec']['conf'][type]['global']['alerts_log'] = true
   default['ossec']['conf'][type]['global']['logall'] = false
+  default['ossec']['conf'][type]['global']['logall_json'] = false
   default['ossec']['conf'][type]['global']['email_notification'] = false
   default['ossec']['conf'][type]['global']['smtp_server'] = 'smtp.example.wazuh.com'
   default['ossec']['conf'][type]['global']['email_from'] = 'ossecm@example.wazuh.com'
@@ -65,9 +66,11 @@ default['ossec']['pagerduty_key'] = 'f25bc0a22b014829818f82ca33636454'
 
   default['ossec']['conf'][type]['cluster']['name'] = 'wazuh'
   default['ossec']['conf'][type]['cluster']['node_name'] = 'node01'
+  default['ossec']['conf'][type]['cluster']['node_type'] = 'master'
   default['ossec']['conf'][type]['cluster']['key'] = ''
   default['ossec']['conf'][type]['cluster']['interval'] = '2m'
-  default['ossec']['conf'][type]['cluster']['host'] = ''
+  default['ossec']['conf'][type]['cluster']['port'] = 1516
+  default['ossec']['conf'][type]['cluster']['bind_addr'] = '0.0.0.0'
   default['ossec']['conf'][type]['cluster']['nodes']['node'] = 'localhost'
 
   default['ossec']['conf'][type]['ruleset']['decoder_dir'] = ['ruleset/decoders', 'etc/decoders']
