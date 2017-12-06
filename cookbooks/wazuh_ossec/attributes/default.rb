@@ -20,6 +20,7 @@
 default['ossec']['dir'] = '/var/ossec'
 default['ossec']['server_role'] = 'ossec_server'
 default['ossec']['address'] = nil
+default['ossec']['ignore_failure'] = false
 # CUSTOMIZE - Below customize the URL for sending messages
 # to a specific Slack channel connection with slack
 default['ossec']['hook_url'] = 'https://hooks.slack.com/services/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'
