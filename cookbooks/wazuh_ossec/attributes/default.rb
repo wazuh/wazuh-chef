@@ -333,7 +333,7 @@ default['ossec']['conf']['all']['localfile'] = [
 # CUSTOMIZE:
 # The following block is commented because
 # Chef is responsible for configuring agents
-# in the PhishMe environments
+# in the environments
 #
 #default['ossec']['agent_conf'] = [
 #   {
