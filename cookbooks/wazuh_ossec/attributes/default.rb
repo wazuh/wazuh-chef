@@ -50,6 +50,18 @@ default['ossec']['pagerduty_key'] = 'f25bc0a22b014829818f82ca33636454'
   #Choose between plain or json format (or both) for internal logs
   default['ossec']['conf'][type]['logging']['log_format'] = 'plain'
 
+  # Cluster configuration
+  default['ossec']['conf'][type]['cluster']['name'] = 'Wazuh'
+  default['ossec']['conf'][type]['cluster']['node_name'] = 'node01'
+  default['ossec']['conf'][type]['cluster']['node_type'] = 'master'
+  default['ossec']['conf'][type]['cluster']['key'] = ''
+  default['ossec']['conf'][type]['cluster']['interval'] = '2m'
+  default['ossec']['conf'][type]['cluster']['port'] = 1516
+  default['ossec']['conf'][type]['cluster']['bind_addr'] = '0.0.0.0'
+  default['ossec']['conf'][type]['cluster']['nodes']['node'] = []
+  default['ossec']['conf'][type]['cluster']['hidden'] = 'no'
+  default['ossec']['conf'][type]['cluster']['disabled'] = 'yes'
+
   # Authd configuration
   default['ossec']['conf'][type]['auth']['disabled'] = false
   default['ossec']['conf'][type]['auth']['port'] = 1515
@@ -64,15 +76,6 @@ default['ossec']['pagerduty_key'] = 'f25bc0a22b014829818f82ca33636454'
   default['ossec']['conf'][type]['auth']['ssl_manager_cert'] = "#{node['ossec']['dir']}/etc/sslmanager.cert"
   default['ossec']['conf'][type]['auth']['ssl_manager_key'] = "#{node['ossec']['dir']}/etc/sslmanager.key"
   default['ossec']['conf'][type]['auth']['ssl_auto_negotiate'] = false
-
-  default['ossec']['conf'][type]['cluster']['name'] = 'wazuh'
-  default['ossec']['conf'][type]['cluster']['node_name'] = 'node01'
-  default['ossec']['conf'][type]['cluster']['node_type'] = 'master'
-  default['ossec']['conf'][type]['cluster']['key'] = ''
-  default['ossec']['conf'][type]['cluster']['interval'] = '2m'
-  default['ossec']['conf'][type]['cluster']['port'] = 1516
-  default['ossec']['conf'][type]['cluster']['bind_addr'] = '0.0.0.0'
-  default['ossec']['conf'][type]['cluster']['nodes']['node'] = 'localhost'
 
   default['ossec']['conf'][type]['ruleset']['decoder_dir'] = ['ruleset/decoders', 'etc/decoders']
   default['ossec']['conf'][type]['ruleset']['rule_dir'] = ['ruleset/rules', 'etc/rules']
