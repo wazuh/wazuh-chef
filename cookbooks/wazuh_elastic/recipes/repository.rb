@@ -12,7 +12,7 @@ when 'debian'
     subscribes :reload, 'package[lsb-release]', :immediately
   end
 
-  apt_repository 'elastic-5.x' do
+  apt_repository 'elastic-6.x' do
     uri 'https://artifacts.elastic.co/packages/6.x/apt'
     key 'https://artifacts.elastic.co/GPG-KEY-elasticsearch'
     distribution "stable"
@@ -22,7 +22,7 @@ when 'debian'
     end
   end
 when 'rhel'
-  yum_repository 'elastic-5.x' do
+  yum_repository 'elastic-6.x' do
     description 'Elastic repository for 6.x packages'
     baseurl 'https://artifacts.elastic.co/packages/6.x/yum'
     gpgkey 'https://artifacts.elastic.co/GPG-KEY-elasticsearch'
