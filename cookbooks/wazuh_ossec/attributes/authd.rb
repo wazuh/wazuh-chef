@@ -18,11 +18,7 @@
 #
 
 default['ossec']['agent_auth']['name'] = node['hostname']
-<<<<<<< HEAD
-default['ossec']['agent_auth']['host'] = node['ossec']['hostname_server_ip']
-=======
 default['ossec']['agent_auth']['host'] = node['ossec']['authd-master']
->>>>>>> d3e691bba7f9a6a500c6722eb8e57a4110600cbb
 default['ossec']['agent_auth']['port'] = node['ossec']['conf']['server']['auth']['port']
 
 default['ossec']['agent_auth']['ca'] = nil

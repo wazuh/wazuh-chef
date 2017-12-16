@@ -38,11 +38,7 @@ end
 
 execute "#{dir}/bin/agent-auth #{args}" do
   timeout 30
-<<<<<<< HEAD
-  ignore_failure true
-=======
   ignore_failure node['ossec']['ignore_failure']
->>>>>>> d3e691bba7f9a6a500c6722eb8e57a4110600cbb
   only_if { agent_auth['host'] && !File.size?("#{dir}/etc/client.keys") }
 end
 
@@ -56,13 +52,6 @@ template "#{node['ossec']['dir']}/etc/local_internal_options.conf" do
   notifies :restart, 'service[wazuh]', :delayed
 end
 
-<<<<<<< HEAD
-service 'wazuh' do
-  service_name 'wazuh-agent'
-  supports status: true, restart: true
-  action [:enable, :start]
-  only_if "test -s #{dir}/etc/client.keys"
-=======
 template "#{node['ossec']['dir']}/active-response/bin/quarantine.sh" do
   source 'var/ossec/active-response/bin/quarantine.sh.erb'
   owner 'root'
@@ -78,5 +67,4 @@ service 'wazuh' do
   action [:enable, :restart]
   only_if "test -s #{dir}/etc/client.keys"
   not_if ("ps axu | grep ossec-agentd | grep -v grep && ps axu | grep ossec-logcollector | grep -v grep && ps axu | grep ossec-syscheckd | grep -v grep ")
->>>>>>> d3e691bba7f9a6a500c6722eb8e57a4110600cbb
 end

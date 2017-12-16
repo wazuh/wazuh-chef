@@ -25,9 +25,7 @@ file '/etc/filebeat/logstash_certificate.crt' do
   notifies :restart, "service[#{node['filebeat']['service_name']}]", :delayed
 end
 
-<<<<<<< HEAD
-=======
-file '/etc/filebeat/logstash-forwarder.crt' do
+file '/etc/filebeat/logstash.crt' do
   mode '0544'
   owner 'root'
   group 'root'
@@ -36,7 +34,7 @@ file '/etc/filebeat/logstash-forwarder.crt' do
   notifies :restart, "service[#{node['filebeat']['service_name']}]", :delayed
 end
 
-file '/etc/filebeat/logstash-forwarder.key' do
+file '/etc/filebeat/logstash.key' do
   mode '0544'
   owner 'root'
   group 'root'
@@ -45,7 +43,6 @@ file '/etc/filebeat/logstash-forwarder.key' do
   notifies :restart, "service[#{node['filebeat']['service_name']}]", :delayed
 end
 
->>>>>>> d3e691bba7f9a6a500c6722eb8e57a4110600cbb
 service node['filebeat']['service_name'] do
   supports :status => true, :restart => true, :reload => true
   action [:start, :enable]

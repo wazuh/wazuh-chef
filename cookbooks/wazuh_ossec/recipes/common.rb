@@ -17,10 +17,6 @@
 # limitations under the License.
 #
 
-<<<<<<< HEAD
-=======
-
->>>>>>> d3e691bba7f9a6a500c6722eb8e57a4110600cbb
 ruby_block 'ossec install_type' do
   block do
     if node['recipes'].include?('ossec::default')

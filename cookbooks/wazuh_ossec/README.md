@@ -1,5 +1,5 @@
-ossec cookbook
-==============
+Wazuh cookbook
+===============
 
 Installs Wazuh manager and agents. See:
 
@@ -145,8 +145,6 @@ For the Wazuh server, create a role, `wazuh_server`. Add attributes per above as
   }
 ```
 
-<<<<<<< HEAD
-=======
 If you want to enable Wazuh cluster, you need to create two roles, one role for the **Master** and one or more than one for the ***Clients***:
 
 **Note**: This Chef cookbook only brings compatibility with **CentOS 7**, we are working on add more distributions soon.
@@ -221,7 +219,6 @@ If you want to enable Wazuh cluster, you need to create two roles, one role for 
 More information about cluster configuration in the following link: https://documentation.wazuh.com/current/user-manual/manager/wazuh-cluster.html
 
 
->>>>>>> d3e691bba7f9a6a500c6722eb8e57a4110600cbb
 For OSSEC agents, create a role, `wazuh_agent`.
 
 ```
@@ -234,12 +231,8 @@ For OSSEC agents, create a role, `wazuh_agent`.
     },
     "override_attributes": {
       "ossec": {
-<<<<<<< HEAD
-        "hostname_server_ip": "manager.wazuh.com"
-=======
         "master": "manager-master.wazuh-test.com",
         "address": ["manager-master.wazuh-test.com", "manager-client.wazuh-test.com"],
->>>>>>> d3e691bba7f9a6a500c6722eb8e57a4110600cbb
       }
     },
     "chef_type": "role",
