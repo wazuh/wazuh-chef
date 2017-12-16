@@ -4,6 +4,7 @@ input {
     beats {
         port => 5000
         codec => "json_lines"
+<<<<<<< HEAD
 #        ssl => true
 #        ssl_certificate => "/etc/logstash/logstash.crt"
 #        ssl_key => "/etc/logstash/logstash.key"
@@ -20,6 +21,28 @@ input {
 filter {
     geoip {
         source => "srcip"
+=======
+        ssl => true
+        ssl_certificate => "/etc/logstash/logstash.crt"
+        ssl_key => "/etc/logstash/logstash.key"
+    }
+}
+filter {
+    if [data][srcip] {
+        mutate {
+            add_field => [ "@src_ip", "%{[data][srcip]}" ]
+        }
+    }
+    if [data][aws][sourceIPAddress] {
+        mutate {
+            add_field => [ "@src_ip", "%{[data][aws][sourceIPAddress]}" ]
+        }
+    }
+}
+filter {
+    geoip {
+        source => "@src_ip"
+>>>>>>> d3e691bba7f9a6a500c6722eb8e57a4110600cbb
         target => "GeoLocation"
         fields => ["city_name", "continent_code", "country_code2", "country_name", "region_name", "location"]
     }
@@ -28,17 +51,26 @@ filter {
         target => "@timestamp"
     }
     mutate {
+<<<<<<< HEAD
         remove_field => [ "timestamp", "beat", "fields", "input_type", "tags", "count", "@version", "log", "offset", "type"]
+=======
+        remove_field => [ "timestamp", "beat", "input_type", "tags", "count", "@version", "log", "offset", "type","@src_ip"]
+>>>>>>> d3e691bba7f9a6a500c6722eb8e57a4110600cbb
     }
 }
 output {
     elasticsearch {
         hosts => ["localhost:9200"]
+<<<<<<< HEAD
         index => "wazuh-alerts-%{+YYYY.MM.dd}"
         document_type => "wazuh"
         template => "/etc/logstash/wazuh-elastic5-template.json"
 #       template => "/etc/logstash/wazuh-elastic2-template.json"
         template_name => "wazuh"
         template_overwrite => true
+=======
+        index => "wazuh-alerts-3.x-%{+YYYY.MM.dd}"
+        document_type => "wazuh"
+>>>>>>> d3e691bba7f9a6a500c6722eb8e57a4110600cbb
     }
 }

@@ -1,0 +1,2 @@
+.kitchen/*
+./cookbooks/wazuh_ossec/.kitchen/*

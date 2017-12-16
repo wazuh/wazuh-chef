@@ -24,12 +24,38 @@ package 'wazuh-manager' do
   package_name 'wazuh-manager'
 end
 
+<<<<<<< HEAD
 execute 'Enable Authd' do
   command '/var/ossec/bin/ossec-control enable auth'
   not_if "ps axu | grep ossec-authd | grep -v grep"
   notifies :restart, "service[wazuh]", :delayed
 end
 
+=======
+# The dependences should be installed only when the cluster is enabled
+if node['ossec']['conf']['server']['cluster']['disabled'] == 'no'
+ case node['platform']
+  when 'debian', 'ubuntu'
+    log 'Wazuh_Cluster_not_compatible' do
+      message "Wazuh cluster is not compatible with this version with #{node['platform']}"
+      level :warn
+    end
+  when 'redhat', 'centos'
+    if node['platform_version'].to_i == 7
+      package ['python-setuptools', 'python-cryptography']
+    end
+  end
+end
+
+# Auth need to be enable only in master node.
+if node['ossec']['conf']['server']['cluster']['node_type'] == 'master'
+  execute 'Enable Authd' do
+    command '/var/ossec/bin/ossec-control enable auth'
+    not_if "ps axu | grep ossec-authd | grep -v grep"
+    notifies :restart, "service[wazuh]", :delayed
+  end
+end
+>>>>>>> d3e691bba7f9a6a500c6722eb8e57a4110600cbb
 include_recipe 'wazuh_ossec::common'
 
 include_recipe 'wazuh_ossec::wazuh_api'

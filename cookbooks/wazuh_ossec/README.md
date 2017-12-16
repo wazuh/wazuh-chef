@@ -145,6 +145,83 @@ For the Wazuh server, create a role, `wazuh_server`. Add attributes per above as
   }
 ```
 
+<<<<<<< HEAD
+=======
+If you want to enable Wazuh cluster, you need to create two roles, one role for the **Master** and one or more than one for the ***Clients***:
+
+**Note**: This Chef cookbook only brings compatibility with **CentOS 7**, we are working on add more distributions soon.
+
+```
+  {
+    "name": "wazuh_server_master",
+    "description": "",
+    "json_class": "Chef::Role",
+    "default_attributes": {
+
+    },
+    "override_attributes": {
+      "ossec": {
+        "cluster_disabled": "no",
+        "conf": {
+          "server": {
+            "cluster": {
+              "node_name": "node01",
+              "node_type": "master",
+              "disabled": "no",
+              "nodes": {
+                "node": ["172.16.10.10", "172.16.10.11"]
+              "key": "596f6b328c8ca831a03f7c7ca8203e8b"
+            }
+          }
+        }
+    },
+    "chef_type": "role",
+    "run_list": [
+      "recipe[wazuh_ossec::manager]"
+    ],
+    "env_run_lists": {
+
+    }
+  }
+```
+
+```
+  {
+    "name": "wazuh_server_client",
+    "description": "",
+    "json_class": "Chef::Role",
+    "default_attributes": {
+
+    },
+    "override_attributes": {
+      "ossec": {
+        "cluster_disabled": "no",
+        "conf": {
+          "server": {
+            "cluster": {
+              "node_name": "node02",
+              "node_type": "client",
+              "disabled": "no",
+              "nodes": {
+                "node": ["172.16.10.10", "172.16.10.11"]
+              "key": "596f6b328c8ca831a03f7c7ca8203e8b"
+            }
+          }
+        }
+    },
+    "chef_type": "role",
+    "run_list": [
+      "recipe[wazuh_ossec::manager]"
+    ],
+    "env_run_lists": {
+
+    }
+  }
+```
+More information about cluster configuration in the following link: https://documentation.wazuh.com/current/user-manual/manager/wazuh-cluster.html
+
+
+>>>>>>> d3e691bba7f9a6a500c6722eb8e57a4110600cbb
 For OSSEC agents, create a role, `wazuh_agent`.
 
 ```
@@ -157,7 +234,12 @@ For OSSEC agents, create a role, `wazuh_agent`.
     },
     "override_attributes": {
       "ossec": {
+<<<<<<< HEAD
         "hostname_server_ip": "manager.wazuh.com"
+=======
+        "master": "manager-master.wazuh-test.com",
+        "address": ["manager-master.wazuh-test.com", "manager-client.wazuh-test.com"],
+>>>>>>> d3e691bba7f9a6a500c6722eb8e57a4110600cbb
       }
     },
     "chef_type": "role",

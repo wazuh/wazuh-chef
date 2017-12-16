@@ -13,9 +13,15 @@ output:
   logstash:
     # The Logstash hosts
     hosts: [<%= @servers.to_json %>]
+<<<<<<< HEAD
   tls:
     # Client Certificate Key
     certificate_key: <%= node['filebeat']['ssl_ca'] %>
+=======
+    ssl.certificate_authorities: <%= node['filebeat']['certificate_authorities'] %>
+    ssl.certificate: <%= node['filebeat']['certificate'] %>
+    ssl.key: <%= node['filebeat']['key'] %>
+>>>>>>> d3e691bba7f9a6a500c6722eb8e57a4110600cbb
 
 logging:
   level: error

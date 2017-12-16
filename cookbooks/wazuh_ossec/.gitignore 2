@@ -11,10 +11,5 @@ Berksfile.lock
 Gemfile.lock
 bin/*
 .bundle/*
-
-<<<<<<< HEAD
-.kitchen/
-=======
 .kitchen/*
->>>>>>> d3e691bba7f9a6a500c6722eb8e57a4110600cbb
 .kitchen.local.yml

@@ -20,7 +20,11 @@ platforms:
   - name: centos-6.7
   - name: centos-7.2
 suites:
+<<<<<<< HEAD
   - name: manager-development
+=======
+  - name: manager-development-master
+>>>>>>> d3e691bba7f9a6a500c6722eb8e57a4110600cbb
     environments_path: "test/environments"
     data_bags_path: "test/data_bags"
     encrypted_data_bag_secret_key_path: "test/data_bags/wazuh_secrets/test_data_bag_key"
@@ -34,7 +38,31 @@ suites:
     attributes:
     provisioner:
       client_rb:
+<<<<<<< HEAD
         environment: development
+
+  - name: elastic-development
+=======
+        environment: development-master
+
+  - name: manager-development-client
+>>>>>>> d3e691bba7f9a6a500c6722eb8e57a4110600cbb
+    environments_path: "test/environments"
+    data_bags_path: "test/data_bags"
+    encrypted_data_bag_secret_key_path: "test/data_bags/wazuh_secrets/test_data_bag_key"
+    driver:
+      network:
+      - ["private_network", {ip: "172.16.10.11"}]
+<<<<<<< HEAD
+=======
+    run_list:
+      - recipe[wazuh_ossec::testenvsetup]
+      - recipe[wazuh_ossec::manager]
+      - recipe[wazuh_filebeat::default]
+    attributes:
+    provisioner:
+      client_rb:
+        environment: development-client
 
   - name: elastic-development
     environments_path: "test/environments"
@@ -42,7 +70,8 @@ suites:
     encrypted_data_bag_secret_key_path: "test/data_bags/wazuh_secrets/test_data_bag_key"
     driver:
       network:
-      - ["private_network", {ip: "172.16.10.11"}]
+      - ["private_network", {ip: "172.16.10.12"}]
+>>>>>>> d3e691bba7f9a6a500c6722eb8e57a4110600cbb
       customize:
         memory: 2048
         cpus: 2
@@ -52,7 +81,11 @@ suites:
     attributes:
     provisioner:
       client_rb:
+<<<<<<< HEAD
         environment: development
+=======
+        environment: development-master
+>>>>>>> d3e691bba7f9a6a500c6722eb8e57a4110600cbb
 
   - name: agent-development
     driver:
@@ -65,4 +98,8 @@ suites:
          vagrant:
     provisioner:
       client_rb:
+<<<<<<< HEAD
         environment: development
+=======
+        environment: development-master
+>>>>>>> d3e691bba7f9a6a500c6722eb8e57a4110600cbb
