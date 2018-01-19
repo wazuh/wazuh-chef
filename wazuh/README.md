@@ -130,7 +130,7 @@ For the Wazuh server, create a role, `wazuh_manager`. Add attributes per above a
   }
 ```
 
-If you want to build a Wazuh cluster, you need to create two roles, one role for the **Master** and another one for ***Client***:
+If you want to build a Wazuh cluster, you need to create two roles, one role for the **Master** and another one for **Client**:
 
 **Note**: This Chef cookbook only brings compatibility with **CentOS 7**, we are working on add more distributions soon.
 

@@ -35,28 +35,28 @@ Attributes
 Recipes
 -------
 
-###Deault
+### Deault
 
 Includes all recipe to install the full Elastic Stack in the same server
 
-###repository
+### repository
 
 We add the differents repositories
 
-###java
+### java
 
 Include the java installation.
 
-###logstash
+### logstash
 
 Include the Logstash installation based in the following [documentation](https://documentation.wazuh.com/current/installation-guide/installing-elastic-stack/index.htmll)
 
 
-###elasticsearch
+### elasticsearch
 
 Include the Elasticsearch installation based in the following [documentation](https://documentation.wazuh.com/current/installation-guide/installing-elastic-stack/index.htmll)
 
-###kibana
+### kibana
 
 Include the Kibana installation based in the following [documentation](https://documentation.wazuh.com/current/installation-guide/installing-elastic-stack/index.htmll)
 

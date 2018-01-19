@@ -40,16 +40,16 @@ default['filebeat']['ssl_ca'] = '/etc/filebeat/logstash_certificate.crt'
 Recipes
 -------
 
-###default
+### default
 
 This recipe includes the recipe wazuh_filebeat::repository and wazuh_filebeat::filebeat
 
-###repository
+### repository
 
 Installs Elastics repository.
 
 
-###filebeat
+### filebeat
 
 Install the package Filebeats, create the configuration through a template in /etc/filebeat/filebeat.yml
 
