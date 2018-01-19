@@ -4,4 +4,4 @@ source 'https://supermarket.getchef.com'
 metadata
 
 cookbook 'hostsfile'
-cookbook 'wazuh_ossec'
+cookbook 'wazuh'

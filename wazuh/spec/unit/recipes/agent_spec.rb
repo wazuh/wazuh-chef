@@ -1,18 +1,18 @@
 #
-# Cookbook Name:: wazuh_ossec
+# Cookbook Name:: wazuh
 # Spec:: agent
 
 require 'spec_helper'
 
-describe 'wazuh_ossec::agent' do
+describe 'wazuh::agent' do
   context 'When all attributes are default, on an unspecified platform' do
     cached(:chef_run) do
       runner = ChefSpec::ServerRunner.new
       runner.converge(described_recipe)
     end
 
-    it 'includes the wazuh_ossec::install_agent recipe' do
-      expect(chef_run).to include_recipe 'wazuh_ossec::install_agent'
+    it 'includes the wazuh::install_agent recipe' do
+      expect(chef_run).to include_recipe 'wazuh::install_agent'
     end
 
     it 'installs ossec-hids-agent' do

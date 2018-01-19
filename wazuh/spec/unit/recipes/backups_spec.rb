@@ -1,11 +1,11 @@
 #
-# Cookbook Name:: wazuh_ossec
+# Cookbook Name:: wazuh
 # Spec:: backups
 #
 
 require 'spec_helper'
 
-describe 'wazuh_ossec::backups' do
+describe 'wazuh::backups' do
   context 'When all attributes are default' do
     before do
       Chef::Config[:encrypted_data_bag_secret] = 'test/data_bags/wazuh_secrets/test_data_bag_key'

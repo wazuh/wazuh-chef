@@ -28,8 +28,8 @@ suites:
       network:
       - ["private_network", {ip: "172.16.10.10"}]
     run_list:
-      - recipe[wazuh_ossec::testenvsetup]
-      - recipe[wazuh_ossec::manager]
+      - recipe[wazuh::testenvsetup]
+      - recipe[wazuh::manager]
       - recipe[wazuh_filebeat::default]
     attributes:
     provisioner:
@@ -44,8 +44,8 @@ suites:
       network:
       - ["private_network", {ip: "172.16.10.11"}]
     run_list:
-      - recipe[wazuh_ossec::testenvsetup]
-      - recipe[wazuh_ossec::manager]
+      - recipe[wazuh::testenvsetup]
+      - recipe[wazuh::manager]
       - recipe[wazuh_filebeat::default]
     attributes:
     provisioner:
@@ -63,7 +63,7 @@ suites:
         memory: 2048
         cpus: 2
     run_list:
-      - recipe[wazuh_ossec::testenvsetup]
+      - recipe[wazuh::testenvsetup]
       - recipe[wazuh_elastic::default]
     attributes:
     provisioner:
@@ -75,8 +75,8 @@ suites:
       network:
       - ["private_network", { type: "dhcp" }]
     run_list:
-      - recipe[wazuh_ossec::testenvsetup]
-      - recipe[wazuh_ossec::agent]
+      - recipe[wazuh::testenvsetup]
+      - recipe[wazuh::agent]
     attributes:
          vagrant:
     provisioner:

@@ -1,5 +1,5 @@
 
-describe 'wazuh_ossec::common' do
+describe 'wazuh::common' do
   describe package('chef') do
     it { should be_installed }
   end

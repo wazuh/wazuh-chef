@@ -1,11 +1,11 @@
 #
-# Cookbook Name:: wazuh_ossec
+# Cookbook Name:: wazuh
 # Spec:: manager
 #
 
 require 'spec_helper'
 
-describe 'wazuh_ossec::manager' do
+describe 'wazuh::manager' do
   cached(:chef_run) { ChefSpec::ServerRunner.new.converge(described_recipe) }
 
   before do
@@ -18,8 +18,8 @@ describe 'wazuh_ossec::manager' do
     )
   end
 
-  it 'includes the wazuh_ossec::manager recipe' do
-    expect(chef_run).to include_recipe 'wazuh_ossec::manager'
+  it 'includes the wazuh::manager recipe' do
+    expect(chef_run).to include_recipe 'wazuh::manager'
   end
 
   it 'creates a remote_file /tmp/ossec-wazuh-1.1.1.tar.gz' do

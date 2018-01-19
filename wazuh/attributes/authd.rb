@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: ossec
-# Recipe:: install_agent
+# Attributes:: authd
 #
 # Copyright 2015, Opscode, Inc.
 #
@@ -17,6 +17,10 @@
 # limitations under the License.
 #
 
-include_recipe 'wazuh_ossec::repository'
+default['ossec']['agent_auth']['name'] = node['hostname']
+default['ossec']['agent_auth']['host'] = node['ossec']['registration_address']
+default['ossec']['agent_auth']['port'] = node['ossec']['conf']['server']['auth']['port']
 
-package 'wazuh-agent'
+default['ossec']['agent_auth']['ca'] = nil
+default['ossec']['agent_auth']['certificate'] = nil
+default['ossec']['agent_auth']['key'] = nil

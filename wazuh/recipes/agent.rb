@@ -17,7 +17,9 @@
 # limitations under the License.
 #
 include_recipe 'apt::default'
-include_recipe 'wazuh_ossec::install_agent'
+include_recipe 'wazuh::repository'
+
+package 'wazuh-agent'
 
 dir = node['ossec']['dir']
 agent_auth = node['ossec']['agent_auth']
@@ -42,7 +44,7 @@ execute "#{dir}/bin/agent-auth #{args}" do
   only_if { agent_auth['host'] && !File.size?("#{dir}/etc/client.keys") }
 end
 
-include_recipe 'wazuh_ossec::common'
+include_recipe 'wazuh::common'
 
 template "#{node['ossec']['dir']}/etc/local_internal_options.conf" do
   source 'var/ossec/etc/agent_local_internal_options.conf'

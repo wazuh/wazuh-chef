@@ -1,18 +1,18 @@
 #
-# Cookbook Name:: wazuh_ossec
+# Cookbook Name:: wazuh
 # Spec:: common
 #
 
 require 'spec_helper'
-describe 'wazuh_ossec::common' do
+describe 'wazuh::common' do
   context 'When all attributes are default, on an unspecified platform' do
     cached(:chef_run) do
       runner = ChefSpec::ServerRunner.new
       runner.converge(described_recipe)
     end
 
-    it 'includes the wazuh_ossec::common recipe' do
-      expect(chef_run).to include_recipe 'wazuh_ossec::common'
+    it 'includes the wazuh::common recipe' do
+      expect(chef_run).to include_recipe 'wazuh::common'
     end
 
     it 'creates a file /var/ossec/etc/ossec.conf' do

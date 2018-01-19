@@ -1,5 +1,5 @@
 
-describe 'wazuh_ossec::manager' do
+describe 'wazuh::manager' do
   describe user('ossecm') do
     it { should exist }
   end

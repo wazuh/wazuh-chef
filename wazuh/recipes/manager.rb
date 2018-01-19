@@ -18,7 +18,7 @@
 #
 #include_recipe 'chef-sugar::default'
 include_recipe 'apt::default'
-include_recipe 'wazuh_ossec::repository'
+include_recipe 'wazuh::repository'
 
 package 'wazuh-manager' do
   package_name 'wazuh-manager'
@@ -47,9 +47,9 @@ if node['ossec']['conf']['server']['cluster']['node_type'] == 'master'
     notifies :restart, "service[wazuh]", :delayed
   end
 end
-include_recipe 'wazuh_ossec::common'
+include_recipe 'wazuh::common'
 
-include_recipe 'wazuh_ossec::wazuh_api'
+include_recipe 'wazuh::wazuh_api'
 
 bash 'Creating ossec-authd key and cert' do
   code <<-EOH

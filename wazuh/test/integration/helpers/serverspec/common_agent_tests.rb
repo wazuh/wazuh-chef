@@ -1,5 +1,5 @@
 
-describe 'wazuh_ossec::agent' do
+describe 'wazuh::agent' do
   describe package('ossec-hids-agent') do
     it { should be_installed }
   end
