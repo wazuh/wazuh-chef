@@ -33,10 +33,10 @@ when 'ubuntu'
 when 'redhat', 'centos'
 
   remote_file '/tmp/jre-8-linux-x64.rpm' do
-    source 'http://download.oracle.com/otn-pub/java/jdk/8u151-b12/e758a0de34e24606bca991d704f6dcbf/jre-8u151-linux-x64.rpm'
+    source 'http://download.oracle.com/otn-pub/java/jdk/8u161-b12/2f38c3b165be4555a1fa6e98c45e0808/jre-8u161-linux-x64.rpm'
     headers ({ "Cookie" => "oraclelicense=ccept-securebackup-cookie" })
-    checksum 'c8992e387f56a5fcd46a37640149a7e3c31c97dc70358a3c227874fd01828b85'
-    not_if 'rpm -qa | grep jre1.8-1.8.0_151-fcs.x86_64'
+    checksum '4cdda5b2f40bfff9e0c6dfa145609eeb0596fd584d31a8609bd30ea644b8e309'
+    not_if 'rpm -qa | grep jre1.8-1.8.0_161-fcs.x86_64'
     notifies :install, 'package[jre-8-linux-x64.rpm]', :immediately
   end
 
