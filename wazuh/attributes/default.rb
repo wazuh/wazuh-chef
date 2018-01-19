@@ -20,7 +20,7 @@
 default['ossec']['dir'] = '/var/ossec'
 default['ossec']['server_role'] = 'ossec_server'
 default['ossec']['address'] = nil
-default['ossec']['ignore_failure'] = false
+default['ossec']['ignore_failure'] = true
 
 %w(local server).each do |type|
 

@@ -1,2 +1,3 @@
 .kitchen/*
+./cookbooks/wazuh/.kitchen
 ./cookbooks/wazuh/.kitchen/*

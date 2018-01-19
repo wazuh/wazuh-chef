@@ -54,15 +54,6 @@ template "#{node['ossec']['dir']}/etc/local_internal_options.conf" do
   notifies :restart, 'service[wazuh]', :delayed
 end
 
-template "#{node['ossec']['dir']}/active-response/bin/quarantine.sh" do
-  source 'var/ossec/active-response/bin/quarantine.sh.erb'
-  owner 'root'
-  group 'ossec'
-  mode '0750'
-  action :create
-  notifies :restart, 'service[wazuh]', :delayed
-end
-
 service 'wazuh' do
   service_name 'wazuh-agent'
   supports status: true, restart: true

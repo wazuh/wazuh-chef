@@ -81,4 +81,4 @@ suites:
          vagrant:
     provisioner:
       client_rb:
-        environment: development-master
+        environment: development

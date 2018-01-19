@@ -51,16 +51,6 @@ include_recipe 'wazuh::common'
 
 include_recipe 'wazuh::wazuh_api'
 
-bash 'Creating ossec-authd key and cert' do
-  code <<-EOH
-    openssl genrsa -out #{node['ossec']['dir']}/etc/sslmanager.key 4096 &&
-    openssl req -new -x509 -key #{node['ossec']['dir']}/etc/sslmanager.key\
-   -out #{node['ossec']['dir']}/etc/sslmanager.cert -days 3650\
-   -subj /CN=fqdn/
-    EOH
-  not_if { ::File.exist?("#{node['ossec']['dir']}/etc/sslmanager.cert") }
-end
-
 template "#{node['ossec']['dir']}/etc/local_internal_options.conf" do
   source 'var/ossec/etc/manager_local_internal_options.conf'
   owner 'root'
