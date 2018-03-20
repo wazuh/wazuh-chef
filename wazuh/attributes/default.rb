@@ -104,7 +104,7 @@ default['ossec']['ignore_failure'] = true
 end
 
 # Commands settings (common for both Manager and Agent)
-default['ossec']['conf']['all']['command'] = [
+default['ossec']['conf']['server']['command'] = [
 {
   'name' => 'host-deny',
   'executable' => 'host-deny.sh',

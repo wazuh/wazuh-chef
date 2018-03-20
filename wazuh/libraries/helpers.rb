@@ -55,7 +55,10 @@ class Chef
 
       def self.ossec_to_xml(hash)
         require 'gyoku'
-        Gyoku.xml object_to_ossec(hash)
+        require 'nokogiri'
+        source= Gyoku.xml object_to_ossec(hash)
+        doc = Nokogiri::XML source
+        puts doc.to_xml
       end
     end
   end
