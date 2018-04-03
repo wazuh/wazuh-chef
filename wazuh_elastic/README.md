@@ -65,10 +65,7 @@ Usage
 
 The cookbook can be used to install OSSEC in one of the three types:
 
-* Logstash - use the wazuh::manager recipe.
-* Elasticsearch - use the wazuh::agent recipe
-* Kibana - use the wazuh::wazuh-api recipe
-
+* using knife --run-list recipe[wazuh_elastic]. Chef will use the default recipe for the installation.
 
 
 * [Wazuh Documentation](https://documentation.wazuh.com)
