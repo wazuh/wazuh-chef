@@ -6,7 +6,7 @@
 #
 
 package 'kibana' do
-#  version node['wazuh-elastic']['elasticsearch_version']
+  version node['wazuh-elastic']['elastic_stack_version']
 end
 
 template 'kibana.yml' do
@@ -30,7 +30,8 @@ end
 
 bash 'Install Wazuh-APP (can take a while)' do
   code <<-EOH
-  /usr/share/kibana/bin/kibana-plugin install https://packages.wazuh.com/wazuhapp/wazuhapp.zip
+  export NODE_OPTIONS="--max-old-space-size=3072"
+  /usr/share/kibana/bin/kibana-plugin install https://packages.wazuh.com/wazuhapp/wazuhapp-"#{node['wazuh-elastic']['wazuh_app_version']}".zip
   EOH
   creates '/usr/share/kibana/plugins/wazuh/package.json'
   notifies :restart, 'service[kibana]', :delayed

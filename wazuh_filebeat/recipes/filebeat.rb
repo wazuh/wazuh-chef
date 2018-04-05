@@ -3,7 +3,9 @@
 # Recipe:: default
 # Author:: Wazuh <info@wazuh.com>
 
-package 'filebeat'
+package 'filebeat' do
+    version node['filebeat']['elastic_stack_version']
+end
 
 template node['filebeat']['config_path'] do
   source 'filebeat.yml.erb'

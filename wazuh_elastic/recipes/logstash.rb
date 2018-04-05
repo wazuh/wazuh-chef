@@ -4,8 +4,15 @@
 
 ######################################################
 
-package 'logstash' do
-#  version node['wazuh-elastic']['elasticsearch_version']
+case node['platform_family']
+when 'debian'
+  package 'logstash' do
+    version '1:'+node['wazuh-elastic']['elastic_stack_version']+'-1'
+  end
+when 'rhel'
+  package 'logstash' do
+    version node['wazuh-elastic']['elastic_stack_version']
+  end
 end
 
 template '01-ossec.conf' do

@@ -6,7 +6,7 @@
 ######################################################
 
 package 'elasticsearch' do
-#    version node['wazuh-elastic']['elasticsearch_version']
+    version node['wazuh-elastic']['elastic_stack_version']
 end
 
 half = ((node['memory']['total'].to_i * 0.5).floor / 1024)
