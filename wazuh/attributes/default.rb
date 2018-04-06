@@ -261,7 +261,7 @@ default['ossec']['conf']['all']['localfile'] = [
   {
     'content!' => {
       'log_format' => 'full_command',
-      'command' => 'netstat -tulpen | sort',
+      'command' => "netstat -tulpn | sed 's/\([[:alnum:]]\+\)\ \+[[:digit:]]\+\ \+[[:digit:]]\+\ \+\(.*\):\([[:digit:]]*\)\ \+\([0-9\.\:\*]\+\).\+\ \([[:digit:]]*\/[[:alnum:]\-]*\).*/\1 \2 == \3 == \4 \5/' | sort -k 4 -g | sed 's/ == \(.*\) ==/:\1/' | sed 1,2d",
       'alias' => 'netstat listening ports',
       'frequency' => 360
     }
