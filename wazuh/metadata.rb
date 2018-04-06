@@ -4,9 +4,16 @@ maintainer_email 'info@wazuh.com'
 license          'Apache 2.0'
 description      'Installs and onfigures ossec'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-issues_url 'https://github.com/wazuh/wazuh-chef/issues'
-source_url 'https://github.com/wazuh/wazuh-chef/tree/master/wazuh'
-version          '0.0.6'
+version          '0.0.7'
+
+%w(redhat centos oracle).each do |el|
+  supports el, '>= 6.0'
+end
+
+supports 'amazon'
+supports 'fedora'
+supports 'debian', '>= 7.0'
+supports 'ubuntu', '>= 12.04'
 
 %w( apt ).each do |pkg|
   depends pkg
@@ -21,3 +28,7 @@ depends 'apt'
 depends 'poise-python'
 depends 'yum'
 depends 'hostsfile'
+
+issues_url 'https://github.com/wazuh/wazuh-chef/issues' if respond_to?(:issues_url)
+source_url 'https://github.com/wazuh/wazuh-chef' if respond_to?(:source_url)
+chef_version '>= 12.7' if respond_to?(:chef_version)
