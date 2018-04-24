@@ -60,7 +60,7 @@ class Chef
                             Nokogiri::XML::Node::SaveOptions::NO_DECLARATION
         source= Gyoku.xml object_to_ossec(hash)
         doc = Nokogiri::XML source
-        puts doc.to_xml( save_with:formatted_no_decl )
+        doc.to_xml( save_with:formatted_no_decl )
       end
     end
   end
