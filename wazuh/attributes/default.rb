@@ -78,12 +78,6 @@ default['ossec']['ignore_failure'] = true
   default['ossec']['conf'][type]['remote']['port'] = "1514"
   default['ossec']['conf'][type]['remote']['protocol'] = "udp"
 
-  # Active Response settings (Manager)
-  default['ossec']['conf'][type]['active-response']['command'] = ['host-deny']
-  default['ossec']['conf'][type]['active-response']['location'] = ['local']
-  default['ossec']['conf'][type]['active-response']['level'] = ['6']
-  default['ossec']['conf'][type]['active-response']['timeout'] = ['1800']
-
   # Integratord settings (Manager)
   default['ossec']['hook_url'] = 'https://hooks.slack.com/services/xxx'
   default['ossec']['pagerduty_key'] = 'xxx'
@@ -143,6 +137,12 @@ default['ossec']['conf']['server']['command'] = [
  }
 }
 ]
+
+# Active Response settings (Manager)
+default['ossec']['conf']['server']['active-response']['command'] = ['host-deny']
+default['ossec']['conf']['server']['active-response']['location'] = ['local']
+default['ossec']['conf']['server']['active-response']['level'] = ['6']
+default['ossec']['conf']['server']['active-response']['timeout'] = ['1800']
 
 # Agent settings (agent)
 default['ossec']['conf']['agent']['client']['server']['address'] = node['ossec']['address']
