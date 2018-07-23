@@ -15,10 +15,6 @@ supports 'fedora'
 supports 'debian', '>= 7.0'
 supports 'ubuntu', '>= 12.04'
 
-%w( apt ).each do |pkg|
-  depends pkg
-end
-
 %w( debian ubuntu ).each do |os|
   supports os
 end
