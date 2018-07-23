@@ -13,11 +13,13 @@ Tested on Ubuntu and CentOS, but should work on any Unix/Linux platform supporte
 This cookbook doesn't configure Windows systems yet. For information on installing Wazuh on Windows, see the [documentation](https://documentation.wazuh.com/current/installation-guide/installing-elastic-stack/index.htmll)
 
 #### Chef
-- Chef 12+
+- Chef 12.14+
 
 #### Cookbooks
 - apt
-- yum
+- chef-sugar
+- poise-python
+- hostsfile
 
 Attributes
 ----------

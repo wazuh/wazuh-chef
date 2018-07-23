@@ -9,11 +9,13 @@ Tested on Ubuntu and CentOS, but should work on any Unix/Linux platform supporte
 This cookbook doesn't configure Windows systems yet. For manual agent installation on Windows, check the [documentation](https://documentation.wazuh.com/current/installation-guide/installing-wazuh-agent/wazuh_agent_windows.html)
 
 #### Chef
-- Chef 12+
+- Chef 12.14+
 
 #### Cookbooks
 - apt
-- yum
+- chef-sugar
+- poise-python
+- hostsfile
 
 Attributes
 ----------

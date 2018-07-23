@@ -25,6 +25,6 @@ depends 'poise-python'
 depends 'yum'
 depends 'hostsfile'
 
-issues_url 'https://github.com/wazuh/wazuh-chef/issues' if respond_to?(:issues_url)
-source_url 'https://github.com/wazuh/wazuh-chef' if respond_to?(:source_url)
-chef_version '>= 12.7' if respond_to?(:chef_version)
+issues_url 'https://github.com/wazuh/wazuh-chef/issues'
+source_url 'https://github.com/wazuh/wazuh-chef'
+chef_version '>= 12.14'

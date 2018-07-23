@@ -17,7 +17,6 @@ This cookbook doesn't configure Windows systems yet. For information on installi
 
 #### Cookbooks
 - apt
-- yum
 
 Attributes
 ----------
