@@ -38,6 +38,10 @@ if agent_auth['key'] && File.exist?(agent_auth['key'])
   args << ' -k ' + agent_auth['key']
 end
 
+if agent_auth['password']
+  args << ' -P ' + agent_auth['password']
+end
+
 execute "#{dir}/bin/agent-auth #{args}" do
   timeout 30
   ignore_failure node['ossec']['ignore_failure']
