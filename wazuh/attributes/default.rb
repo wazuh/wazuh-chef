@@ -15,12 +15,14 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
+
 # general settings
 default['ossec']['dir'] = '/var/ossec'
 default['ossec']['server_role'] = 'ossec_server'
 default['ossec']['address'] = nil
 default['ossec']['ignore_failure'] = true
+default['wazuh']['api']['data_bag']['name'] = 'wazuh_secrets'
+default['wazuh']['api']['data_bag']['item'] = 'api'
 
 %w(local server).each do |type|
 
