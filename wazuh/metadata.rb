@@ -22,7 +22,6 @@ end
 depends 'chef-sugar'
 depends 'apt'
 depends 'poise-python'
-depends 'yum'
 depends 'hostsfile'
 
 issues_url 'https://github.com/wazuh/wazuh-chef/issues'
