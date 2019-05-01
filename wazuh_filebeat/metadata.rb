@@ -10,3 +10,7 @@ supports 'debian'
 supports 'ubuntu'
 
 depends 'apt'
+
+issues_url 'https://github.com/wazuh/wazuh-chef/issues'
+source_url 'https://github.com/wazuh/wazuh-chef'
+chef_version '>= 12.14'
