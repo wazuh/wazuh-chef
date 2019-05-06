@@ -17,7 +17,7 @@ Each cookbook has its own README.
 
 ## Use through Berkshelf
 
-The easiest way to making use of these cookbooks (especiall `wazuh_filebeat` & `wazuh_elastic` until they are published to Supermarket) is by including in your `Berksfile` something like the below:
+The easiest way to making use of these cookbooks (especially `wazuh_filebeat` & `wazuh_elastic` until they are published to Supermarket) is by including in your `Berksfile` something like the below:
 
 ```ruby
 cookbook 'wazuh', github: 'wazuh/wazuh-chef', rel: 'wazuh'
