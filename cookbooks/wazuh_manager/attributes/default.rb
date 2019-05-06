@@ -38,7 +38,7 @@ default['ossec']['ignore_failure'] = true
   default['ossec']['conf'][type]['alerts']['email_alert_level'] = 12
   default['ossec']['conf'][type]['alerts']['log_alert_level'] = 3
 
-  # Choose between plain or json format (or both) for internal logs (common for both Manager and Agent)
+  # Choose between plain or json format (or both) for internal logs
   default['ossec']['conf'][type]['logging']['log_format'] = 'plain'
 
   # Cluster settings (Manager)
@@ -97,7 +97,7 @@ default['ossec']['ignore_failure'] = true
   ]
 end
 
-# Commands settings (common for both Manager and Agent)
+# Commands settings
 default['ossec']['conf']['server']['command'] = [
 {
   'name' => 'host-deny',
@@ -144,24 +144,7 @@ default['ossec']['conf']['server']['active-response']['location'] = ['local']
 default['ossec']['conf']['server']['active-response']['level'] = ['6']
 default['ossec']['conf']['server']['active-response']['timeout'] = ['1800']
 
-# Agent settings (agent)
-default['ossec']['conf']['agent']['client']['server']['address'] = node['ossec']['address']
-default['ossec']['conf']['agent']['client']['server']['port'] = 1514
-default['ossec']['conf']['agent']['client']['server']['protocol'] = 'udp'
-default['ossec']['conf']['agent']['client']['notify_time'] = 10
-default['ossec']['conf']['agent']['client']['time-reconnect'] = 60
-default['ossec']['conf']['agent']['client']['auto_restart'] = true
-
-
-default['ossec']['conf']['agent']['client_buffer']['disable'] = false
-default['ossec']['conf']['agent']['client_buffer']['queue_size'] = 5000
-default['ossec']['conf']['agent']['client_buffer']['events_per_second'] = 500
-
-default['ossec']['conf']['agent']['active-response']['disabled'] = false
-default['ossec']['conf']['agent']['active-response']['ca_store'] = '/var/ossec/etc/wpk_root.pem'
-
-
-# Syscheck settings (common for both Manager and Agent)
+# Syscheck settings
 default['ossec']['conf']['all']['syscheck']['disabled'] = false
 default['ossec']['conf']['all']['syscheck']['frequency'] = 43_200
 default['ossec']['conf']['all']['syscheck']['scan_on_start'] = true
@@ -193,7 +176,7 @@ default['ossec']['conf']['all']['syscheck']['nodiff'] = '/etc/ssl/private.key'
 default['ossec']['conf']['all']['syscheck']['skip_nfs'] = true
 
 
-# Rootcheck settings (common for both Manager and Agent)
+# Rootcheck settings
 default['ossec']['conf']['all']['rootcheck']['disabled'] = false
 default['ossec']['conf']['all']['rootcheck']['check_unixaudit'] = true
 default['ossec']['conf']['all']['rootcheck']['check_files'] = true
@@ -232,14 +215,14 @@ when 'rhel'
     default['ossec']['conf']['all']['rootcheck']['system_audit'] = [
       '/var/ossec/etc/shared/system_audit_rcl.txt',
       '/var/ossec/etc/shared/system_audit_ssh.txt',
-      '/var/ossec/etc/shared/cis_rhel7_linux_rcl.txt'
+      '/var/ossec/etc/shared/cis_rhel7_linux_rcl.txtf'
     ]
   end
 end
 
 default['ossec']['conf']['all']['rootcheck']['skip_nfs'] = true
 
-# Localfiles settings (common for both Manager and Agent)
+# Localfiles settings
 default['ossec']['conf']['all']['localfile'] = [
   {
     'log_format' => 'syslog',
@@ -316,7 +299,6 @@ default['ossec']['conf']['all']['localfile'] = [
     }
   }
 ]
-
 
 # Agent.conf. Centralized configuration. (Manager)
 #

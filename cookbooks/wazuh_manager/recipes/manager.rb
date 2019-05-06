@@ -18,7 +18,7 @@
 #
 #include_recipe 'chef-sugar::default'
 include_recipe 'apt::default'
-include_recipe 'wazuh::repository'
+include_recipe 'wazuh_manager::repository'
 
 package 'wazuh-manager' do
   package_name 'wazuh-manager'
@@ -47,9 +47,9 @@ if node['ossec']['conf']['server']['cluster']['node_type'] == 'master'
     notifies :restart, "service[wazuh]", :delayed
   end
 end
-include_recipe 'wazuh::common'
+include_recipe 'wazuh_manager::common'
 
-include_recipe 'wazuh::wazuh_api'
+include_recipe 'wazuh_manager::wazuh_api'
 
 template "#{node['ossec']['dir']}/etc/local_internal_options.conf" do
   source 'var/ossec/etc/manager_local_internal_options.conf'
