@@ -1,0 +1,21 @@
+{
+    "name": "wazuh_agent",
+    "description": "Wazuh agent",
+    "json_class": "Chef::Role",
+    "default_attributes": {
+
+    },
+    "override_attributes": {
+      "ossec": {
+        "registration_address": "manager-master.wazuh-test.com",
+        "address": ["manager-master.wazuh-test.com", "manager-client.wazuh-test.com"]
+      }
+    },
+    "chef_type": "role",
+    "run_list": [
+      "recipe[wazuh_agent::agent]"
+    ],
+    "env_run_lists": {
+
+    }
+  }
