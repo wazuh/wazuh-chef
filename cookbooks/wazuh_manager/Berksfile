@@ -1,5 +1,5 @@
 source 'https://supermarket.chef.io'
-
+#cookbook 'wazuh_agent', path '../wazuh_agent'
 cookbook 'wazuh_filebeat', path: '../wazuh_filebeat'
 cookbook 'wazuh_elastic', path: '../wazuh_elastic'
 metadata
@@ -10,3 +10,4 @@ cookbook 'hostsfile'
 cookbook 'apt'
 cookbook 'yum'
 cookbook 'poise-python'
+cookbook 'htpasswd'

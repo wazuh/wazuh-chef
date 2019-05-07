@@ -1,5 +1,6 @@
 source 'https://supermarket.chef.io'
 
+#cookbook 'wazuh_manager', path '../wazuh_manager'
 cookbook 'wazuh_filebeat', path: '../wazuh_filebeat'
 cookbook 'wazuh_elastic', path: '../wazuh_elastic'
 metadata
