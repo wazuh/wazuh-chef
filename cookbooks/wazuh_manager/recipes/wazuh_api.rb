@@ -25,18 +25,6 @@ end
 
 package ['nodejs', 'wazuh-api']
 
-
-api_keys = Chef::EncryptedDataBagItem.load('wazuh_secrets', 'api')
-
-file "#{node['ossec']['dir']}/api/configuration/auth/user" do
-  mode '0650'
-  owner 'root'
-  group 'root'
-  content "#{api_keys['htpasswd_user']}:#{api_keys['htpasswd_passcode']}"
-  action :create
-  notifies :restart, 'service[wazuh-api]', :delayed
-end
-
 service 'wazuh-api' do
   supports restart: true
   action [:enable, :start]
