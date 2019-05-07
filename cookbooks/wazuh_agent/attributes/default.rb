@@ -71,6 +71,8 @@ default['ossec']['conf']['agent']['client']['notify_time'] = 10
 default['ossec']['conf']['agent']['client']['time-reconnect'] = 60
 default['ossec']['conf']['agent']['client']['auto_restart'] = true
 
+default['ossec']['conf']['server']['auth']['port'] = 1515
+
 
 default['ossec']['conf']['agent']['client_buffer']['disable'] = false
 default['ossec']['conf']['agent']['client_buffer']['queue_size'] = 5000

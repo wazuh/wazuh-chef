@@ -7,8 +7,8 @@
     },
     "override_attributes": {
       "ossec": {
-        "registration_address": "manager-master.wazuh-test.com",
-        "address": ["manager-master.wazuh-test.com", "manager-client.wazuh-test.com"]
+        "registration_address": "<YOUR MANAGER IP ADDRESS>",
+        "address": "<YOUR AGENT IP ADDRESS>"
       }
     },
     "chef_type": "role",

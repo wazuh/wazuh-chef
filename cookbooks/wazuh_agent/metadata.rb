@@ -1,4 +1,4 @@
-name             'wazuh'
+name             'wazuh_agent'
 maintainer       'Wazuh Inc.'
 maintainer_email 'info@wazuh.com'
 license          'Apache 2.0'
