@@ -115,8 +115,7 @@ default['ossec']['conf']['all']['syscheck']['skip_nfs'] = true
 
 
 # Rootcheck settings
-default['ossec']['conf']['all']['rootcheck']['disabled'] = false
-default['ossec']['conf']['all']['rootcheck']['check_unixaudit'] = true
+default['ossec']['conf']['all']['rootcheck']['disabled'] = true
 default['ossec']['conf']['all']['rootcheck']['check_files'] = true
 default['ossec']['conf']['all']['rootcheck']['check_trojans'] = true
 default['ossec']['conf']['all']['rootcheck']['check_dev'] = true

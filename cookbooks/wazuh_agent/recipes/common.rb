@@ -50,13 +50,9 @@ file "#{node['ossec']['dir']}/etc/ossec.conf" do
   manage_symlink_source true
   notifies :restart, 'service[wazuh]'
 
-  content lazy {
-    # Merge the "typed" attributes over the "all" attributes.
-    all_conf = node['ossec']['conf']['all'].to_hash
-    type_conf = node['ossec']['conf'][node['ossec']['install_type']].to_hash
-    conf = Chef::Mixin::DeepMerge.deep_merge(type_conf, all_conf)
-    Chef::OSSEC::Helpers.ossec_to_xml('ossec_config' => conf)
-  }
+  all_conf = node['ossec']['conf']['all'].to_hash
+  Chef::OSSEC::Helpers.ossec_to_xml('ossec_config' => all_conf)
+  
 end
 
 file "#{node['ossec']['dir']}/etc/shared/agent.conf" do

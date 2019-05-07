@@ -46,7 +46,6 @@ default['ossec']['ignore_failure'] = true
   default['ossec']['conf'][type]['cluster']['node_name'] = 'node01'
   default['ossec']['conf'][type]['cluster']['node_type'] = 'master'
   default['ossec']['conf'][type]['cluster']['key'] = ''
-  default['ossec']['conf'][type]['cluster']['interval'] = '2m'
   default['ossec']['conf'][type]['cluster']['port'] = 1516
   default['ossec']['conf'][type]['cluster']['bind_addr'] = '0.0.0.0'
   default['ossec']['conf'][type]['cluster']['nodes']['node'] = []
@@ -178,7 +177,6 @@ default['ossec']['conf']['all']['syscheck']['skip_nfs'] = true
 
 # Rootcheck settings
 default['ossec']['conf']['all']['rootcheck']['disabled'] = false
-default['ossec']['conf']['all']['rootcheck']['check_unixaudit'] = true
 default['ossec']['conf']['all']['rootcheck']['check_files'] = true
 default['ossec']['conf']['all']['rootcheck']['check_trojans'] = true
 default['ossec']['conf']['all']['rootcheck']['check_dev'] = true
@@ -187,59 +185,16 @@ default['ossec']['conf']['all']['rootcheck']['check_pids'] = true
 default['ossec']['conf']['all']['rootcheck']['check_ports'] = true
 default['ossec']['conf']['all']['rootcheck']['check_if'] = true
 default['ossec']['conf']['all']['rootcheck']['frequency'] = 43200
-default['ossec']['conf']['all']['rootcheck']['rootkit_files'] = "#{node['ossec']['dir']}/etc/shared/rootkit_files.txt"
-default['ossec']['conf']['all']['rootcheck']['rootkit_trojans'] = "#{node['ossec']['dir']}/etc/shared/rootkit_trojans.txt"
-case node['platform_family']
-when 'debian'
-  default['ossec']['conf']['all']['rootcheck']['system_audit'] = [
-    '/var/ossec/etc/shared/system_audit_rcl.txt',
-    '/var/ossec/etc/shared/system_audit_ssh.txt',
-    '/var/ossec/etc/shared/cis_debian_linux_rcl.txt'
-  ]
-when 'rhel'
-  if node['platform_version'].to_i == 5
-    default['ossec']['conf']['all']['rootcheck']['system_audit'] = [
-      '/var/ossec/etc/shared/system_audit_rcl.txt',
-      '/var/ossec/etc/shared/system_audit_ssh.txt',
-      '/var/ossec/etc/shared/cis_rhel5_linux_rcl.txt'
-    ]
-  end
-  if node['platform_version'].to_i == 6
-    default['ossec']['conf']['all']['rootcheck']['system_audit'] = [
-      '/var/ossec/etc/shared/system_audit_rcl.txt',
-      '/var/ossec/etc/shared/system_audit_ssh.txt',
-      '/var/ossec/etc/shared/cis_rhel6_linux_rcl.txt'
-    ]
-  end
-  if node['platform_version'].to_i == 7
-    default['ossec']['conf']['all']['rootcheck']['system_audit'] = [
-      '/var/ossec/etc/shared/system_audit_rcl.txt',
-      '/var/ossec/etc/shared/system_audit_ssh.txt',
-      '/var/ossec/etc/shared/cis_rhel7_linux_rcl.txtf'
-    ]
-  end
-end
-
+default['ossec']['conf']['all']['rootcheck']['rootkit_files'] = '/var/ossec/etc/rootcheck/rootkit_files.txt'
+default['ossec']['conf']['all']['rootcheck']['rootkit_trojans'] = '/var/ossec/etc/rootcheck/rootkit_trojans.txt'
 default['ossec']['conf']['all']['rootcheck']['skip_nfs'] = true
 
 # Localfiles settings
 default['ossec']['conf']['all']['localfile'] = [
   {
-    'log_format' => 'syslog',
-    'location' => '/var/log/syslog'
-  },
-  {
-    'content!' => {
-      'log_format' => 'syslog',
-      'location' => '/var/log/dpkg.log'
-    }
-  },
-  {
-    'content!' => {
     'log_format' => 'command',
     'command' => 'df -P',
     'frequency' => 360
-     }
   },
   {
     'content!' => {
@@ -251,9 +206,15 @@ default['ossec']['conf']['all']['localfile'] = [
   },
   {
     'content!' => {
-      'log_format' => 'full_command',
-      'command' => 'last -n 20',
-      'frequency' => 360
+    'log_format' => 'full_command',
+    'command' => 'last -n 20',
+    'frequency' => 360
+     }
+  },
+  {
+    'content!' => {
+      'log_format' => 'syslog',
+      'command' => '/var/ossec/logs/active-responses.log',
     }
   },
   {
@@ -265,38 +226,20 @@ default['ossec']['conf']['all']['localfile'] = [
   {
     'content!' => {
       'log_format' => 'syslog',
-      'location' => '/var/log/secure'
+      'location' => '/var/log/syslog'
       }
   },
   {
     'content!' => {
       'log_format' => 'syslog',
-      'location' => '/var/log/audit/audit.log'
+      'location' => '/var/log/dpkg.log'
       }
   },
   {
     'content!' => {
       'log_format' => 'syslog',
-      'location' => '/var/log/xferlog'
+      'location' => '/var/log/kern.log'
       }
-  },
-  {
-    'content!' => {
-      'log_format' => 'syslog',
-      'location' => '/var/log/maillog'
-      }
-  },
-  {
-    'content!' => {
-      'log_format' => 'apache',
-      'location' => '/var/www/logs/access_log'
-    }
-  },
-  {
-    'content!' => {
-      'log_format' => 'apache',
-      'location' => '/var/www/logs/error_log'
-    }
   }
 ]
 
