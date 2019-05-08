@@ -16,6 +16,18 @@ Deploy Wazuh platform using Chef cookbooks. Chef recipes are prepared for instal
 Each cookbook has its own README.
 
 
+## Use through Berkshelf
+
+The easiest way to making use of these cookbooks (especially `wazuh_filebeat` & `wazuh_elastic` until they are published to Supermarket) is by including in your `Berksfile` something like the below:
+
+```ruby
+cookbook 'wazuh', github: 'wazuh/wazuh-chef', rel: 'wazuh'
+cookbook 'wazuh_filebeat', github: 'wazuh/wazuh-chef', rel: 'wazuh_filebeat'
+cookbook 'wazuh_elastic', github: 'wazuh/wazuh-chef', rel: 'wazuh_elastic'
+```
+
+This will source all three cookbook housed in this repo from github.
+
 ## Contribute
 
 If you want to contribute to our project please don't hesitate to send a pull request. You can also join our users [mailing list](https://groups.google.com/d/forum/wazuh), by sending an email to [wazuh+subscribe@googlegroups.com](mailto:wazuh+subscribe@googlegroups.com), to ask questions and participate in discussions.
