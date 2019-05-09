@@ -19,22 +19,14 @@
 
 ruby_block 'ossec install_type' do
   block do
-    if node['recipes'].include?('ossec::default')
-      type = 'local'
-    else
-      type = "test"
-
-      File.open('/var/ossec/etc/ossec-init.conf') do |file|
-        file.each_line do |line|
-          if line =~ /^TYPE="([^"]+)"/
-            type = Regexp.last_match(1)
-            break
-          end
+    File.open('/var/ossec/etc/ossec-init.conf') do |file|
+      file.each_line do |line|
+        if line =~ /^TYPE="([^"]+)"/
+          type = Regexp.last_match(1)
+          break
         end
-       end
+      end
     end
-
-    node.normal['ossec']['install_type'] = type
   end
 end
 
@@ -50,9 +42,11 @@ file "#{node['ossec']['dir']}/etc/ossec.conf" do
   manage_symlink_source true
   notifies :restart, 'service[wazuh]'
 
-  all_conf = node['ossec']['conf']['all'].to_hash
-  Chef::OSSEC::Helpers.ossec_to_xml('ossec_config' => all_conf)
-  
+  content lazy {
+    all_conf = node['ossec']['conf'].to_hash
+    Chef::OSSEC::Helpers.ossec_to_xml('ossec_config' => all_conf)
+  }
+
 end
 
 file "#{node['ossec']['dir']}/etc/shared/agent.conf" do
@@ -60,20 +54,5 @@ file "#{node['ossec']['dir']}/etc/shared/agent.conf" do
   group 'ossec'
   mode '0440'
   notifies :restart, 'service[wazuh]'
-
-  # Even if agent.cont is not appropriate for this kind of
-  # installation, we need to create an empty file instead of deleting
-  # for two reasons. Firstly, install_type is set at converge time
-  # while action can't be lazy. Secondly, a subsequent package update
-  # would just replace the file.
   action :create
-
-  content lazy {
-    if node['ossec']['install_type'] == 'server'
-      conf = node['ossec']['agent_conf'].to_a
-      Chef::OSSEC::Helpers.ossec_to_xml('agent_config' => conf)
-    else
-      ''
-    end
-  }
 end

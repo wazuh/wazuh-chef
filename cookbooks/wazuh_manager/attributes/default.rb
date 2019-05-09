@@ -18,86 +18,82 @@
 #
 # general settings
 default['ossec']['dir'] = '/var/ossec'
-default['ossec']['server_role'] = 'ossec_server'
 default['ossec']['address'] = nil
 default['ossec']['ignore_failure'] = true
 
-%w(local server).each do |type|
+# Manager global settings
+default['ossec']['conf']['global']['jsonout_output'] = true
+default['ossec']['conf']['global']['alerts_log'] = true
+default['ossec']['conf']['global']['logall'] = false
+default['ossec']['conf']['global']['logall_json'] = false
+default['ossec']['conf']['global']['email_notification'] = false
+default['ossec']['conf']['global']['smtp_server'] = 'smtp.example.wazuh.com'
+default['ossec']['conf']['global']['email_from'] = 'manager@example.wazuh.com'
+default['ossec']['conf']['global']['email_to'] = 'recipient@example.wazuh.com'
+default['ossec']['conf']['global']['email_maxperhour'] = 12
+default['ossec']['conf']['global']['white_list'] = ['127.0.0.1', '^localhost.localdomain$', '8.8.8.8']
+default['ossec']['conf']['alerts']['email_alert_level'] = 12
+default['ossec']['conf']['alerts']['log_alert_level'] = 3
 
-  # Manager global settings
-  default['ossec']['conf'][type]['global']['jsonout_output'] = true
-  default['ossec']['conf'][type]['global']['alerts_log'] = true
-  default['ossec']['conf'][type]['global']['logall'] = false
-  default['ossec']['conf'][type]['global']['logall_json'] = false
-  default['ossec']['conf'][type]['global']['email_notification'] = false
-  default['ossec']['conf'][type]['global']['smtp_server'] = 'smtp.example.wazuh.com'
-  default['ossec']['conf'][type]['global']['email_from'] = 'manager@example.wazuh.com'
-  default['ossec']['conf'][type]['global']['email_to'] = 'recipient@example.wazuh.com'
-  default['ossec']['conf'][type]['global']['email_maxperhour'] = 12
-  default['ossec']['conf'][type]['global']['white_list'] = ['127.0.0.1', '^localhost.localdomain$', '8.8.8.8']
-  default['ossec']['conf'][type]['alerts']['email_alert_level'] = 12
-  default['ossec']['conf'][type]['alerts']['log_alert_level'] = 3
+# Choose between plain or json format (or both) for internal logs
+default['ossec']['conf']['logging']['log_format'] = 'plain'
 
-  # Choose between plain or json format (or both) for internal logs
-  default['ossec']['conf'][type]['logging']['log_format'] = 'plain'
+# Cluster settings (Manager)
+default['ossec']['conf']['cluster']['name'] = 'wazuh'
+default['ossec']['conf']['cluster']['node_name'] = 'node01'
+default['ossec']['conf']['cluster']['node_type'] = 'master'
+default['ossec']['conf']['cluster']['key'] = ''
+default['ossec']['conf']['cluster']['port'] = 1516
+default['ossec']['conf']['cluster']['bind_addr'] = '0.0.0.0'
+default['ossec']['conf']['cluster']['nodes']['node'] = []
+default['ossec']['conf']['cluster']['hidden'] = 'no'
+default['ossec']['conf']['cluster']['disabled'] = 'yes'
 
-  # Cluster settings (Manager)
-  default['ossec']['conf'][type]['cluster']['name'] = 'wazuh'
-  default['ossec']['conf'][type]['cluster']['node_name'] = 'node01'
-  default['ossec']['conf'][type]['cluster']['node_type'] = 'master'
-  default['ossec']['conf'][type]['cluster']['key'] = ''
-  default['ossec']['conf'][type]['cluster']['port'] = 1516
-  default['ossec']['conf'][type]['cluster']['bind_addr'] = '0.0.0.0'
-  default['ossec']['conf'][type]['cluster']['nodes']['node'] = []
-  default['ossec']['conf'][type]['cluster']['hidden'] = 'no'
-  default['ossec']['conf'][type]['cluster']['disabled'] = 'yes'
+# Registration service - Authd settings (Manager)
+default['ossec']['conf']['auth']['disabled'] = false
+default['ossec']['conf']['auth']['port'] = 1515
+default['ossec']['conf']['auth']['use_source_ip'] = true
+default['ossec']['conf']['auth']['force_insert'] = true
+default['ossec']['conf']['auth']['force_time'] = 0
+default['ossec']['conf']['auth']['purge'] = false
+default['ossec']['conf']['auth']['use_password'] = false
+default['ossec']['conf']['auth']['ciphers'] = 'HIGH:!ADH:!EXP:!MD5:!RC4:!3DES:!CAMELLIA:@STRENGTH'
+default['ossec']['conf']['auth']['ssl_verify_host'] = false
+default['ossec']['conf']['auth']['ssl_manager_cert'] = "#{node['ossec']['dir']}/etc/sslmanager.cert"
+default['ossec']['conf']['auth']['ssl_manager_key'] = "#{node['ossec']['dir']}/etc/sslmanager.key"
+default['ossec']['conf']['auth']['ssl_auto_negotiate'] = false
 
-  # Registration service - Authd settings (Manager)
-  default['ossec']['conf'][type]['auth']['disabled'] = false
-  default['ossec']['conf'][type]['auth']['port'] = 1515
-  default['ossec']['conf'][type]['auth']['use_source_ip'] = true
-  default['ossec']['conf'][type]['auth']['force_insert'] = true
-  default['ossec']['conf'][type]['auth']['force_time'] = 0
-  default['ossec']['conf'][type]['auth']['purge'] = false
-  default['ossec']['conf'][type]['auth']['use_password'] = false
-  default['ossec']['conf'][type]['auth']['ciphers'] = 'HIGH:!ADH:!EXP:!MD5:!RC4:!3DES:!CAMELLIA:@STRENGTH'
-  default['ossec']['conf'][type]['auth']['ssl_verify_host'] = false
-  default['ossec']['conf'][type]['auth']['ssl_manager_cert'] = "#{node['ossec']['dir']}/etc/sslmanager.cert"
-  default['ossec']['conf'][type]['auth']['ssl_manager_key'] = "#{node['ossec']['dir']}/etc/sslmanager.key"
-  default['ossec']['conf'][type]['auth']['ssl_auto_negotiate'] = false
+# Ruleset settings (Manager)
+default['ossec']['conf']['ruleset']['decoder_dir'] = ['ruleset/decoders', 'etc/decoders']
+default['ossec']['conf']['ruleset']['rule_dir'] = ['ruleset/rules', 'etc/rules']
+default['ossec']['conf']['ruleset']['rule_exclude'] = '0215-policy_rules.xml'
+default['ossec']['conf']['ruleset']['list'] = [ 'etc/lists/audit-keys', 'etc/lists/amazon/aws-sources', 'etc/lists/amazon/aws-eventnames' ]
 
-  # Ruleset settings (Manager)
-  default['ossec']['conf'][type]['ruleset']['decoder_dir'] = ['ruleset/decoders', 'etc/decoders']
-  default['ossec']['conf'][type]['ruleset']['rule_dir'] = ['ruleset/rules', 'etc/rules']
-  default['ossec']['conf'][type]['ruleset']['rule_exclude'] = '0215-policy_rules.xml'
-  default['ossec']['conf'][type]['ruleset']['list'] = [ 'etc/lists/audit-keys', 'etc/lists/amazon/aws-sources', 'etc/lists/amazon/aws-eventnames' ]
+# Remoted settings (Manager)
+default['ossec']['conf']['remote']['connection'] = ['secure']
+default['ossec']['conf']['remote']['port'] = "1514"
+default['ossec']['conf']['remote']['protocol'] = "udp"
 
-  # Remoted settings (Manager)
-  default['ossec']['conf'][type]['remote']['connection'] = ['secure']
-  default['ossec']['conf'][type]['remote']['port'] = "1514"
-  default['ossec']['conf'][type]['remote']['protocol'] = "udp"
-
-  # Integratord settings (Manager)
-  default['ossec']['hook_url'] = 'https://hooks.slack.com/services/xxx'
-  default['ossec']['pagerduty_key'] = 'xxx'
-  default['ossec']['conf'][type]['integration'] = [
-    {
-      'name' => 'slack',
-      'level' => '9',
-      'hook_url' => node['ossec']['hook_url']
-    },
-    {
-      'content!' => {
-        'name' => 'pagerduty',
-        'level' => '11',
-        'api_key' => node['ossec']['pagerduty_key']
-     }
-   }
-  ]
-end
+# Integratord settings (Manager)
+default['ossec']['conf']['integration']['hook_url'] = 'https://hooks.slack.com/services/xxx'
+default['ossec']['conf']['integration']['pagerduty_key'] = 'xxx'
+default['ossec']['conf']['integration'] = [
+  {
+    'name' => 'slack',
+    'level' => '9',
+    'hook_url' => node['ossec']['hook_url']
+  },
+  {
+    'content!' => {
+      'name' => 'pagerduty',
+      'level' => '11',
+      'api_key' => node['ossec']['pagerduty_key']
+    }
+  }
+]
 
 # Commands settings
-default['ossec']['conf']['server']['command'] = [
+default['ossec']['conf']['command'] = [
 {
   'name' => 'host-deny',
   'executable' => 'host-deny.sh',
@@ -138,23 +134,23 @@ default['ossec']['conf']['server']['command'] = [
 ]
 
 # Active Response settings (Manager)
-default['ossec']['conf']['server']['active-response']['command'] = ['host-deny']
-default['ossec']['conf']['server']['active-response']['location'] = ['local']
-default['ossec']['conf']['server']['active-response']['level'] = ['6']
-default['ossec']['conf']['server']['active-response']['timeout'] = ['1800']
+default['ossec']['conf']['active-response']['command'] = ['host-deny']
+default['ossec']['conf']['active-response']['location'] = ['local']
+default['ossec']['conf']['active-response']['level'] = ['6']
+default['ossec']['conf']['active-response']['timeout'] = ['1800']
 
 # Syscheck settings
-default['ossec']['conf']['all']['syscheck']['disabled'] = false
-default['ossec']['conf']['all']['syscheck']['frequency'] = 43_200
-default['ossec']['conf']['all']['syscheck']['scan_on_start'] = true
-default['ossec']['conf']['all']['syscheck']['alert_new_files'] = true
-default['ossec']['conf']['all']['syscheck']['auto_ignore'] = false
-default['ossec']['conf']['all']['syscheck']['directories'] = [
+default['ossec']['conf']['syscheck']['disabled'] = false
+default['ossec']['conf']['syscheck']['frequency'] = 43_200
+default['ossec']['conf']['syscheck']['scan_on_start'] = true
+default['ossec']['conf']['syscheck']['alert_new_files'] = true
+default['ossec']['conf']['syscheck']['auto_ignore'] = false
+default['ossec']['conf']['syscheck']['directories'] = [
   { '@check_all' => true, 'content!' => '/etc,/usr/bin,/usr/sbin' },
   { '@check_all' => true, 'content!' => '/bin,/sbin,/boot' }
 ]
-default['ossec']['conf']['all']['syscheck']['auto_ignore'] = false
-default['ossec']['conf']['all']['syscheck']['ignore'] = [
+default['ossec']['conf']['syscheck']['auto_ignore'] = false
+default['ossec']['conf']['syscheck']['ignore'] = [
   '/etc/mtab',
   '/etc/mnttab',
   '/etc/hosts.deny',
@@ -171,26 +167,26 @@ default['ossec']['conf']['all']['syscheck']['ignore'] = [
 ]
 
 
-default['ossec']['conf']['all']['syscheck']['nodiff'] = '/etc/ssl/private.key'
-default['ossec']['conf']['all']['syscheck']['skip_nfs'] = true
+default['ossec']['conf']['syscheck']['nodiff'] = '/etc/ssl/private.key'
+default['ossec']['conf']['syscheck']['skip_nfs'] = true
 
 
 # Rootcheck settings
-default['ossec']['conf']['all']['rootcheck']['disabled'] = false
-default['ossec']['conf']['all']['rootcheck']['check_files'] = true
-default['ossec']['conf']['all']['rootcheck']['check_trojans'] = true
-default['ossec']['conf']['all']['rootcheck']['check_dev'] = true
-default['ossec']['conf']['all']['rootcheck']['check_sys'] = true
-default['ossec']['conf']['all']['rootcheck']['check_pids'] = true
-default['ossec']['conf']['all']['rootcheck']['check_ports'] = true
-default['ossec']['conf']['all']['rootcheck']['check_if'] = true
-default['ossec']['conf']['all']['rootcheck']['frequency'] = 43200
-default['ossec']['conf']['all']['rootcheck']['rootkit_files'] = '/var/ossec/etc/rootcheck/rootkit_files.txt'
-default['ossec']['conf']['all']['rootcheck']['rootkit_trojans'] = '/var/ossec/etc/rootcheck/rootkit_trojans.txt'
-default['ossec']['conf']['all']['rootcheck']['skip_nfs'] = true
+default['ossec']['conf']['rootcheck']['disabled'] = false
+default['ossec']['conf']['rootcheck']['check_files'] = true
+default['ossec']['conf']['rootcheck']['check_trojans'] = true
+default['ossec']['conf']['rootcheck']['check_dev'] = true
+default['ossec']['conf']['rootcheck']['check_sys'] = true
+default['ossec']['conf']['rootcheck']['check_pids'] = true
+default['ossec']['conf']['rootcheck']['check_ports'] = true
+default['ossec']['conf']['rootcheck']['check_if'] = true
+default['ossec']['conf']['rootcheck']['frequency'] = 43200
+default['ossec']['conf']['rootcheck']['rootkit_files'] = "#{node['ossec']['dir']}/etc/rootcheck/rootkit_files.txt"
+default['ossec']['conf']['rootcheck']['rootkit_trojans'] = "#{node['ossec']['dir']}/etc/rootcheck/rootkit_trojans.txt"
+default['ossec']['conf']['rootcheck']['skip_nfs'] = true
 
 # Localfiles settings
-default['ossec']['conf']['all']['localfile'] = [
+default['ossec']['conf']['localfile'] = [
   {
     'log_format' => 'command',
     'command' => 'df -P',

@@ -25,7 +25,7 @@ package 'wazuh-manager' do
 end
 
 # The dependences should be installed only when the cluster is enabled
-if node['ossec']['conf']['server']['cluster']['disabled'] == 'no'
+if node['ossec']['conf']['cluster']['disabled'] == 'no'
  case node['platform']
   when 'debian', 'ubuntu'
     log 'Wazuh_Cluster_not_compatible' do
@@ -40,7 +40,7 @@ if node['ossec']['conf']['server']['cluster']['disabled'] == 'no'
 end
 
 # Auth need to be enable only in master node.
-if node['ossec']['conf']['server']['cluster']['node_type'] == 'master'
+if node['ossec']['conf']['cluster']['node_type'] == 'master'
   execute 'Enable Authd' do
     command '/var/ossec/bin/ossec-control enable auth'
     not_if "ps axu | grep ossec-authd | grep -v grep"
