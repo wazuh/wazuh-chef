@@ -26,6 +26,43 @@ agent_auth = node['ossec']['agent_auth']
 
 args = "-m #{agent_auth['host']} -p #{agent_auth['port']} -A #{agent_auth['name']}"
 
+if agent_auth['auto_negotiate']
+  args << ' -a ' + agent_auth['auto_negotiate']
+end
+
+if agent_auth['cipher_list']
+  args << ' -c ' + agent_auth['cipher_list']
+end
+
+if agent_auth['wazuh_directory']
+  args << ' -D ' + agent_auth['wazuh_directory']
+end
+
+if agent_auth['debug_mode'] == "true"
+  args << ' -d '
+end
+
+if agent_auth['run_as_group']
+  args << ' -g ' + agent_auth['run_as_group']
+end
+
+if agent_auth['set_group']
+  args << ' -G ' + agent_auth['set_group']
+end
+
+if agent_auth['agent_ip_by_manager'] == "true"
+  args << ' -i '
+end
+
+if agent_auth['agent_ip']
+  args << ' -I ' + agent_auth['agent_ip']
+end
+
+if agent_auth['password']
+  args << ' -P ' + agent_auth['password']
+end
+
+
 if agent_auth['ca'] && File.exist?(agent_auth['ca'])
   args << ' -v ' + agent_auth['ca']
 end
