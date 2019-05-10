@@ -1,0 +1,11 @@
+default['ossec']['conf']['global']['jsonout_output'] = true
+default['ossec']['conf']['global']['alerts_log'] = true
+default['ossec']['conf']['global']['logall'] = false
+default['ossec']['conf']['global']['logall_json'] = false
+default['ossec']['conf']['global']['email_notification'] = false
+default['ossec']['conf']['global']['smtp_server'] = 'smtp.example.wazuh.com'
+default['ossec']['conf']['global']['email_from'] = 'ossecm@example.wazuh.com'
+default['ossec']['conf']['global']['email_to'] = 'recipient@example.wazuh.com'
+default['ossec']['conf']['global']['email_maxperhour'] = 12
+default['ossec']['conf']['global']['email_log_source'] = "alerts.log"
+default['ossec']['conf']['global']['white_list'] = [ '127.0.0.1', '^localhost.localdomain$', '127.0.0.53']
