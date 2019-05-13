@@ -1,6 +1,6 @@
 filebeat:
   prospectors:
-    - input_type: log
+    - type: log
       paths:
         - "/var/ossec/logs/alerts/alerts.json"
       document_type: json
@@ -8,25 +8,8 @@ filebeat:
       json.keys_under_root: true
       json.overwrite_keys: true
 
-
 output:
   logstash:
     # The Logstash hosts
-    hosts: [<%= @servers.to_json %>]
-    ssl.certificate_authorities: <%= node['filebeat']['certificate_authorities'] %>
-    ssl.certificate: <%= node['filebeat']['certificate'] %>
-    ssl.key: <%= node['filebeat']['key'] %>
-
-logging:
-  level: error
-
-  # enable file rotation with default configuration
-  to_files: true
-
-  # do not log to syslog
-  to_syslog: false
-
-  files:
-    path: /var/log/mybeat
-    name: mybeat.log
-    keepfiles: 7
+    hosts: [<%= @logstash_servers.to_json %>]
+#   ssl.certificate_authorities: <%= node['filebeat']['certificate_authorities'] %>

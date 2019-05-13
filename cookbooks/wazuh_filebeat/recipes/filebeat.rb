@@ -3,6 +3,8 @@
 # Recipe:: default
 # Author:: Wazuh <info@wazuh.com>
 
+include_recipe 'wazuh_filebeat::repository'
+
 package 'filebeat' do
     version node['filebeat']['elastic_stack_version']
 end
@@ -12,7 +14,7 @@ template node['filebeat']['config_path'] do
   owner 'root'
   group 'root'
   mode '0640'
-  variables(:servers => node['filebeat']['logstash_servers'])
+  variables(:logstash_servers => node['filebeat']['logstash_servers'])
   notifies :restart, "service[#{node['filebeat']['service_name']}]"
 end
 
