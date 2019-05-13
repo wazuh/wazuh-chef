@@ -38,8 +38,8 @@ The easiest way to making use of these cookbooks (especially `wazuh_filebeat` & 
 ```ruby
 cookbook "wazuh_agent", git: "https://github.com/wazuh/wazuh-chef.git",rel: 'cookbooks/wazuh_agent'
 cookbook "wazuh_manager", git: "https://github.com/wazuh/wazuh-chef.git",rel: 'cookbooks/wazuh_manager'
-cookbook 'wazuh_filebeat', github: 'wazuh/wazuh-chef', rel: 'cookbooks/wazuh_filebeat'
-cookbook 'wazuh_elastic', github: 'wazuh/wazuh-chef', rel: 'cookbooks/wazuh_elastic'
+cookbook 'wazuh_filebeat', github: 'https://github.com/wazuh/wazuh-chef.git', rel: 'cookbooks/wazuh_filebeat'
+cookbook 'wazuh_elastic', github: 'https://github.com/wazuh/wazuh-chef.git', rel: 'cookbooks/wazuh_elastic'
 ```
 
 You can specify tags, branches and revisions. More info on https://docs.chef.io/berkshelf.html
