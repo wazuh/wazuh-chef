@@ -44,6 +44,92 @@ cookbook 'wazuh_elastic', github: 'https://github.com/wazuh/wazuh-chef.git', rel
 
 You can specify tags, branches and revisions. More info on https://docs.chef.io/berkshelf.html
 
+#### Secrets
+
+In order to properly install and use chef to install Wazuh Elements, the wazuh_secrets data bag must three secrets. The following describes how to define the needed json files to generate an encrypted data bag.
+
+##### api.json
+
+Contains the username and password that will be installed for Wazuh API authentication. Is required by the manager.
+
+Example of json before encryption:
+
+```json
+{
+  "id": "api",
+  "htpasswd_user": "<YOUR USER>",
+  "htpasswd_passcode": "<YOUR PASSWORD>"
+}
+
+```
+
+##### logstash_certificate.json
+
+Contains the certificate and the certificate key that will secure communication with logstash. Required by  Elastic and Filebeat.
+
+```json
+{
+  "id": "logstash_certificate",
+  "logstash_certificate": "<YOUR LOGSTASH CERTIFICATE>",
+  "logstash_certificate_key": "<YOUR LOGSTASH CERTIFICATE KEY>"¡
+}
+
+```
+
+##### nginx_certificate.json
+
+Stores the nginx certificate and key. Required by Elastic.
+
+```json
+{
+  "id": "nginx_certificate",
+  "nginx_crt": "<YOUR NGINGX CERT>",
+  "nginx_key": "<YOUR NGINX KEY"
+}
+```
+
+
+
+#### Generate data bags
+
+In order to transfer our credentials securely, chef provides *data bags* that allows to encrypt some sensitive data before communication.
+
+The following process describes an example of how to create secrets and data bags to encrypt data.
+
+* Install a key or generate one (with openssl for example) on your Workstation.
+
+* Create the required secret by using : ```knife data bag create wazuh_secrets api --secret-file <path> -z```  (execute once per file: *api*, *logstash_certificate* and *nginx_certificate*)
+
+* Upload your new secrets with : ```knife upload data_bags/```
+
+* Before installing Wazuh-Manager, Wazuh-Filebeat or Wazuh-Elastic you will need to copy the key in */etc/chef/encrypted_data_bag_secret* (default path) or in the desired path (remember to specify the key path in *knife.rb* and *config.rb*) of every node.
+
+  
+
+After encryption, the previous json files will have new fields that describe encryption method and other useful info. For example *api.json* after encryption will look like this:
+
+```json
+{
+  "id": "api",
+  "htpasswd_user": {
+    "encrypted_data": "whdiITsM/JFBwiAcCE5MaVE2MinRLdDIGbJ0\n",
+    "iv": "NVK/ezXHBsSFuiMm\n",
+    "auth_tag": "NFPZcxGrjqxRSF7v/+i6Kw==\n",
+    "version": 3,
+    "cipher": "aes-256-gcm"
+  },
+  "htpasswd_passcode": {
+    "encrypted_data": "rX952YaNifO1gtcFXHxjteKCk6Zi592FZGgyE1gs0A==\n",
+    "iv": "LThJWRCIB4JaDP4E\n",
+    "auth_tag": "2oS9JDBtNdcRhsOdgg/A9A==\n",
+    "version": 3,
+    "cipher": "aes-256-gcm"
+  }
+}
+```
+
+
+
 ## Contribute
 
 If you want to contribute to our project please don't hesitate to send a pull request. You can also join our users [mailing list](https://groups.google.com/d/forum/wazuh), by sending an email to [wazuh+subscribe@googlegroups.com](mailto:wazuh+subscribe@googlegroups.com), to ask questions and participate in discussions.
