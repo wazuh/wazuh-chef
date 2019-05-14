@@ -71,7 +71,7 @@ Contains the certificate and the certificate key that will secure communication 
 {
   "id": "logstash_certificate",
   "logstash_certificate": "<YOUR LOGSTASH CERTIFICATE>",
-  "logstash_certificate_key": "<YOUR LOGSTASH CERTIFICATE KEY>"¡
+  "logstash_certificate_key": "<YOUR LOGSTASH CERTIFICATE KEY>"
 }
 
 ```
