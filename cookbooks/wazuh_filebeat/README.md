@@ -38,7 +38,7 @@ Create a role, wazuh_filebeat. Add attributes per above as needed to customize i
     },
     "chef_type": "role",
     "run_list": [
-      "recipe[wazuh::manager]"
+      "recipe[wazuh_filebeat::filebeat]"
     ],
     "env_run_lists": {
 
