@@ -15,19 +15,12 @@ when 'rhel'
   end
 end
 
-template '01-ossec.conf' do
-  path '/etc/logstash/conf.d/01-ossec.conf'
-  source '01-ossec.conf.erb'
-  owner 'root'
-  group 'root'
-  # variables({
-  #   :elasticsearch_cluster_name => node['wazuh-elk']['elasticsearch_cluster_name'],
-  #   :elasticsearch_node_name => node['wazuh-elk']['elasticsearch_node_name']
-  # })
-  notifies :restart, 'service[logstash]', :delayed
-end
-
-ssl = Chef::EncryptedDataBagItem.load('wazuh_secrets', 'logstash_certificate')
+ssl = begin
+        Chef::EncryptedDataBagItem.load('wazuh_secrets', 'logstash_certificate')
+      rescue Net::HTTPServerException
+        {'logstash_certificate' => ""}
+  
+      end
 
 file '/etc/logstash/logstash.crt' do
   mode '0544'
@@ -35,7 +28,25 @@ file '/etc/logstash/logstash.crt' do
   group 'root'
   content ssl['logstash_certificate'].to_s
   action :create
-  notifies :restart, 'service[logstash]', :delayed
+end
+
+case node['wazuh-elastic']['logstash_configuration']
+when "local"
+  bash 'Loading logstash local configuration...' do
+    code <<-EOF
+    curl -so /etc/logstash/conf.d/01-wazuh.conf https://raw.githubusercontent.com/wazuh/wazuh/3.9/extensions/logstash/01-wazuh-local.conf
+    usermod -a -G ossec logstash
+    sed -i 's|localhost:9200|'#{node['wazuh-elastic']['elasticsearch_ip']}:#{node['wazuh-elastic']['elasticsearch_port']}'|g' /etc/logstash/conf.d/01-wazuh.conf
+    EOF
+  end
+
+when "remote"
+  bash 'Loading logstash local configuration...' do
+    code <<-EOF
+    curl -so /etc/logstash/conf.d/01-wazuh.conf https://raw.githubusercontent.com/wazuh/wazuh/3.9/extensions/logstash/01-wazuh-remote.conf 
+    sed -i 's|localhost:9200|'#{node['wazuh-elastic']['elasticsearch_ip']}:#{node['wazuh-elastic']['elasticsearch_port']}'|g' /etc/logstash/conf.d/01-wazuh.conf 
+    EOF
+  end
 end
 
 file '/etc/logstash/logstash.key' do
@@ -44,7 +55,6 @@ file '/etc/logstash/logstash.key' do
   group 'root'
   content ssl['logstash_certificate_key'].to_s
   action :create
-  notifies :restart, 'service[logstash]', :delayed
 end
 
 service 'logstash' do

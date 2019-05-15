@@ -9,15 +9,16 @@ package 'kibana' do
   version node['wazuh-elastic']['elastic_stack_version']
 end
 
+
 template 'kibana.yml' do
   path '/etc/kibana/kibana.yml'
   source 'kibana.yml.erb'
   owner 'root'
   group 'root'
   variables({
-     :kibana_port => node['wazuh-elastic']['kibana_port'],
-     :kibana_host => node['wazuh-elastic']['kibana_host'],
-     :kibana_elasticsearch_server => node['wazuh-elastic']['kibana_elasticsearch_server']
+     :kibana_port_line =>  "server.port: #{node['wazuh-elastic']['kibana_port']}",
+     :kibana_host_line =>  "server.host: #{node['wazuh-elastic']['kibana_host']}",
+     :kibana_elasticsearch_server_line => "elasticsearch.hosts: ['#{node['wazuh-elastic']['kibana_elasticsearch_server']}']"
   })
   mode 0755
 end
@@ -30,8 +31,7 @@ end
 
 bash 'Install Wazuh-APP (can take a while)' do
   code <<-EOH
-  export NODE_OPTIONS="--max-old-space-size=3072"
-  /usr/share/kibana/bin/kibana-plugin install https://packages.wazuh.com/wazuhapp/wazuhapp-"#{node['wazuh-elastic']['wazuh_app_version']}".zip
+  sudo -u kibana NODE_OPTIONS='--max-old-space-size=3072' /usr/share/kibana/bin/kibana-plugin install https://packages.wazuh.com/wazuhapp/wazuhapp-#{node['wazuh-elastic']['wazuh_app_version']}.zip kibana
   EOH
   creates '/usr/share/kibana/plugins/wazuh/package.json'
   notifies :restart, 'service[kibana]', :delayed

@@ -6,6 +6,9 @@
 ######################################################
 
 
+include_recipe 'wazuh_elastic::java'
+include_recipe 'wazuh_elastic::repository'
+
 package 'elasticsearch' do
     version node['wazuh-elastic']['elastic_stack_version']
 end
