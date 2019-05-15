@@ -1,0 +1,20 @@
+{
+    "name": "wazuh_elastic",
+    "description": "Wazuh Elastic Role",
+    "json_class": "Chef::Role",
+    "default_attributes": {
+
+    },
+    "override_attributes": {
+        "filebeat": {
+            "logstash_servers" : "<YOUR LOGSTASHs IPs HERE>"   
+        }
+    },
+    "chef_type": "role",
+    "run_list": [
+        "recipe[wazuh_elastic::elasticsearch]"
+    ],
+    "env_run_lists": {
+
+    }
+}

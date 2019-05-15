@@ -1,6 +1,6 @@
 {
     "name": "wazuh_agent",
-    "description": "Wazuh agent",
+    "description": "Wazuh Agent Role",
     "json_class": "Chef::Role",
     "default_attributes": {
 
