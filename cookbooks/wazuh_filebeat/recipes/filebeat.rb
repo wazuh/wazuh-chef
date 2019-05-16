@@ -18,36 +18,25 @@ template node['filebeat']['config_path'] do
   notifies :restart, "service[#{node['filebeat']['service_name']}]"
 end
 
-ssl = begin
-        Chef::EncryptedDataBagItem.load('wazuh_secrets', 'logstash_certificate')
-      rescue Net::HTTPServerException
-        {'logstash_certificate' => ""}
-      
-      end
-
-file '/etc/filebeat/logstash_certificate.crt' do
-  mode '0544'
-  owner 'root'
-  group 'root'
-  content ssl['logstash_certificate'].to_s
-  action :create
-  notifies :restart, "service[#{node['filebeat']['service_name']}]", :delayed
+begin
+  ssl = Chef::EncryptedDataBagItem.load('wazuh_secrets', 'logstash_certificate')
+  log "Logstash certificate found, writing... (Note: Disabled by default) " do
+    message "-----LOGSTASH CERTIFICATE FOUND-----"
+    level :info
+  end
+rescue ArgumentError
+  ssl = {'logstash_certificate' => "", 'logstash_certificate_key' => ""}
+  log "No logstash certificate found...Installation will continue with empty certificate (Note: Disabled by default)" do
+    message "-----LOGSTASH CERTIFICATE NOT FOUND-----"
+    level :info
+  end
 end
 
 file '/etc/filebeat/logstash.crt' do
-  mode '0544'
+  mode '0644'
   owner 'root'
   group 'root'
   content ssl['logstash_certificate'].to_s
-  action :create
-  notifies :restart, "service[#{node['filebeat']['service_name']}]", :delayed
-end
-
-file '/etc/filebeat/logstash.key' do
-  mode '0544'
-  owner 'root'
-  group 'root'
-  content ssl['logstash_certificate_key'].to_s
   action :create
   notifies :restart, "service[#{node['filebeat']['service_name']}]", :delayed
 end

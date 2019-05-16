@@ -25,6 +25,41 @@ end
 
 package ['nodejs', 'wazuh-api']
 
+begin
+  api_keys = Chef::EncryptedDataBagItem.load('wazuh_secrets', 'api')
+  log "Api credentials found. Loading them..." do
+    message "-----API KEYS FOUND-----"
+    level :info
+  end
+rescue ArgumentError
+  api_keys = {'htpasswd_user' => "#{node['api']['user']}", 'htpasswd_passcode' => "#{node['api']['passcode']}"}
+  log "No api crendentials. Installation will continue with defaults (foo:bar)..." do
+    message "-----NO API KEYS-----"
+    level :info
+  end
+end
+
+if (node['api']['password_plaintext'] == "yes")
+  bash "Installing user..." do
+    code <<-EOH
+    cd /var/ossec/api/configuration/auth/
+    node htpasswd -c user #{api_keys['htpasswd_user']} -b #{api_keys['htpasswd_passcode']}
+    cd
+    EOH
+    notifies :restart, 'service[wazuh-api]', :delayed
+  end
+
+else 
+  file "#{node['ossec']['dir']}/api/configuration/auth/user" do
+    mode '0650'
+    owner 'root'
+    group 'root'
+    content "#{api_keys['htpasswd_user']}:#{api_keys['htpasswd_passcode']}"
+    action :create
+    notifies :restart, 'service[wazuh-api]', :delayed
+  end
+end
+
 service 'wazuh-api' do
   supports restart: true
   action [:enable, :start]
