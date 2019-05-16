@@ -1,0 +1,1 @@
+include_recipe 'wazuh_manager::manager'
