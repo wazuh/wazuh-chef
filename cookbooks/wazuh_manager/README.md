@@ -120,7 +120,14 @@ Declares wazuh repository and gpg key urls.
 
 #### wazuh_api.rb
 
-Installs node.js and wazuh-api. Default api credentials are foo:bar.
+Installs node.js and wazuh-api.  **Important:** You can add your credentials by setting the attributes:
+
+* `['api']['user'] = "foo"`
+
+* `['api']['passcode'] = "bar"`
+* `['api']['password_plaintext'] = "yes" ` 
+
+If `password_plaintext` is set to `"no"` the password won't be hashed.
 
 ### References
 
