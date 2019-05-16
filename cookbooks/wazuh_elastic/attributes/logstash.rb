@@ -1,1 +1,1 @@
-default['wazuh-elastic']['logstash_configuration'] = "remote"
+default['wazuh-elastic']['logstash_configuration'] = "local"
