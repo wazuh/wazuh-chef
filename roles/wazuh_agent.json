@@ -13,7 +13,7 @@
     },
     "chef_type": "role",
     "run_list": [
-      "recipe[wazuh_agent::agent]"
+      "recipe[wazuh_agent::default]"
     ],
     "env_run_lists": {
 

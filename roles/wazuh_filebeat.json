@@ -10,7 +10,7 @@
     },
     "chef_type": "role",
     "run_list": [
-        "recipe[wazuh_filebeat::filebeat]"
+        "recipe[wazuh_filebeat::default]"
     ],
     "env_run_lists": {
 

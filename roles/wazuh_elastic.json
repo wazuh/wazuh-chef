@@ -6,13 +6,11 @@
 
     },
     "override_attributes": {
-        "filebeat": {
-            "logstash_servers" : "<YOUR LOGSTASHs IPs HERE>"   
-        }
+
     },
     "chef_type": "role",
     "run_list": [
-        "recipe[wazuh_elastic::elasticsearch]"
+        "recipe[wazuh_elastic::default]"
     ],
     "env_run_lists": {
 
