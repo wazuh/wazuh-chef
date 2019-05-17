@@ -31,7 +31,7 @@ begin
     message "-----API KEYS FOUND-----"
     level :info
   end
-rescue ArgumentError
+rescue ArgumentError, Net::HTTPServerException
   api_keys = {'htpasswd_user' => "#{node['api']['user']}", 'htpasswd_passcode' => "#{node['api']['passcode']}"}
   log "No api crendentials. Installation will continue with defaults (foo:bar)..." do
     message "-----NO API KEYS-----"
@@ -46,7 +46,6 @@ if (node['api']['password_plaintext'] == "yes")
     node htpasswd -c user #{api_keys['htpasswd_user']} -b #{api_keys['htpasswd_passcode']}
     cd
     EOH
-    notifies :restart, 'service[wazuh-api]', :delayed
   end
 
 else 
@@ -56,11 +55,10 @@ else
     group 'root'
     content "#{api_keys['htpasswd_user']}:#{api_keys['htpasswd_passcode']}"
     action :create
-    notifies :restart, 'service[wazuh-api]', :delayed
   end
 end
 
 service 'wazuh-api' do
-  supports restart: true
-  action [:enable, :start]
+  supports :status => true, :restart => true, :reload => true
+  action [:enable, :restart]
 end

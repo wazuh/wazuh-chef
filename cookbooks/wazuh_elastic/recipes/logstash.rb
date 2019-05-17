@@ -40,7 +40,7 @@ begin
     message "-----LOGSTASH CERTIFICATE FOUND-----"
     level :info
   end
-rescue ArgumentError
+rescue ArgumentError, Net::HTTPServerException
   ssl = {'logstash_certificate' => "", 'logstash_certificate_key' => ""}
   log "No logstash certificate found...Installation will continue with empty certificate (Note: Disabled by default)" do
     message "-----LOGSTASH CERTIFICATE NOT FOUND-----"
@@ -65,5 +65,6 @@ file '/etc/logstash/logstash.key' do
 end
 
 service 'logstash' do
+  supports :status => true, :restart => true, :reload => true
   action [:enable, :start]
 end
