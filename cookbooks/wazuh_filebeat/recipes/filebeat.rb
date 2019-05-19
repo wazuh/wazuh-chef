@@ -41,5 +41,5 @@ end
 
 service node['filebeat']['service_name'] do
   supports :status => true, :restart => true, :reload => true
-  action [:start, :reenable]
+  action [:start, :enable]
 end

@@ -44,7 +44,6 @@ if node['ossec']['conf']['cluster']['node_type'] == 'master'
   execute 'Enable Authd' do
     command '/var/ossec/bin/ossec-control enable auth'
     not_if "ps axu | grep ossec-authd | grep -v grep"
-    notifies :restart, "service[wazuh]", :delayed
   end
 end
 include_recipe 'wazuh_manager::common'
@@ -56,7 +55,6 @@ template "#{node['ossec']['dir']}/etc/local_internal_options.conf" do
   owner 'root'
   group 'ossec'
   action :create
-  notifies :restart, 'service[wazuh]', :delayed
 end
 
 template "#{node['ossec']['dir']}/etc/rules/local_rules.xml" do
@@ -64,7 +62,6 @@ template "#{node['ossec']['dir']}/etc/rules/local_rules.xml" do
   owner 'root'
   group 'ossec'
   mode '0640'
-  notifies :restart, 'service[wazuh]', :delayed
 end
 
 
@@ -73,11 +70,10 @@ template "#{node['ossec']['dir']}/etc/decoders/local_decoder.xml" do
   owner 'root'
   group 'ossec'
   mode '0640'
-  notifies :restart, 'service[wazuh]', :delayed
 end
 
 service 'wazuh' do
   service_name 'wazuh-manager'
-  supports status: true, restart: true
-  action [:enable, :start]
+  supports :status => true, :restart => true, :reload => true
+  action [:enable, :restart]
 end

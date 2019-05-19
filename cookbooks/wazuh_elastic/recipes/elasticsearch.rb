@@ -44,7 +44,8 @@ bash 'insert_line_limits.conf' do
 end
 
 service 'elasticsearch' do
-  action [:enable, :start]
+  supports :status => true, :restart => true, :reload => true
+  action [:enable, :restart]
 end
 
 ruby_block 'wait for elasticsearch' do
