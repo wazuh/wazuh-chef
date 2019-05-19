@@ -46,7 +46,9 @@ You can specify tags, branches and revisions. More info on https://docs.chef.io/
 
 #### Secrets
 
-In order to properly install and use chef to install Wazuh Elements, the wazuh_secrets data bag must three secrets. The following describes how to define the needed json files to generate an encrypted data bag.
+The following describes how to define the needed json files to generate an encrypted data bag.
+
+**Important**: If api user secret is declared will be installed. Otherwise the default user will be foo:bar. Also if logstash_certificate secret is not created, empty logstash.crt will be created. Remember that whatever options you choose, the logstash ssl protocol is disabled by default.
 
 ##### api.json
 
@@ -75,20 +77,6 @@ Contains the certificate and the certificate key that will secure communication 
 }
 
 ```
-
-##### nginx_certificate.json
-
-Stores the nginx certificate and key. Required by Elastic.
-
-```json
-{
-  "id": "nginx_certificate",
-  "nginx_crt": "<YOUR NGINGX CERT>",
-  "nginx_key": "<YOUR NGINX KEY"
-}
-```
-
-
 
 #### Generate data bags
 
