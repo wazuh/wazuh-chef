@@ -9,6 +9,10 @@ package 'kibana' do
   version node['wazuh-elastic']['elastic_stack_version']
 end
 
+service "kibana" do
+  supports :start => true, :stop => true, :restart => true, :reload => true, :status => true
+  action [:enable, :start]
+end
 
 template 'kibana.yml' do
   path '/etc/kibana/kibana.yml'
@@ -21,6 +25,7 @@ template 'kibana.yml' do
      :kibana_elasticsearch_server_line => "elasticsearch.hosts: ['#{node['wazuh-elastic']['kibana_elasticsearch_server']}']"
   })
   mode 0755
+  notifies :restart, "service[kibana]", :immediately
 end
 
 ruby_block 'wait for elasticsearch' do
@@ -29,14 +34,20 @@ ruby_block 'wait for elasticsearch' do
   end
 end
 
-bash 'Install Wazuh-APP (can take a while)' do
+bash 'Waiting for elasticsearch curl response...' do
   code <<-EOH
-  sudo -u kibana NODE_OPTIONS='--max-old-space-size=3072' /usr/share/kibana/bin/kibana-plugin install https://packages.wazuh.com/wazuhapp/wazuhapp-#{node['wazuh-elastic']['wazuh_app_version']}.zip kibana
+  until (curl -XGET http://localhost:9200); do
+    printf 'Waiting for elasticsearch....'
+    sleep 5
+  done
   EOH
-  creates '/usr/share/kibana/plugins/wazuh/package.json'
 end
 
-service 'kibana' do
-  supports :status => true, :restart => true, :reload => true
-  action [:enable, :restart]
+bash 'Install Wazuh-APP (can take a while)' do
+  code <<-EOH
+  sudo -u kibana NODE_OPTIONS='--max-old-space-size=4096' /usr/share/kibana/bin/kibana-plugin install https://packages.wazuh.com/wazuhapp/wazuhapp-#{node['wazuh-elastic']['wazuh_app_version']}.zip kibana
+  EOH
+  creates '/usr/share/kibana/plugins/wazuh/package.json'
+  notifies :restart, "service[kibana]", :immediately
 end
+

@@ -88,7 +88,6 @@ template "#{node['ossec']['dir']}/etc/local_internal_options.conf" do
   owner 'root'
   group 'ossec'
   action :create
-  notifies :restart, 'service[wazuh]', :delayed
 end
 
 service 'wazuh' do

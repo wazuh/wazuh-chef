@@ -26,12 +26,33 @@ when "local"
   end
 
 when "remote"
-  bash 'Loading logstash local configuration...' do
+  bash 'Loading logstash remote configuration...' do
     code <<-EOF
     curl -so /etc/logstash/conf.d/01-wazuh.conf https://raw.githubusercontent.com/wazuh/wazuh/3.9/extensions/logstash/01-wazuh-remote.conf 
     sed -i 's|localhost:9200|'#{node['wazuh-elastic']['elasticsearch_ip']}:#{node['wazuh-elastic']['elasticsearch_port']}'|g' /etc/logstash/conf.d/01-wazuh.conf 
     EOF
   end
+end
+
+service "logstash" do
+  supports :start => true, :stop => true, :restart => true, :reload => true
+  action [:enable, :start]
+end
+
+
+ruby_block 'wait for elasticsearch' do
+  block do
+    loop { break if (TCPSocket.open("#{node['wazuh-elastic']['elasticsearch_ip']}",node['wazuh-elastic']['elasticsearch_port']) rescue nil); puts "Waiting for elasticsearch to start"; sleep 5 }
+  end
+end
+
+bash 'Waiting for elasticsearch Socket...' do
+  code <<-EOH
+  until (curl -XGET http://localhost:9200); do
+    printf 'Waiting for elasticsearch....'
+    sleep 5
+  done
+  EOH
 end
 
 begin
@@ -54,6 +75,7 @@ file '/etc/logstash/logstash.crt' do
   group 'root'
   content ssl['logstash_certificate'].to_s
   action :create
+  notifies :restart, "service[logstash]", :immediately
 end
 
 file '/etc/logstash/logstash.key' do
@@ -62,9 +84,5 @@ file '/etc/logstash/logstash.key' do
   group 'root'
   content ssl['logstash_certificate_key'].to_s
   action :create
-end
-
-service 'logstash' do
-  supports :status => true, :restart => true, :reload => true
-  action [:enable, :start]
+  notifies :restart, "service[logstash]", :immediately
 end
