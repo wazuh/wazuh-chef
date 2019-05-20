@@ -1,76 +1,79 @@
-Elastic Stack cookbook
-=======================
+# Wazuh Elasticsearch cookbook
 
-Installs Elastic Stack. See:
+This cookbook installs and configure Elastic Stack. Please note that it's not obligatory to install the whole stack, recipes can work independently (some of them require java and repository)
 
-https://documentation.wazuh.com/
+### Attributes
 
-Usage
-------------
-Create a role following the ['wazuh_elastic'](https://github.com/wazuh/wazuh-chef/roles/wazuh_elastic.json) role structure and specify your desired configuration attributes. 
+The ``attributes`` folder contains all the default configuration files in order to generate ossec.conf file.
 
-Assign the current role to desired nodes and run `chef-client` on them.
+Check ['ossec.conf']( https://documentation.wazuh.com/3.x/user-manual/reference/ossec-conf/index.html) documentation to see all configuration sections.
 
-Attributes
-----------
+### Installation
 
-* `node['wazuh-elastic']['elasticsearch_cluster_name']` - Defines the cluster name.
-* `node['wazuh-elastic']['elasticsearch_node_name']` - Defines the elasticsearch node name.
-* `nose['wazuh-elastic']['elasticsearch_port']` - Defines the elasticsearch port.
-* `node['wazuh-elastic']['elasticsearch_ip']` = 'localhost' - Defines the elasticsearch ip.
+Create a role, `wazuh_elastic`. Add attributes per above as needed to customize the installation.
 
-* `node['wazuh-elastic']['kibana_host']` - This setting specifies the IP address of the back end server..
-* `node['wazuh-elastic']['kibana_port']` - Kibana is served by a back end server. This setting specifies the port to use.
-* `node['wazuh-elastic']['kibana_elasticsearch_server']` - The URL of the Elasticsearch instance to use for all your queries.
+```
+{
+    "name": "wazuh_elastic",
+    "description": "Wazuh Elastic Role",
+    "json_class": "Chef::Role",
+    "default_attributes": {
 
+    },
+    "override_attributes": {
 
-Recipes
--------
+    },
+    "chef_type": "role",
+    "run_list": [
+        "recipe[wazuh_elastic::default]"
+    ],
+    "env_run_lists": {
 
-### default.rb
-
-Includes all recipe to install the full Elastic Stack in the same server
-
-### repository
-
-The *elastic-6.x* repository is added for rhel and debian distributions. GPG Key will be installed.
-
-### java
-
-Installs *openjdk-8* in ubuntu < 16.0 and the *java-1.8.0-openjdk* for redhat and centos distributions.
-
-### logstash
-
-Installs logstash in the specified version and creates the certificates based on `logstash_certificate` secret if it exists, otherwise creates an empty */etc/logstash/logstash.crt* and */etc/logstash/logstash.key* . By default **SSL is disabled**.
-
-You can modify the attribute `['wazuh-elastic']['logstash_configuration']` between *"remote"* and *"local"*  to choose between the type of installation that logstash will be installed.
+    }
+}
+```
 
 
-### elasticsearch
+### Recipes
 
-Installs the elasticsearch  and configures the *elasticsearch.yml* and the JVM options (*etc/elasticsearch/jvm.options*). The wazuh template for elasticsearch will be downloaded.
+#### default.rb
 
-The following attributes are loaded.
+Declares all recipes in the cookbok and installs the whole Elastic Stack.
 
-* `['wazuh-elastic']['elasticsearch_cluster_name']`
+#### elasticsearch.rb
 
-* `['wazuh-elastic']['elasticsearch_node_name']`
+Installs elasticsearch, depends on java.rb and repository, so jdk 8 and the elastic repository will be added. The Wazuh template will be configured. The following attributes can be modified to customize your installation.
 
-* `['wazuh-elastic']['elasticsearch_port']`
+* ```['wazuh-elastic']['elasticsearch_cluster_name'] = 'wazuh'```
+* ```['wazuh-elastic']['elasticsearch_node_name'] = 'elk.wazuh-test.com'```
+* ```['wazuh-elastic']['elasticsearch_port'] = 9200```
+* ```['wazuh-elastic']['elasticsearch_ip'] = 'localhost'```
 
-* `['wazuh-elastic']['elasticsearch_ip']`
+#### repository.rb 
 
-### kibana
+Declares elastic repository and gpg key urls.
 
-Installs kibana according to specified version. Configures *kibana.yml* file according to the following attributes:
+#### java.rb
 
-* `['wazuh-elastic']['kibana_host']`
-* `['wazuh-elastic']['kibana_port']`
-* `['wazuh-elastic']['kibana_elasticsearch_server']`
+Installs openjdk 8 that is required by Elasticsearch in order to work.
 
-You can modify them to customize your installation.
+### logstash.rb
 
-References
------
+Installs logstash from packages and downloads configuration (remote or local). You can choose between configurations using:
 
-Check https://documentation.wazuh.com/3.x/installation-guide/installing-elastic-stack/index.html for more information about the Elastic Stack installation.
+* ```['wazuh-elastic']['logstash_configuration'] = "local"```
+
+### kibana.rb
+
+Installs kibana packages and configures kibana.yml. You can customize the installation by editing the following attributes.
+
+* ```['wazuh-elastic']['kibana_host'] = '0.0.0.0'```
+* ```['wazuh-elastic']['kibana_port'] = '5601'```
+* ```['wazuh-elastic']['kibana_elasticsearch_server'] = "http://#{node ['wazuh-elastic']['elasticsearch_ip']}:#{node['wazuh-elastic']['elasticsearch_port']}"```
+
+
+
+### References
+
+Check https://documentation.wazuh.com/current/installation-guide/installing-elastic-stack/index.html for more information about Wazuh Elastic.
+
