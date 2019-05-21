@@ -1,6 +1,6 @@
 # Wazuh Elasticsearch cookbook
 
-This cookbook installs and configure Elastic Stack. Please note that it's not obligatory to install the whole stack, recipes can work independently (some of them require java and repository)
+This cookbook installs and configure Elastic Stack. Please note that it's not obligatory to install the whole stack, recipes can work independently (some of them require *java.rb* and *repository.rb* recipes)
 
 ### Attributes
 
@@ -10,7 +10,7 @@ Check ['ossec.conf']( https://documentation.wazuh.com/3.x/user-manual/reference/
 
 ### Installation
 
-Create a role, `wazuh_elastic`. Add attributes per above as needed to customize the installation.
+Create a role, `wazuh_elastic`. Modify attributes to customize the installation.
 
 ```
 {
@@ -38,11 +38,11 @@ Create a role, `wazuh_elastic`. Add attributes per above as needed to customize 
 
 #### default.rb
 
-Declares all recipes in the cookbok and installs the whole Elastic Stack.
+Declares all recipes in the cookbook and installs the whole Elastic Stack.
 
 #### elasticsearch.rb
 
-Installs elasticsearch, depends on java.rb and repository, so jdk 8 and the elastic repository will be added. The Wazuh template will be configured. The following attributes can be modified to customize your installation.
+Installs Elasticsearch, depends on *java.rb* and repository, so JDK-8 and the Elastic repository will be added. The Wazuh template will be configured. The following attributes can be modified to customize your installation.
 
 * ```['wazuh-elastic']['elasticsearch_cluster_name'] = 'wazuh'```
 * ```['wazuh-elastic']['elasticsearch_node_name'] = 'elk.wazuh-test.com'```
@@ -55,23 +55,21 @@ Declares elastic repository and gpg key urls.
 
 #### java.rb
 
-Installs openjdk 8 that is required by Elasticsearch in order to work.
+Installs OpenJDK-8 that is required by Elasticsearch in order to work.
 
 ### logstash.rb
 
-Installs logstash from packages and downloads configuration (remote or local). You can choose between configurations using:
+Installs Logstash from packages and downloads configuration (remote or local). You can choose between configurations using:
 
 * ```['wazuh-elastic']['logstash_configuration'] = "local"```
 
 ### kibana.rb
 
-Installs kibana packages and configures kibana.yml. You can customize the installation by editing the following attributes.
+Installs Kibana packages and configures *kibana.yml*. You can customize the installation by editing the following attributes.
 
 * ```['wazuh-elastic']['kibana_host'] = '0.0.0.0'```
 * ```['wazuh-elastic']['kibana_port'] = '5601'```
 * ```['wazuh-elastic']['kibana_elasticsearch_server'] = "http://#{node ['wazuh-elastic']['elasticsearch_ip']}:#{node['wazuh-elastic']['elasticsearch_port']}"```
-
-
 
 ### References
 

@@ -29,7 +29,7 @@ Check roles README for more information about default attributes and how to cust
 
 #### Cloning whole repository
 
-You can clone repository by running: ```git clone https://github.com/wazuh/wazuh-chef```  and you will get the whole repository.
+You can clone the repository by running:  ```git clone https://github.com/wazuh/wazuh-chef```  and you will get the whole repository.
 
 #### Use through Berkshelf
 
@@ -42,19 +42,19 @@ cookbook 'wazuh_filebeat', github: 'https://github.com/wazuh/wazuh-chef.git', re
 cookbook 'wazuh_elastic', github: 'https://github.com/wazuh/wazuh-chef.git', rel: 'cookbooks/wazuh_elastic'
 ```
 
-You can specify tags, branches and revisions. More info on https://docs.chef.io/berkshelf.html
+You can specify tags, branches, and revisions. More info on https://docs.chef.io/berkshelf.html
 
 #### Secrets
 
-The following describes how to define the needed json files to generate an encrypted data bag.
+The following describes how to define the needed JSON files to generate an encrypted data bag.
 
-**Important**: If api user secret is declared will be installed. Otherwise the default user will be foo:bar. Also if logstash_certificate secret is not created, empty logstash.crt will be created. Remember that whatever options you choose, the logstash ssl protocol is disabled by default.
+**Important**: If API user secret is declared will be installed. Otherwise, the default user will be *foo:bar*. Also if *logstash_certificate* secret is not generated, empty *logstash.crt* will be created. Remember that whatever options you choose, the Logstash SSL protocol is disabled by default.
 
 ##### api.json
 
-Contains the username and password that will be installed for Wazuh API authentication. Is required by the manager.
+It contains the username and password that will be installed for Wazuh API authentication. Is required by the manager.
 
-Example of json before encryption:
+Example of JSON before encryption:
 
 ```json
 {
@@ -67,7 +67,7 @@ Example of json before encryption:
 
 ##### logstash_certificate.json
 
-Contains the certificate and the certificate key that will secure communication with logstash. Required by  Elastic and Filebeat.
+It contains the certificate and the certificate key that will secure communication with Logstash. Required by  Elastic and Filebeat.
 
 ```json
 {
@@ -80,21 +80,21 @@ Contains the certificate and the certificate key that will secure communication 
 
 #### Generate data bags
 
-In order to transfer our credentials securely, chef provides *data bags* that allows to encrypt some sensitive data before communication.
+In order to transfer our credentials securely, Chef provides *[data_bags](https://docs.chef.io/data_bags.html)* that allows encrypting some sensitive data before communication.
 
 The following process describes an example of how to create secrets and data bags to encrypt data.
 
-* Install a key or generate one (with openssl for example) on your Workstation.
+* Install a key or generate one (with OpenSSL for example) on your Workstation.
 
-* Create the required secret by using : ```knife data bag create wazuh_secrets api --secret-file <path> -z```  (execute once per file: *api*, *logstash_certificate* and *nginx_certificate*)
+* Create the required secret by using : ```knife data bag create wazuh_secrets api --secret-file <path> -z```  (execute once per file: *api*, *logstash_certificate*)
 
-* Upload your new secrets with : ```knife upload data_bags/```
+* Upload your new secrets with ```knife upload data_bags/```
 
-* Before installing Wazuh-Manager, Wazuh-Filebeat or Wazuh-Elastic you will need to copy the key in */etc/chef/encrypted_data_bag_secret* (default path) or in the desired path (remember to specify the key path in *knife.rb* and *config.rb*) of every node.
+* Before installing Wazuh-Manager, Wazuh-Filebeat or Wazuh-Elastic you will need to copy the key in */etc/chef/encrypted_data_bag_secret* (default path) or in the desired path (remember to specify the key path in *knife.rb* and *config.rb*) of your workstation.
 
   
 
-After encryption, the previous json files will have new fields that describe encryption method and other useful info. For example *api.json* after encryption will look like this:
+After encryption, the previous JSON files will have new fields that describe the encryption method and other useful info. For example *api.json* after encryption will look like this:
 
 ```json
 {
@@ -128,7 +128,7 @@ cookbook 'wazuh_filebeat', github: 'wazuh/wazuh-chef', rel: 'wazuh_filebeat'
 cookbook 'wazuh_elastic', github: 'wazuh/wazuh-chef', rel: 'wazuh_elastic'
 ```
 
-This will source all three cookbook housed in this repo from github.
+This will source all three cookbooks housed in this repo from GitHub.
 
 ## Contribute
 

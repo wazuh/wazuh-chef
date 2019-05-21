@@ -6,7 +6,7 @@ Requirements
 #### Platforms
 Tested on Ubuntu and CentOS, but should work on any Unix/Linux platform supported by Wazuh. Installation by default is done from packages.
 
-This cookbooks doesn't configure Windows systems yet. For manual agent installation on Windows, check the [documentation](https://documentation.wazuh.com/current/installation-guide/installing-wazuh-agent/wazuh_agent_windows.html)
+These cookbooks don't configure Windows systems yet. For manual agent installation on Windows, check the [documentation](https://documentation.wazuh.com/current/installation-guide/installing-wazuh-agent/wazuh_agent_windows.html)
 
 #### Chef
 - Chef 12+
@@ -49,9 +49,9 @@ This produces:
 
 **Important note:** Gyoku will hash the defined attributes and the ```ossec.conf``` file will only contain the declared attributes, via default attributes or overridden ones. Any other information will be overwritten and deleted from the file.
 
-If you want to add new fields to customize your installation, you can declare it as a default attribute in it's respective .rb file in the attributes folder or add it manually to the role.
+If you want to add new fields to customize your installation, you can declare it as a default attribute in its respective .rb file in the attributes folder or add it manually to the role.
 
-For example: To enable cluster configuration, the following lane would be added to ```/cookbooks/wazuh_manager/attributes/cluster.rb``` .
+For example: To enable cluster configuration, the following lane would be added to ```/cookbooks/wazuh_manager/attributes/cluster.rb ```.
 
 `````` ruby
 default['ossec']['conf']['cluster']['disabled'] == false
@@ -103,10 +103,10 @@ In case you want to customize your installation using roles, you can declare att
     "description": "Wazuh Manager host",
     "json_class": "Chef::Role",
     "default_attributes": {
-		"ossec": {
+        "ossec": {
             "cluster":{
-            	"disabled" : "false"
-        	}
+                "disabled" : "false"
+            }
         }
     },
     "override_attributes": {
@@ -122,7 +122,7 @@ In case you want to customize your installation using roles, you can declare att
   }
 ```
 
-Same example applies for Wazuh Agent and it's own attributes.
+The same example applies for Wazuh Agent and it's own attributes.
 
 You can get more info about attributes and how the work on the chef documentation: https://docs.chef.io/attributes.html
 

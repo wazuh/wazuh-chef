@@ -108,7 +108,7 @@ Check cluster documentation for more details: <https://documentation.wazuh.com/c
 
 #### manager.rb
 
-Installs the wazuh-manager and required dependencies. Also creates the ```local_rules.xml``` and ```local_decoder.xml``` files.
+Installs the wazuh-manager and required dependencies. Also creates the *local_rules.xml* and *local_decoder.xml* files.
 
 #### common.rb
 
@@ -120,10 +120,9 @@ Declares wazuh repository and gpg key urls.
 
 #### wazuh_api.rb
 
-Installs node.js and wazuh-api.  **Important:** You can add your credentials by setting the attributes:
+Installs Node.js and Wazuh API.  **Important:** You can add your credentials by setting the attributes:
 
 * `['api']['user'] = "foo"`
-
 * `['api']['passcode'] = "bar"`
 * `['api']['password_plaintext'] = "yes" ` 
 

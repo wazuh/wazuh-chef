@@ -1,6 +1,6 @@
 # Wazuh Agent cookbook
 
-This cookbooks installs and configure a Wazuh Agent on specified nodes.
+These cookbooks install and configure a Wazuh Agent on specified nodes.
 
 Agent is automatically registered in the specified address by using ['agent authd'](https://documentation.wazuh.com/current/user-manual/agents/registering-agents/register-agent-authd.html#simple-method) (```['ossec']['registration_address']``` and connects with the manager address ```['ossec']['address']```). You can set this attributes by default on attributes folder or specify it in the ['wazuh_agent role'](https://github.com/wazuh/wazuh-chef/blob/3.9-repository-refactor/roles/wazuh_agent.json). 
 
@@ -10,7 +10,7 @@ Create a role following the ['wazuh_agent'](https://github.com/wazuh/wazuh-chef/
 
 Assign the current role to desired nodes and run ```chef-client``` on them.
 
-You can declare desired agent_auth parameters to customizy the registration process.
+You can declare desired *agent_auth* parameters to customize the registration process.
 
 For example:
 
@@ -20,7 +20,7 @@ For example:
     "description": "Wazuh agent",
     "json_class": "Chef::Role",
     "default_attributes": {
-	},
+    },
     "override_attributes": {
       "ossec": {
         "registration_address": "172.19.0.211",
@@ -46,7 +46,7 @@ For example:
 The agent_auth parameters are the following:
 
 ```
--a 	: "auto_negotiate"
+-a  : "auto_negotiate"
 -A  : "name"
 -m  : "host"
 -p  : "port"
@@ -75,15 +75,15 @@ Check ['ossec.conf']( https://documentation.wazuh.com/3.x/user-manual/reference/
 
 #### agent.rb
 
-Registers agent by using agent authd method. You can declare desired fields to customize the registration process. 
+Register agent by using agent authd method. You can declare the desired fields to customize the registration process. 
 
 #### common.rb
 
-Generates the ossec.conf file using Gyoku and restarts the wazuh-agent service
+It generates the ossec.conf file using Gyoku and restarts the wazuh-agent service
 
 #### repository.rb
 
-Declares repository of Wazuh and gpg keys based on different installations.
+Declares repository of Wazuh and GPG keys based on different installations.
 
 ### References
 
