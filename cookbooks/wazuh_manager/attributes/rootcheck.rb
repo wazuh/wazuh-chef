@@ -1,0 +1,13 @@
+# Rootcheck settings
+default['ossec']['conf']['rootcheck']['disabled'] = false
+default['ossec']['conf']['rootcheck']['check_files'] = true
+default['ossec']['conf']['rootcheck']['check_trojans'] = true
+default['ossec']['conf']['rootcheck']['check_dev'] = true
+default['ossec']['conf']['rootcheck']['check_sys'] = true
+default['ossec']['conf']['rootcheck']['check_pids'] = true
+default['ossec']['conf']['rootcheck']['check_ports'] = true
+default['ossec']['conf']['rootcheck']['check_if'] = true
+default['ossec']['conf']['rootcheck']['frequency'] = 43200
+default['ossec']['conf']['rootcheck']['rootkit_files'] = "#{node['ossec']['dir']}/etc/rootcheck/rootkit_files.txt"
+default['ossec']['conf']['rootcheck']['rootkit_trojans'] = "#{node['ossec']['dir']}/etc/rootcheck/rootkit_trojans.txt"
+default['ossec']['conf']['rootcheck']['skip_nfs'] = true

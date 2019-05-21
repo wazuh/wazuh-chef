@@ -1,3 +1,9 @@
 .kitchen/*
-./cookbooks/wazuh/.kitchen
-./cookbooks/wazuh/.kitchen/*
+./cookbooks/wazuh_agent/.kitchen
+./cookbooks/wazuh_agent/.kitchen/*
+./cookbooks/wazuh_manager/.kitchen
+./cookbooks/wazuh_manager/.kitchen/*
+./cookbooks/wazuh_elastic/.kitchen
+./cookbooks/wazuh_elastic/.kitchen/*
+./cookbooks/wazuh_filebeat/.kitchen
+./cookbooks/wazuh_filebeat/.kitchen/*
