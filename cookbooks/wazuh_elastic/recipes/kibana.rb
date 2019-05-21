@@ -45,7 +45,7 @@ end
 
 bash 'Install Wazuh-APP (can take a while)' do
   code <<-EOH
-  sudo -u kibana NODE_OPTIONS='--max-old-space-size=4096' /usr/share/kibana/bin/kibana-plugin install https://packages.wazuh.com/wazuhapp/wazuhapp-#{node['wazuh-elastic']['wazuh_app_version']}.zip kibana
+  sudo -u kibana /usr/share/kibana/bin/kibana-plugin install https://packages.wazuh.com/wazuhapp/wazuhapp-#{node['wazuh-elastic']['wazuh_app_version']}.zip kibana
   EOH
   creates '/usr/share/kibana/plugins/wazuh/package.json'
   notifies :restart, "service[kibana]", :immediately

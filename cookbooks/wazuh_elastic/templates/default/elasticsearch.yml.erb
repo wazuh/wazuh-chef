@@ -14,7 +14,7 @@
 #
 # Use a descriptive name for your cluster:
 #
-cluster.name:  <%= @clustername %>
+cluster.name: <%= @clustername %>
 #
 # ------------------------------------ Node ------------------------------------
 #
@@ -40,7 +40,7 @@ path.logs: /var/log/elasticsearch
 #
 # Lock the memory on startup:
 #
-bootstrap.memory_lock: true
+#bootstrap.memory_lock: true
 #
 # Make sure that the heap size is set to about half the memory available
 # on the system and that the owner of the process is allowed to use this
@@ -56,7 +56,7 @@ network.host: <%= @ip %>
 #
 # Set a custom port for HTTP:
 #
-#http.port: 9200
+http.port: <%= @port %>
 #
 # For more information, consult the network module documentation.
 #
@@ -65,11 +65,11 @@ network.host: <%= @ip %>
 # Pass an initial list of hosts to perform discovery when new node is started:
 # The default list of hosts is ["127.0.0.1", "[::1]"]
 #
-#discovery.zen.ping.unicast.hosts: <%= @elasticsearch_cluster %>
+#discovery.zen.ping.unicast.hosts: ["host1", "host2"]
 #
 # Prevent the "split brain" by configuring the majority of nodes (total number of master-eligible nodes / 2 + 1):
 #
-#discovery.zen.minimum_master_nodes: 2
+#discovery.zen.minimum_master_nodes: 
 #
 # For more information, consult the zen discovery module documentation.
 #

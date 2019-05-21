@@ -11,9 +11,6 @@ package 'elasticsearch' do
     version node['wazuh-elastic']['elastic_stack_version']
 end
 
-half = ((node['memory']['total'].to_i * 0.5).floor / 1024)
-
-node.default['wazuh_elastic']['memmory'] = (half > 30_500 ? '30500m' : "#{half}m")
 
 template '/etc/elasticsearch/elasticsearch.yml' do
   source 'elasticsearch.yml.erb'
@@ -22,7 +19,8 @@ template '/etc/elasticsearch/elasticsearch.yml' do
   mode '0660'
   variables({hostname: node['hostname'],
             clustername: node['wazuh-elastic']['elasticsearch_cluster_name'],
-            ip:  node['wazuh-elastic']['elasticsearch_ip']})
+            ip:  node['wazuh-elastic']['elasticsearch_ip'],
+            port: node['wazuh-elastic']['elasticsearch_port']})
 end
 
 template '/etc/elasticsearch/jvm.options' do
@@ -30,7 +28,7 @@ template '/etc/elasticsearch/jvm.options' do
   owner 'root'
   group 'elasticsearch'
   mode '0660'
-  variables({memmory: node['wazuh_elastic']['memmory']})
+  variables({memmory: node['wazuh-elastic']['elasticsearch_memmory']})
 end
 
 bash 'insert_line_limits.conf' do
@@ -54,7 +52,7 @@ end
 
 bash 'Elasticsearch_template' do
   code <<-EOH
-  curl https://raw.githubusercontent.com/wazuh/wazuh/3.9/extensions/elasticsearch/wazuh-elastic6-template-alerts.json | curl -X PUT 'http://#{node['wazuh-elastic']['elasticsearch_ip']}:#{node['wazuh-elastic']['elasticsearch_port']}/_template/wazuh' -H 'Content-Type: application/json' -d @-
+  curl https://raw.githubusercontent.com/wazuh/wazuh/#{node['wazuh-elastic']['extensions_version']}/extensions/elasticsearch/wazuh-elastic6-template-alerts.json | curl -X PUT 'http://#{node['wazuh-elastic']['elasticsearch_ip']}:#{node['wazuh-elastic']['elasticsearch_port']}/_template/wazuh' -H 'Content-Type: application/json' -d @-
   EOH
   not_if "curl -XGET 'http://#{node['wazuh-elastic']['elasticsearch_ip']}:#{node['wazuh-elastic']['elasticsearch_port']}/_template/wazuh' | grep wazuh"
   notifies :restart, "service[elasticsearch]", :immediately
