@@ -1,5 +1,3 @@
-## JVM configuration
-
 ################################################################
 ## IMPORTANT: JVM heap size
 ################################################################
@@ -8,8 +6,8 @@
 ## size to the same value. For example, to set
 ## the heap to 4 GB, set:
 ##
-## -Xms<%= @memmory %>
-## -Xmx<%= @memmory %>
+## -Xms4g
+## -Xmx4g
 ##
 ## See https://www.elastic.co/guide/en/elasticsearch/reference/current/heap-size.html
 ## for more information
@@ -96,10 +94,10 @@
 
 # specify an alternative path for heap dumps; ensure the directory exists and
 # has sufficient space
-#${heap.dump.path}
+-XX:HeapDumpPath=/var/lib/elasticsearch
 
 # specify an alternative path for JVM fatal error logs
-#${error.file}
+-XX:ErrorFile=/var/log/elasticsearch/hs_err_pid%p.log
 
 ## JDK 8 GC logging
 
@@ -113,7 +111,7 @@
 8:-XX:GCLogFileSize=64m
 
 # JDK 9+ GC logging
-9-:-Xlog:gc*,gc+age=trace,safepoint:file=${loggc}:utctime,pid,tags:filecount=32,filesize=64m
+9-:-Xlog:gc*,gc+age=trace,safepoint:file=/var/log/elasticsearch/gc.log:utctime,pid,tags:filecount=32,filesize=64m
 # due to internationalization enhancements in JDK 9 Elasticsearch need to set the provider to COMPAT otherwise
 # time/date parsing will break in an incompatible way for some date patterns and locals
 9-:-Djava.locale.providers=COMPAT
