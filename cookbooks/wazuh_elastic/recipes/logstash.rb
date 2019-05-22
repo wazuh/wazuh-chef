@@ -15,11 +15,11 @@ when 'rhel'
   end
 end
 
-case node['wazuh-elastic']['logstash_configuration']
+case node['wazuh-elastic']['logstash_configuration'] #
 when "local"
   bash 'Loading logstash local configuration...' do
     code <<-EOF
-    curl -so /etc/logstash/conf.d/01-wazuh.conf https://raw.githubusercontent.com/wazuh/wazuh/#{node['wazuh-elastic']['extensions_version']}/extensions/logstash/01-wazuh-local.conf
+    curl -so /etc/logstash/conf.d/01-wazuh.conf https://github.com/wazuh/wazuh/blob/#{node['wazuh-elastic']['extensions_version']}/extensions/logstash/6.x/01-wazuh-local.conf
     usermod -a -G ossec logstash
     sed -i 's|localhost:9200|'#{node['wazuh-elastic']['elasticsearch_ip']}:#{node['wazuh-elastic']['elasticsearch_port']}'|g' /etc/logstash/conf.d/01-wazuh.conf
     EOF
@@ -28,7 +28,7 @@ when "local"
 when "remote"
   bash 'Loading logstash remote configuration...' do
     code <<-EOF
-    curl -so /etc/logstash/conf.d/01-wazuh.conf https://raw.githubusercontent.com/wazuh/wazuh/#{node['wazuh-elastic']['extensions_version']}/extensions/logstash/01-wazuh-remote.conf 
+    curl -so /etc/logstash/conf.d/01-wazuh.conf https://github.com/wazuh/wazuh/blob/#{node['wazuh-elastic']['extensions_version']}/extensions/logstash/6.x/01-wazuh-local.conf 
     sed -i 's|localhost:9200|'#{node['wazuh-elastic']['elasticsearch_ip']}:#{node['wazuh-elastic']['elasticsearch_port']}'|g' /etc/logstash/conf.d/01-wazuh.conf 
     EOF
   end

@@ -5,7 +5,7 @@
 #
 #
 #
-default['filebeat']['elastic_stack_version'] = '6.7.2'
+default['filebeat']['elastic_stack_version'] = '6.8.0'
 default['filebeat']['package_name'] = 'filebeat'
 default['filebeat']['service_name'] = 'filebeat'
 default['filebeat']['logstash_servers'] = 'indexer.wazuh.com:5000'
