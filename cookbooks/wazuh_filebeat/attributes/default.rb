@@ -5,10 +5,10 @@
 #
 #
 #
-default['filebeat']['elastic_stack_version'] = '6.7.2'
+default['filebeat']['elastic_stack_version'] = '6.8.0'
 default['filebeat']['package_name'] = 'filebeat'
 default['filebeat']['service_name'] = 'filebeat'
-default['filebeat']['logstash_servers'] = 'indexer.wazuh.com:5000'
+default['filebeat']['logstash_servers'] = ["YOUR_ELASTIC_SERVER_IP:5000"]
 default['filebeat']['timeout'] = 15
 default['filebeat']['config_path'] = '/etc/filebeat/filebeat.yml'
 default['filebeat']['certificate_authorities'] = '/etc/filebeat/logstash_certificate.crt'
