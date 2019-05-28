@@ -27,7 +27,7 @@ template '/etc/elasticsearch/elasticsearch.yml' do
             path_logs: "path.logs: #{node['wazuh-elastic']['elasticsearch_path_logs']}",
             network_host: "network.host: #{node['wazuh-elastic']['elasticsearch_ip']}",
             http_port: "http.port: #{node['wazuh-elastic']['elasticsearch_port']}",
-            discovery_type: "#{node['wazuh-elastic']['discovery_option']}",
+            discovery_option: "#{node['wazuh-elastic']['elasticsearch_discovery_option']}",
             cluster_initial_master_nodes: "#{node['wazuh-elastic']['elasticsearch_cluster_initial_master_nodes']}" })
 end
 
