@@ -20,9 +20,9 @@ template 'kibana.yml' do
   owner 'root'
   group 'root'
   variables({
-     :kibana_port_line =>  "server.port: #{node['wazuh-elastic']['kibana_port']}",
-     :kibana_host_line =>  "server.host: #{node['wazuh-elastic']['kibana_host']}",
-     :kibana_elasticsearch_server_line => "elasticsearch.hosts: ['#{node['wazuh-elastic']['kibana_elasticsearch_server']}']"
+     kibana_server_port: "server.port: #{node['wazuh-elastic']['kibana_server_port']}",
+     kibana_server_host: "server.host: #{node['wazuh-elastic']['kibana_server_host']}",
+     kibana_elasticsearch_server_host: "elasticsearch.hosts: ['#{node['wazuh-elastic']['kibana_elasticsearch_hosts']}']"
   })
   mode 0755
   notifies :restart, "service[kibana]", :immediately
@@ -36,7 +36,7 @@ end
 
 bash 'Waiting for elasticsearch curl response...' do
   code <<-EOH
-  until (curl -XGET http://localhost:9200); do
+  until (curl -XGET http://#{node['wazuh-elastic']['elasticsearch_ip']}:#{node['wazuh-elastic']['elasticsearch_port']}); do
     printf 'Waiting for elasticsearch....'
     sleep 5
   done
@@ -51,3 +51,10 @@ bash 'Install Wazuh-APP (can take a while)' do
   notifies :restart, "service[kibana]", :immediately
 end
 
+bash 'Verify Kibana folders owner' do
+  code <<-EOF
+    chown -R kibana:kibana /usr/share/kibana/optimize
+    chown -R kibana:kibana /usr/share/kibana/plugins
+  EOF
+  notifies :restart, "service[kibana]", :immediately
+end
