@@ -8,7 +8,7 @@
 default['filebeat']['elastic_stack_version'] = '7.1.0'
 default['filebeat']['package_name'] = 'filebeat'
 default['filebeat']['service_name'] = 'filebeat'
-default['filebeat']['elasticsearch_server_ip'] = "172.19.0.211"
+default['filebeat']['elasticsearch_server_ip'] = "[YOUR_ELASTICSEARCH_SERVER_IP]"
 default['filebeat']['timeout'] = 15
 default['filebeat']['config_path'] = '/etc/filebeat/filebeat.yml'
 
