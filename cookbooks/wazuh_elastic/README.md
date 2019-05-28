@@ -35,7 +35,7 @@ Create a role, `wazuh_elastic`. Modify attributes to customize the installation.
 
 #### Customize ELK installation
 
-You can customize the installation of Elasticsearch, Kibana and Logstash modifying the following parameters.
+You can customize the installation of Elasticsearch and Kibana modifying the following parameters.
 
 
 **Elasticsearch:**
@@ -45,9 +45,6 @@ You can customize the installation of Elasticsearch, Kibana and Logstash modifyi
 * ```['wazuh-elastic']['elasticsearch_node_name'] = 'elk.wazuh-test.com'```
 * ```['wazuh-elastic']['elasticsearch_port'] = 9200```
 * ```['wazuh-elastic']['elasticsearch_ip'] = 'localhost'```
-
-**Logstash:**
-* ```['wazuh-elastic']['logstash_configuration'] = "local"```
 
 **Kibana:**
 
@@ -74,9 +71,6 @@ Declares elastic repository and gpg key urls.
 
 Installs OpenJDK-8 that is required by Elasticsearch in order to work.
 
-### logstash.rb
-
-Installs Logstash from packages and downloads configuration (remote or local). You can choose between configurations using:
 
 ### kibana.rb
 
