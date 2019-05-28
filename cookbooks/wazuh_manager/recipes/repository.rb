@@ -34,6 +34,27 @@ case node['platform_family']
       components ['main']
       distribution 'stable'
     end
+
+    apt_update
+
+  when 'ubuntu'
+    package 'lsb-release'
+
+    ohai 'reload lsb' do
+      plugin 'lsb'
+      # action :nothing
+      subscribes :reload, 'package[lsb-release]', :immediately
+    end
+
+    apt_repository 'Wazuh' do
+      uri 'http://packages.wazuh.com/3.x/apt/'
+      key 'https://packages.wazuh.com/key/GPG-KEY-WAZUH'
+      components ['main']
+      distribution 'stable'
+    end
+
+    apt_update
+
   
   when 'rhel', 'amazon'
     yum_repository 'Wazuh' do
