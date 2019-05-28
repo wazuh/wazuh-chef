@@ -3,7 +3,7 @@ name 'wazuh_elastic'
 maintainer 'Wazuh'
 maintainer_email 'info@wazuh.com'
 license 'All rights reserved'
-description 'setup Elastic: logstash, elasticsearch and kibana for Wazuh'
+description 'setup Elastic: elasticsearch and kibana for Wazuh'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version '0.0.2'
 

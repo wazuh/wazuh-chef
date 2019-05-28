@@ -1,1 +1,0 @@
-default['wazuh-elastic']['logstash_configuration'] = "local"

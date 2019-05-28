@@ -17,11 +17,10 @@
 # limitations under the License.
 #
 #include_recipe 'chef-sugar::default'
-include_recipe 'apt::default'
-include_recipe 'wazuh_manager::repository'
 
-package 'wazuh-manager' do
-  package_name 'wazuh-manager'
+
+apt_package 'wazuh-manager' do
+  version "#{node['wazuh-manager']['version']}-1"
 end
 
 # The dependences should be installed only when the cluster is enabled
@@ -46,8 +45,8 @@ if node['ossec']['conf']['cluster']['node_type'] == 'master'
     not_if "ps axu | grep ossec-authd | grep -v grep"
   end
 end
-include_recipe 'wazuh_manager::common'
 
+include_recipe 'wazuh_manager::common'
 include_recipe 'wazuh_manager::wazuh_api'
 
 template "#{node['ossec']['dir']}/etc/local_internal_options.conf" do

@@ -6,7 +6,7 @@ when 'debian', 'ubuntu'
   bash 'Install nodejs' do
     code <<-EOH
       cd /tmp &&
-      curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+      curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
       EOH
     not_if { ::File.exist?('/etc/apt/sources.list.d/nodesource.list') }
   end
@@ -16,14 +16,18 @@ when 'redhat', 'centos', 'fedora'
   bash 'Install nodejs' do
     code <<-EOH
       cd /tmp &&
-      curl --silent --location https://rpm.nodesource.com/setup_6.x | bash -
+      curl --silent --location https://rpm.nodesource.com/setup_8.x | bash -
       EOH
     not_if { ::File.exist?('/etc/yum.repos.d/nodesource-el.repo') }
   end
 
 end
 
-package ['nodejs', 'wazuh-api']
+package ['nodejs']
+
+apt_package 'wazuh-api' do
+  version "#{node['wazuh-manager']['version']}-1"
+end
 
 begin
   api_keys = Chef::EncryptedDataBagItem.load('wazuh_secrets', 'api')

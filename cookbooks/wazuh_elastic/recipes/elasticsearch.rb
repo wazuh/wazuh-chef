@@ -5,10 +5,9 @@
 #
 ######################################################
 
-
-
 package 'elasticsearch' do
     version node['wazuh-elastic']['elastic_stack_version']
+    action :install
 end
 
 
@@ -17,10 +16,19 @@ template '/etc/elasticsearch/elasticsearch.yml' do
   owner 'root'
   group 'elasticsearch'
   mode '0660'
-  variables({hostname: node['hostname'],
-            clustername: node['wazuh-elastic']['elasticsearch_cluster_name'],
-            ip:  node['wazuh-elastic']['elasticsearch_ip'],
-            port: node['wazuh-elastic']['elasticsearch_port']})
+  variables({clustername: "cluster.name: #{node['wazuh-elastic']['elasticsearch_cluster_name']}",
+            node_name: "node.name: #{node['wazuh-elastic']['elasticsearch_node_name']}",
+            node_master: "node.master: #{node['wazuh-elastic']['elasticsearch_node_master']}",
+            node_data: "node.data: #{node['wazuh-elastic']['elasticsearch_node_data']}",
+            node_ingest: "node.ingest: #{node['wazuh-elastic']['elasticsearch_node_ingest']}",
+            node_max_local_storage_nodes: "node.max_local_storage_nodes: #{node['wazuh-elastic']['elasticsearch_node_max_local_storage_nodes']}",
+            cluster_remote_connect: "cluster.remote.connect: #{node['wazuh-elasticsearch']['elasticsearch_cluster_remote_connect']}",
+            path_data: "path.data: #{node['wazuh-elastic']['elasticsearch_path_data']}",
+            path_logs: "path.logs: #{node['wazuh-elastic']['elasticsearch_path_logs']}",
+            network_host: "network.host: #{node['wazuh-elastic']['elasticsearch_ip']}",
+            http_port: "http.port: #{node['wazuh-elastic']['elasticsearch_port']}",
+            discovery_option: "#{node['wazuh-elastic']['elasticsearch_discovery_option']}",
+            cluster_initial_master_nodes: "#{node['wazuh-elastic']['elasticsearch_cluster_initial_master_nodes']}" })
 end
 
 template '/etc/elasticsearch/jvm.options' do
@@ -50,12 +58,13 @@ ruby_block 'wait for elasticsearch' do
   end
 end
 
-bash 'Elasticsearch_template' do
-  code <<-EOH
-  curl https://raw.githubusercontent.com/wazuh/wazuh/#{node['wazuh-elastic']['extensions_version']}/extensions/elasticsearch/6.x/wazuh-template.json | curl -X PUT 'http://#{node['wazuh-elastic']['elasticsearch_ip']}:#{node['wazuh-elastic']['elasticsearch_port']}/_template/wazuh' -H 'Content-Type: application/json' -d @-
-  EOH
-  not_if "curl -XGET 'http://#{node['wazuh-elastic']['elasticsearch_ip']}:#{node['wazuh-elastic']['elasticsearch_port']}/_template/wazuh' | grep wazuh"
-  notifies :restart, "service[elasticsearch]", :immediately
+bash 'Verify Elasticsearch folders owner' do
+  code <<-EOF
+    chown elasticsearch:elasticsearch -R /etc/elasticsearch
+    chown elasticsearch:elasticsearch -R /usr/share/elasticsearch
+    chown elasticsearch:elasticsearch -R /var/lib/elasticsearch
+  EOF
+  notifies :restart, "service[elasticsearch]", :delayed
 end
 
 

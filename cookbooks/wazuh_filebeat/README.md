@@ -1,7 +1,7 @@
 # Filebeat cookbook
 
 ## Description
-This cookbook installs and configures Filebeat in order on the specified node. It's important to mention that he ```logstash_servers``` attribute is obligatory and defines the Logstash IP's
+This cookbook installs and configures Filebeat in order on the specified node.
 
 #### Chef
 - Chef 12+
@@ -30,11 +30,7 @@ Create a role, wazuh_filebeat. Add attributes per above as needed to customize t
 
     },
     "override_attributes": {
-        "filebeat": {
-            "logstash_servers" : "<YOUR LOGSTASHs IPs HERE>"
-            
-        }
-
+        
     },
     "chef_type": "role",
     "run_list": [
@@ -50,7 +46,6 @@ Default attributes are:
 
 * `node['filebeat']['package_name']` - Package name
 * `node['filebeat']['service_name']` - Service name
-* `node['filebeat']['logstash_servers'] ` - Logstash server IP or hostname
 * `node['filebeat']['timeout'] ` - Seconds until the timeout
 * `node['filebeat']['config_path'] ` - Certificate path.
 * `node['filebeat']['ssl_ca'] ` - SSL path.

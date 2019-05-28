@@ -11,7 +11,7 @@ Deploy Wazuh platform using Chef cookbooks. Chef recipes are prepared for instal
 
 * [Wazuh Agent ](https://github.com/wazuh/wazuh-chef/tree/master/wazuh_agent)
 * [Wazuh Manager and API](https://github.com/wazuh/wazuh-chef/tree/master/wazuh_manager)
-* [Elastic Stack (Elasticsearch, Logstash, Kibana)](https://github.com/wazuh/wazuh-chef/tree/master/wazuh_elastic)
+* [Elastic Stack (Elasticsearch, Kibana)](https://github.com/wazuh/wazuh-chef/tree/master/wazuh_elastic)
 * [Filebeat](https://github.com/wazuh/wazuh-chef/tree/master/wazuh_filebeat)
 
 Each cookbook has its own README.md
@@ -48,7 +48,7 @@ You can specify tags, branches, and revisions. More info on https://docs.chef.io
 
 The following describes how to define the needed JSON files to generate an encrypted data bag.
 
-**Important**: If API user secret is declared will be installed. Otherwise, the default user will be *foo:bar*. Also if *logstash_certificate* secret is not generated, empty *logstash.crt* will be created. Remember that whatever options you choose, the Logstash SSL protocol is disabled by default.
+**Important**: If API user secret is declared will be installed. Otherwise, the default user will be *foo:bar*. 
 
 ##### api.json
 
@@ -65,19 +65,6 @@ Example of JSON before encryption:
 
 ```
 
-##### logstash_certificate.json
-
-It contains the certificate and the certificate key that will secure communication with Logstash. Required by  Elastic and Filebeat.
-
-```json
-{
-  "id": "logstash_certificate",
-  "logstash_certificate": "<YOUR LOGSTASH CERTIFICATE>",
-  "logstash_certificate_key": "<YOUR LOGSTASH CERTIFICATE KEY>"
-}
-
-```
-
 #### Generate data bags
 
 In order to transfer our credentials securely, Chef provides *[data_bags](https://docs.chef.io/data_bags.html)* that allows encrypting some sensitive data before communication.
@@ -86,7 +73,7 @@ The following process describes an example of how to create secrets and data bag
 
 * Install a key or generate one (with OpenSSL for example) on your Workstation.
 
-* Create the required secret by using : ```knife data bag create wazuh_secrets api --secret-file <path> -z```  (execute once per file: *api*, *logstash_certificate*)
+* Create the required secret by using : ```knife data bag create wazuh_secrets api --secret-file <path> -z```
 
 * Upload your new secrets with ```knife upload data_bags/```
 
