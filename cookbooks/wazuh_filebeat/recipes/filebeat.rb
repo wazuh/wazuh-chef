@@ -9,34 +9,18 @@ package 'filebeat' do
     version node['filebeat']['elastic_stack_version']
 end
 
+bash 'Elasticsearch_template' do
+  code <<-EOH
+  curl -so /etc/filebeat/wazuh-template.json "https://raw.githubusercontent.com/wazuh/wazuh/#{node['filebeat']['extensions_version']}/extensions/elasticsearch/7.x/wazuh-template.json"
+  EOH
+end
+
 template node['filebeat']['config_path'] do
   source 'filebeat.yml.erb'
   owner 'root'
   group 'root'
   mode '0640'
-  variables(:logstash_servers => node['filebeat']['logstash_servers'])
-end
-
-begin
-  ssl = Chef::EncryptedDataBagItem.load('wazuh_secrets', 'logstash_certificate')
-  log "Logstash certificate found, writing... (Note: Disabled by default) " do
-    message "-----LOGSTASH CERTIFICATE FOUND-----"
-    level :info
-  end
-rescue ArgumentError, Net::HTTPServerException
-  ssl = {'logstash_certificate' => "", 'logstash_certificate_key' => ""}
-  log "No logstash certificate found...Installation will continue with empty certificate (Note: Disabled by default)" do
-    message "-----LOGSTASH CERTIFICATE NOT FOUND-----"
-    level :info
-  end
-end
-
-file '/etc/filebeat/logstash.crt' do
-  mode '0644'
-  owner 'root'
-  group 'root'
-  content ssl['logstash_certificate'].to_s
-  action :create
+  variables(elasticsearch_server_ip: "  hosts: ['#{node['filebeat']['elasticsearch_server_ip']}:9200']")
 end
 
 service node['filebeat']['service_name'] do
