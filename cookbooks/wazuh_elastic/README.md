@@ -1,6 +1,6 @@
 # Wazuh Elasticsearch cookbook
 
-This cookbook installs and configure Elastic Stack. Please note that it's not obligatory to install the whole stack, recipes can work independently (some of them require *java.rb* and *repository.rb* recipes)
+This cookbook installs and configure Elastic Stack. Please note that it's not obligatory to install the whole stack, recipes can work independently.
 
 ### Attributes
 
@@ -61,15 +61,11 @@ Declares all recipes in the cookbook and installs the whole Elastic Stack.
 
 #### elasticsearch.rb
 
-Installs Elasticsearch, depends on *java.rb* and repository, so JDK-8 and the Elastic repository will be added. The Wazuh template will be configured. 
+Installs Elasticsearch, the Wazuh template will be configured. 
 
 #### repository.rb 
 
 Declares elastic repository and gpg key urls.
-
-#### java.rb
-
-Installs OpenJDK-8 that is required by Elasticsearch in order to work.
 
 
 ### kibana.rb
