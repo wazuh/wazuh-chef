@@ -22,7 +22,7 @@ template 'kibana.yml' do
   variables({
      kibana_server_port: "server.port: #{node['wazuh-elastic']['kibana_server_port']}",
      kibana_server_host: "server.host: #{node['wazuh-elastic']['kibana_server_host']}",
-     kibana_elasticsearch_server_host: "elasticsearch.hosts: ['#{node['wazuh-elastic']['kibana_elasticsearch_hosts']}']"
+     kibana_elasticsearch_server_hosts: "elasticsearch.hosts: ['#{node['wazuh-elastic']['kibana_elasticsearch_server_hosts']}']"
   })
   mode 0755
   notifies :restart, "service[kibana]", :immediately
