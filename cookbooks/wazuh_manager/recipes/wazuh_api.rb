@@ -1,6 +1,6 @@
 
 
-case node['platform']
+case node['platform_family']
 when 'debian', 'ubuntu'
 
   bash 'Install nodejs' do
@@ -11,7 +11,13 @@ when 'debian', 'ubuntu'
     not_if { ::File.exist?('/etc/apt/sources.list.d/nodesource.list') }
   end
 
-when 'redhat', 'centos', 'fedora'
+  apt_package 'wazuh-api'
+
+  apt_package 'wazuh-api' do
+    version "#{node['wazuh-manager']['version']}-1"
+  end
+
+when 'redhat', 'centos', 'fedora', 'rhel'
 
   bash 'Install nodejs' do
     code <<-EOH
@@ -21,12 +27,12 @@ when 'redhat', 'centos', 'fedora'
     not_if { ::File.exist?('/etc/yum.repos.d/nodesource-el.repo') }
   end
 
-end
+  yum_package 'wazuh-api'
 
-package ['nodejs']
+  yum_package 'wazuh-api' do
+    version "#{node['wazuh-manager']['version']}-1"
+  end
 
-apt_package 'wazuh-api' do
-  version "#{node['wazuh-manager']['version']}-1"
 end
 
 begin

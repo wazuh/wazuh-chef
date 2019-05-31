@@ -18,9 +18,15 @@
 #
 #include_recipe 'chef-sugar::default'
 
-
-apt_package 'wazuh-manager' do
-  version "#{node['wazuh-manager']['version']}-1"
+case node['platform_family']
+when "debian", "ubuntu"
+  apt_package 'wazuh-manager' do
+    version "#{node['wazuh-manager']['version']}-1"
+  end
+when "redhat", "rhel", "centos"
+  yum_package 'wazuh-manager' do
+    version "#{node['wazuh-manager']['version']}-1"
+  end
 end
 
 # The dependences should be installed only when the cluster is enabled

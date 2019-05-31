@@ -56,7 +56,7 @@ case node['platform_family']
     apt_update
 
   
-  when 'rhel', 'amazon'
+  when 'rhel', 'amazon', 'redhat'
     yum_repository 'Wazuh' do
       description 'WAZUH Repository - www.wazuh.com'
       baseurl 'https://packages.wazuh.com/3.x/yum'
