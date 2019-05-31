@@ -5,13 +5,15 @@
 # Create user and group
 #
 
-package 'kibana' do
-  version node['wazuh-elastic']['elastic_stack_version']
-end
-
-service "kibana" do
-  supports :start => true, :stop => true, :restart => true, :reload => true, :status => true
-  action [:enable, :start]
+case node['platform_family']
+when "debian", "ubuntu"
+  apt_package 'kibana' do
+    version "#{node['wazuh-elastic']['elastic_stack_version']}"
+  end
+when "redhat", "rhel", "centos"
+  yum_package 'kibana' do
+    version "#{node['wazuh-elastic']['elastic_stack_version']}-1"
+  end
 end
 
 template 'kibana.yml' do
@@ -25,8 +27,23 @@ template 'kibana.yml' do
      kibana_elasticsearch_server_hosts: "elasticsearch.hosts: ['#{node['wazuh-elastic']['kibana_elasticsearch_server_hosts']}']"
   })
   mode 0755
-  notifies :restart, "service[kibana]", :immediately
 end
+
+case 
+when "debian", "ubuntu"
+  service "kibana" do
+    supports :start => true, :stop => true, :restart => true, :reload => true
+    action [:enable,:start]
+  end
+when "redhat", "rhel", "centos"
+  service "kibana" do
+    supports :start => true, :stop => true, :restart => true, :reload => true
+    provider Chef::Provider::Service::Init
+    action [:start]
+  end
+end
+
+
 
 ruby_block 'wait for elasticsearch' do
   block do
@@ -43,12 +60,24 @@ bash 'Waiting for elasticsearch curl response...' do
   EOH
 end
 
-bash 'Install Wazuh-APP (can take a while)' do
-  code <<-EOH
-  sudo -u kibana /usr/share/kibana/bin/kibana-plugin install https://packages.wazuh.com/wazuhapp/wazuhapp-#{node['wazuh-elastic']['wazuh_app_version']}.zip kibana
-  EOH
-  creates '/usr/share/kibana/plugins/wazuh/package.json'
-  notifies :restart, "service[kibana]", :immediately
+
+case node['platform_family']
+when "debian", "ubuntu"
+  bash 'Install Wazuh-APP (can take a while)' do
+    code <<-EOH
+    sudo -u kibana /usr/share/kibana/bin/kibana-plugin install https://packages.wazuh.com/wazuhapp/wazuhapp-#{node['wazuh-elastic']['wazuh_app_version']}.zip kibana
+    EOH
+    creates '/usr/share/kibana/plugins/wazuh/package.json'
+    notifies :restart, "service[kibana]", :delayed
+  end
+when "redhat", "rhel", "centos"
+  bash 'Install Wazuh-APP (can take a while)' do
+    code <<-EOH
+    sudo -u kibana /usr/share/kibana/bin/kibana-plugin install https://packages.wazuh.com/wazuhapp/wazuhapp-#{node['wazuh-elastic']['wazuh_app_version']}.zip
+    EOH
+    creates '/usr/share/kibana/plugins/wazuh/package.json'
+    notifies :restart, "service[kibana]", :delayed
+  end
 end
 
 bash 'Verify Kibana folders owner' do
@@ -56,5 +85,5 @@ bash 'Verify Kibana folders owner' do
     chown -R kibana:kibana /usr/share/kibana/optimize
     chown -R kibana:kibana /usr/share/kibana/plugins
   EOF
-  notifies :restart, "service[kibana]", :immediately
+
 end

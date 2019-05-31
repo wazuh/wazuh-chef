@@ -42,7 +42,7 @@ when 'ubuntu'
     end
   end
 
-when 'rhel'
+when 'rhel','centos'
   yum_repository "elastic-7.x" do
     description "Elastic repository for 7.x packages"
     baseurl "https://artifacts.elastic.co/packages/7.x/yum"

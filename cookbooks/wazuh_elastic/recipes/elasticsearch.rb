@@ -5,9 +5,15 @@
 #
 ######################################################
 
-package 'elasticsearch' do
-    version node['wazuh-elastic']['elastic_stack_version']
-    action :install
+case node['platform_family']
+when "debian", "ubuntu"
+  apt_package 'elasticsearch' do
+    version "#{node['wazuh-elastic']['elastic_stack_version']}"
+  end
+when "redhat", "rhel", "centos"
+  yum_package 'elasticsearch' do
+    version "#{node['wazuh-elastic']['elastic_stack_version']}-1"
+  end
 end
 
 
