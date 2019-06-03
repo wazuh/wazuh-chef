@@ -6,11 +6,20 @@
 ######################################################
 
 
+if platform_family?('debian', 'ubuntu')
 
-package 'elasticsearch' do
-    version node['wazuh-elastic']['elastic_stack_version']
+  apt_package 'elasticsearch' do
+    version "#{node['wazuh-elastic']['elastic_stack_version']}"
+  end
+
+elsif platform_family?('rhel', 'redhat', 'centos', 'amazon')
+  yum_package 'elasticsearch' do
+    version "#{node['wazuh-elastic']['elastic_stack_version']}-1"
+  end
+
+else
+  raise "Currently platforn not supported yet. Feel free to open an issue on https://www.github.com/wazuh/wazuh-chef if you consider that support for a specific OS should be added"
 end
-
 
 template '/etc/elasticsearch/elasticsearch.yml' do
   source 'elasticsearch.yml.erb'
