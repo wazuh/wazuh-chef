@@ -1,6 +1,5 @@
 
-case node['platform_family'] 
-when "debian","ubuntu"
+if platform_family?('debian','ubuntu')
   default['ossec']['conf']['localfile'] = [
     {
       'log_format' => 'command',
@@ -53,9 +52,7 @@ when "debian","ubuntu"
         }
     }
   ]
-
-when "centos","redhat","rhel"
-
+elsif platform_family?("centos","redhat","rhel", "amazon")
   default['ossec']['conf']['localfile'] = [
     {
       'log_format' => 'command',
@@ -96,6 +93,8 @@ when "centos","redhat","rhel"
         }
     },
   ]
+else
+  raise "Currently platforn not supported yet. Feel free to open an issue on https://www.github.com/wazuh/wazuh-chef if you consider that support for a specific OS should be added"
 end
 
 
