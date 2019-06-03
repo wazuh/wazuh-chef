@@ -17,29 +17,29 @@
 # limitations under the License.
 #
 
-case node['platform_family']
-  
-  when 'debian'
-    package 'lsb-release'
+if platform_family?('ubuntu', 'debian')
+  package 'lsb-release'
 
-    ohai 'reload lsb' do
-      plugin 'lsb'
-      # action :nothing
-      subscribes :reload, 'package[lsb-release]', :immediately
-    end
-
-    apt_repository 'Wazuh' do
-      uri 'http://packages.wazuh.com/3.x/apt/'
-      key 'https://packages.wazuh.com/key/GPG-KEY-WAZUH'
-      components ['main']
-      distribution 'stable'
-    end
-  
-  when 'rhel', 'amazon'
-    yum_repository 'Wazuh' do
-      description 'WAZUH Repository - www.wazuh.com'
-      baseurl 'https://packages.wazuh.com/3.x/yum'
-      gpgkey 'https://packages.wazuh.com/key/GPG-KEY-WAZUH'
-      action :create
+  ohai 'reload lsb' do
+    plugin 'lsb'
+    # action :nothing
+    subscribes :reload, 'package[lsb-release]', :immediately
   end
+
+  apt_repository 'Wazuh' do
+    uri 'http://packages.wazuh.com/3.x/apt/'
+    key 'https://packages.wazuh.com/key/GPG-KEY-WAZUH'
+    components ['main']
+    distribution 'stable'
+  end
+
+elsif platform_family?('rhel', 'redhat', 'centos', 'amazon')
+  yum_repository 'Wazuh' do
+    description 'WAZUH Repository - www.wazuh.com'
+    baseurl 'https://packages.wazuh.com/3.x/yum'
+    gpgkey 'https://packages.wazuh.com/key/GPG-KEY-WAZUH'
+    action :create
+  end
+else
+  raise "Currently platforn not supported yet. Feel free to open an issue on https://www.github.com/wazuh/wazuh-chef if you consider that support for a specific OS should be added"
 end

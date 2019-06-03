@@ -18,16 +18,19 @@
 #
 #include_recipe 'chef-sugar::default'
 
-case node['platform_family']
-when "debian", "ubuntu"
+
+if platform_family?('ubuntu', 'debian')
   apt_package 'wazuh-manager' do
     version "#{node['wazuh-manager']['version']}-1"
   end
-when "redhat", "rhel", "centos"
+elsif platform_family?('debian', 'rhel','centos', 'amazon')
   yum_package 'wazuh-manager' do
     version "#{node['wazuh-manager']['version']}-1"
   end
+else
+  raise "Currently platforn not supported yet. Feel free to open an issue on https://www.github.com/wazuh/wazuh-chef if you consider that support for a specific OS should be added"
 end
+
 
 # The dependences should be installed only when the cluster is enabled
 if node['ossec']['conf']['cluster']['disabled'] == 'no'
