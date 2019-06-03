@@ -12,7 +12,7 @@ end
 bash 'Elasticsearch_template' do
   code <<-EOH
   curl -so /etc/filebeat/wazuh-template.json "https://raw.githubusercontent.com/wazuh/wazuh/#{node['filebeat']['extensions_version']}/extensions/elasticsearch/7.x/wazuh-template.json"
-  EOH                                        
+  EOH
 end
 
 template node['filebeat']['config_path'] do
