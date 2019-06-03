@@ -5,15 +5,16 @@
 # Create user and group
 #
 
-case node['platform_family']
-when "debian", "ubuntu"
+if platform_family?('debian', 'ubuntu')
   apt_package 'kibana' do
     version "#{node['wazuh-elastic']['elastic_stack_version']}"
   end
-when "redhat", "rhel", "centos"
+elsif platform_family?('rhel', 'redhat', 'centos', 'amazon')
   yum_package 'kibana' do
     version "#{node['wazuh-elastic']['elastic_stack_version']}-1"
   end
+else
+  raise "Currently platforn not supported yet. Check out for updates in www.github.com/wazuh/wazuh-chef"
 end
 
 template 'kibana.yml' do
@@ -33,13 +34,13 @@ case
 when "debian", "ubuntu"
   service "kibana" do
     supports :start => true, :stop => true, :restart => true, :reload => true
-    action [:enable,:start]
+    action [:restart]
   end
 when "redhat", "rhel", "centos"
   service "kibana" do
     supports :start => true, :stop => true, :restart => true, :reload => true
     provider Chef::Provider::Service::Init
-    action [:start]
+    action [:restart]
   end
 end
 
@@ -61,8 +62,7 @@ bash 'Waiting for elasticsearch curl response...' do
 end
 
 
-case node['platform_family']
-when "debian", "ubuntu"
+if platform_family?('debian', 'ubuntu')
   bash 'Install Wazuh-APP (can take a while)' do
     code <<-EOH
     sudo -u kibana /usr/share/kibana/bin/kibana-plugin install https://packages.wazuh.com/wazuhapp/wazuhapp-#{node['wazuh-elastic']['wazuh_app_version']}.zip kibana
@@ -70,7 +70,7 @@ when "debian", "ubuntu"
     creates '/usr/share/kibana/plugins/wazuh/package.json'
     notifies :restart, "service[kibana]", :delayed
   end
-when "redhat", "rhel", "centos"
+elsif platform_family?('rhel', 'redhat', 'centos', 'amazon')
   bash 'Install Wazuh-APP (can take a while)' do
     code <<-EOH
     sudo -u kibana /usr/share/kibana/bin/kibana-plugin install https://packages.wazuh.com/wazuhapp/wazuhapp-#{node['wazuh-elastic']['wazuh_app_version']}.zip
