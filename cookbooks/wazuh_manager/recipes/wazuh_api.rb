@@ -1,8 +1,6 @@
 
 
-case node['platform']
-when 'debian', 'ubuntu'
-
+if platform_family?('ubuntu', 'debian')
   bash 'Install nodejs' do
     code <<-EOH
       cd /tmp &&
@@ -11,7 +9,11 @@ when 'debian', 'ubuntu'
     not_if { ::File.exist?('/etc/apt/sources.list.d/nodesource.list') }
   end
 
-when 'redhat', 'centos', 'fedora'
+  apt_package 'wazuh-api' do
+    version "#{node['wazuh-manager']['version']}-1"
+  end
+
+elsif platform_family?('redhat', 'centos', 'rhel', 'amazon')
 
   bash 'Install nodejs' do
     code <<-EOH
@@ -21,12 +23,11 @@ when 'redhat', 'centos', 'fedora'
     not_if { ::File.exist?('/etc/yum.repos.d/nodesource-el.repo') }
   end
 
-end
-
-package ['nodejs']
-
-apt_package 'wazuh-api' do
-  version "#{node['wazuh-manager']['version']}-1"
+  yum_package 'wazuh-api' do
+    version "#{node['wazuh-manager']['version']}-1"
+  end
+else
+  raise "Currently platforn not supported yet. Feel free to open an issue on https://www.github.com/wazuh/wazuh-chef if you consider that support for a specific OS should be added"
 end
 
 begin

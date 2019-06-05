@@ -19,22 +19,32 @@
 #include_recipe 'chef-sugar::default'
 
 
-apt_package 'wazuh-manager' do
-  version "#{node['wazuh-manager']['version']}-1"
+if platform_family?('ubuntu', 'debian')
+  apt_package 'wazuh-manager' do
+    version "#{node['wazuh-manager']['version']}-1"
+  end
+elsif platform_family?('redhat', 'rhel','centos', 'amazon')
+  yum_package 'wazuh-manager' do
+    version "#{node['wazuh-manager']['version']}-1"
+  end
+else
+  raise "Currently platforn not supported yet. Feel free to open an issue on https://www.github.com/wazuh/wazuh-chef if you consider that support for a specific OS should be added"
 end
+
 
 # The dependences should be installed only when the cluster is enabled
 if node['ossec']['conf']['cluster']['disabled'] == 'no'
- case node['platform']
-  when 'debian', 'ubuntu'
+  if platform_family?('ubuntu', 'debian')
     log 'Wazuh_Cluster_not_compatible' do
       message "Wazuh cluster is not compatible with this version with #{node['platform']}"
       level :warn
     end
-  when 'redhat', 'centos'
+  elsif platform_family?('redhat', 'rhel','centos', 'amazon')
     if node['platform_version'].to_i == 7
       package ['python-setuptools', 'python-cryptography']
     end
+  else
+    raise "Currently platforn not supported yet. Feel free to open an issue on https://www.github.com/wazuh/wazuh-chef if you consider that support for a specific OS should be added"
   end
 end
 
