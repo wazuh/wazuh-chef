@@ -7,6 +7,16 @@
 
 Deploy Wazuh platform using Chef cookbooks. Chef recipes are prepared for installing and configuring Agent, Manager (cluster) and RESTful API.
 
+## Dependencies
+
+Every cookbook will install its own required dependencies, *Berksfile* and *metadata.rb* contain all the information about which dependencies will be installed.
+
+There is software that must be installed in order to ensure the correct installation.
+
+- Curl
+- Wget
+- Chef Server Core v12.19.31
+
 ## Cookbooks
 
 * [Wazuh Agent ](https://github.com/wazuh/wazuh-chef/tree/master/wazuh_agent)
