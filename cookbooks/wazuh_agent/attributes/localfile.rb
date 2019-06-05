@@ -52,7 +52,7 @@ if platform_family?('ubuntu', 'debian')
         }
     }
   ]
-elsif platform_family?('debian', 'rhel','centos', 'amazon')
+elsif platform_family?('rhel','centos', 'amazon')
   default['ossec']['conf']['localfile'] = [
     {
       'log_format' => 'command',
