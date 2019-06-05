@@ -14,7 +14,7 @@ elsif platform_family?('rhel', 'redhat', 'centos', 'amazon')
     version "#{node['wazuh-elastic']['elastic_stack_version']}-1"
   end
 else
-  raise "Currently platforn not supported yet. Check out for updates in www.github.com/wazuh/wazuh-chef"
+  raise "Currently platforn not supported yet. Feel free to open an issue on https://www.github.com/wazuh/wazuh-chef if you consider that support for a specific OS should be added"
 end
 
 template 'kibana.yml' do
@@ -30,18 +30,20 @@ template 'kibana.yml' do
   mode 0755
 end
 
-case 
-when "debian", "ubuntu"
+
+if platform_family?('debian', 'ubuntu')
   service "kibana" do
     supports :start => true, :stop => true, :restart => true, :reload => true
     action [:restart]
   end
-when "redhat", "rhel", "centos"
+elsif platform_family?('rhel', 'redhat', 'centos', 'amazon')
   service "kibana" do
     supports :start => true, :stop => true, :restart => true, :reload => true
     provider Chef::Provider::Service::Init
     action [:restart]
   end
+else
+  raise "Currently platforn not supported yet. Feel free to open an issue on https://www.github.com/wazuh/wazuh-chef if you consider that support for a specific OS should be added"
 end
 
 
