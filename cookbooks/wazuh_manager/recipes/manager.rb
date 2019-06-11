@@ -25,7 +25,7 @@ if platform_family?('ubuntu', 'debian')
   apt_package 'wazuh-manager' do
     version "#{node['wazuh-manager']['version']}-1"
   end
-elsif platform_family?('debian', 'rhel','centos', 'amazon')
+elsif platform_family?('rhel','centos', 'amazon')
   yum_package 'wazuh-manager' do
     version "#{node['wazuh-manager']['version']}-1"
   end
