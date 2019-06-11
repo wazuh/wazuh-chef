@@ -4,15 +4,16 @@
 
 ######################################################
 
-case node['platform_family']
-when 'debian'
-  package 'logstash' do
-    version '1:'+node['wazuh-elastic']['elastic_stack_version']+'-1'
+if platform_family?('ubuntu', 'debian')
+  apt_package 'logstash' do
+    version "1:#{node['wazuh-elastic']['elastic_stack_version']}-1"
   end
-when 'rhel'
-  package 'logstash' do
-    version node['wazuh-elastic']['elastic_stack_version']
+elsif platform_family?('rhel','centos', 'amazon')
+  yum_package 'logstash' do
+    version "#{node['wazuh-elastic']['elastic_stack_version']}-1"
   end
+else
+  raise "Currently platforn not supported yet. Feel free to open an issue on https://www.github.com/wazuh/wazuh-chef if you consider that support for a specific OS should be added"
 end
 
 case node['wazuh-elastic']['logstash_configuration'] #
@@ -48,7 +49,7 @@ end
 
 bash 'Waiting for elasticsearch Socket...' do
   code <<-EOH
-  until (curl -XGET http://localhost:9200); do
+  until (curl -XGET http://#{node['wazuh-elastic']['elasticsearch_ip']}:#{node['wazuh-elastic']['elasticsearch_port']}); do
     printf 'Waiting for elasticsearch....'
     sleep 5
   done
