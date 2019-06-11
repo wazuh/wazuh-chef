@@ -11,5 +11,5 @@ filebeat:
 output:
   logstash:
     # The Logstash hosts
-    hosts: [<%= @logstash_servers.to_json %>]
+    hosts: [<%= @logstash_servers %>]
 #   ssl.certificate_authorities: <%= node['filebeat']['certificate_authorities'] %>

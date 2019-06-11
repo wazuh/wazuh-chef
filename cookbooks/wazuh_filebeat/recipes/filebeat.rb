@@ -5,8 +5,16 @@
 
 include_recipe 'wazuh_filebeat::repository'
 
-package 'filebeat' do
-    version node['filebeat']['elastic_stack_version']
+if platform_family?('ubuntu', 'debian')
+  apt_package 'filebeat' do
+    version "#{node['filebeat']['elastic_stack_version']}"
+  end
+elsif platform_family?('rhel','centos', 'amazon')
+  yum_package 'filebeat' do
+    version "#{node['filebeat']['elastic_stack_version']}-1"
+  end
+else
+  raise "Currently platforn not supported yet. Feel free to open an issue on https://www.github.com/wazuh/wazuh-chef if you consider that support for a specific OS should be added"
 end
 
 template node['filebeat']['config_path'] do
