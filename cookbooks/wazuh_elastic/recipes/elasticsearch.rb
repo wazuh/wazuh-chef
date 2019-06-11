@@ -35,7 +35,7 @@ end
 ## Setting heap to half of the RAM available is the recommended by official ES documentation.
 
 half = ((node['memory']['total'].to_i * 0.5).floor / 1024)
-node.default['wazuh_elastic']['elasticsearch_memmory'] = (half > 30_500 ? '30500m' : "#{half}m")
+node.default['wazuh-elastic']['elasticsearch_memmory'] = (half > 30_500 ? '30500m' : "#{half}m")
 
 template '/etc/elasticsearch/jvm.options' do
   source 'jvm.options.erb'
