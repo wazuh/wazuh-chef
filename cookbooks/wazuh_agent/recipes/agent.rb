@@ -19,7 +19,17 @@
 include_recipe 'apt::default'
 include_recipe 'wazuh_agent::repository'
 
-package 'wazuh-agent'
+if platform_family?('ubuntu', 'debian')
+  apt_package 'wazuh-agent' do
+    version "#{node['wazuh-agent']['version']}-1"
+  end
+elsif platform_family?('rhel','centos', 'amazon')
+  yum_package 'wazuh-agent' do
+    version "#{node['wazuh-agent']['version']}-1"
+  end
+else
+  raise "Currently platforn not supported yet. Feel free to open an issue on https://www.github.com/wazuh/wazuh-chef if you consider that support for a specific OS should be added"
+end
 
 dir = node['ossec']['dir']
 agent_auth = node['ossec']['agent_auth']
