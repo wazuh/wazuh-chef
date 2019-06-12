@@ -1,6 +1,14 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Wazuh Chef v3.9.2_7.1.1
+
+### Added
+
+- Filebeat recipe now supports versioning. ([@jm404](https://github.com/jm404)) [#26b41ce](https://github.com/wazuh/wazuh-chef/commit/26b41ce35edf3177425092e9ecb547401e1b2be2)
+
+  
+
 ## Wazuh Chef v3.9.1_7.1.0
 
 ### Changed
