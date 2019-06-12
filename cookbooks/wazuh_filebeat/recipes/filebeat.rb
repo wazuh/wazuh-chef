@@ -8,12 +8,12 @@ include_recipe 'wazuh_filebeat::repository'
 if platform_family?('debian', 'ubuntu')
 
   apt_package 'filebeat' do
-    version "#{node['wazuh-elastic']['elastic_stack_version']}"
+    version "#{node['filebeat']['elastic_stack_version']}"
   end
 
 elsif platform_family?('rhel', 'redhat', 'centos', 'amazon')
   yum_package 'filebeat' do
-    version "#{node['wazuh-elastic']['elastic_stack_version']}-1"
+    version "#{node['filebeat']['elastic_stack_version']}-1"
   end
 
 else

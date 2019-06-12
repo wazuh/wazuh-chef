@@ -5,7 +5,6 @@
 #
 #
 #
-default['filebeat']['elastic_stack_version'] = '7.1.1'
 default['filebeat']['package_name'] = 'filebeat'
 default['filebeat']['service_name'] = 'filebeat'
 default['filebeat']['elasticsearch_server_ip'] = "[YOUR_ELASTICSEARCH_SERVER_IP]"
