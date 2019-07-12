@@ -9,10 +9,10 @@ Deploy Wazuh platform using Chef cookbooks. Chef recipes are prepared for instal
 
 ## Cookbooks
 
-* [Wazuh Agent ](https://github.com/wazuh/wazuh-chef/tree/v3.9.1_6.8.0/cookbooks/wazuh_agent)
-* [Wazuh Manager and API](https://github.com/wazuh/wazuh-chef/tree/v3.9.1_6.8.0/cookbooks/wazuh_manager)
-* [Elastic Stack (Elasticsearch, Logstash, Kibana)](https://github.com/wazuh/wazuh-chef/tree/v3.9.1_6.8.0/cookbooks/wazuh_elastic)
-* [Filebeat](https://github.com/wazuh/wazuh-chef/tree/v3.9.1_6.8.0/cookbooks/wazuh_filebeat)
+* [Wazuh Agent ](https://github.com/wazuh/wazuh-chef/tree/v3.9.2_6.8.0/cookbooks/wazuh_agent)
+* [Wazuh Manager and API](https://github.com/wazuh/wazuh-chef/tree/v3.9.2_6.8.0/cookbooks/wazuh_manager)
+* [Elastic Stack (Elasticsearch, Logstash, Kibana)](https://github.com/wazuh/wazuh-chef/tree/v3.9.2_6.8.0/cookbooks/wazuh_elastic)
+* [Filebeat](https://github.com/wazuh/wazuh-chef/tree/v3.9.2_6.8.0/cookbooks/wazuh_filebeat)
 
 Each cookbook has its own README.md
 
@@ -20,8 +20,8 @@ Each cookbook has its own README.md
 
 You can find predefined roles for a default installation of Wazuh Agent and Manager in the roles folder.
 
-- [Wazuh Agent Role](https://github.com/wazuh/wazuh-chef/blob/v3.9.1_6.8.0/roles/wazuh_agent.json)
-- [Wazuh Manager Role](https://github.com/wazuh/wazuh-chef/blob/v3.9.1_6.8.0/roles/wazuh_agent.json)
+- [Wazuh Agent Role](https://github.com/wazuh/wazuh-chef/blob/v3.9.2_6.8.0/roles/wazuh_agent.json)
+- [Wazuh Manager Role](https://github.com/wazuh/wazuh-chef/blob/v3.9.2_6.8.0/roles/wazuh_agent.json)
 
 Check roles README for more information about default attributes and how to customize your installation.
 
