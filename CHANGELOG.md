@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Wazuh Chef v3.9.2_6.8.0
+
+### Added
+
+- Update Wazuh to 3.9.2 version.
+
 ## Wazuh Chef v3.9.1_6.8.0
 
 ### Changed
