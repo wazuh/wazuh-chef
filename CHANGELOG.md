@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
+- Update to Wazuh version 3.9.3_7.2.0
 
 ## Wazuh Chef v3.9.2_7.1.1
 
