@@ -60,7 +60,7 @@ end
 
 ## Generate agent.conf
 
-if node['ossec']['centralized_configuration']['enabled'] == 'yes'
+if node['ossec']['centralized_configuration']['enabled'] == 'yes' && !node['ossec']['centralized_configuration']['conf'].nil?
 
   file "#{node['ossec']['centralized_configuration']['path']}/agent.conf" do
     owner 'root'
