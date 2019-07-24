@@ -1,3 +1,4 @@
+
 Wazuh cookbooks
 ====================================
 
@@ -125,4 +126,80 @@ In case you want to customize your installation using roles, you can declare att
 The same example applies for Wazuh Agent and it's own attributes.
 
 You can get more info about attributes and how the work on the chef documentation: https://docs.chef.io/attributes.html
+
+
+
+### Centralized Configuration
+
+You can configure your Wazuh [Centralized Configuration](https://documentation.wazuh.com/3.9/user-manual/reference/centralized-configuration.html#centralized-configuration-process) with Chef.
+
+In order to achieve this, the following steps are required:
+
+##### Enable the `agent.conf` configuration
+
+The easiest way to achieve this is to modify the Wazuh Manager attributes in the role
+
+
+
+```
+{
+    "name": "wazuh_manager",
+    "description": "Wazuh Manager host",
+    "json_class": "Chef::Role",
+    "default_attributes": {
+        "ossec": {
+            "centralized_configuration":{
+                "enabled" : "yes",
+                "path": "/var/ossec/etc/shared/default",
+            }
+        }
+    },
+    "override_attributes": {
+
+    },
+    "chef_type": "role",
+    "run_list": [
+      "recipe[wazuh_manager::manager]"
+    ],
+    "env_run_lists": {
+
+    }
+  }
+```
+
+
+
+This, will render all `['ossec']['centralized_configuration']['conf']['agent_config']` variables and convert them to XML using Gyoku
+
+
+
+For example, the following attribute:
+
+```ruby
+default['ossec']['centralized_configuration']['conf']['agent_config']= [
+    {   "@os" => "Linux",
+        "localfile" => {
+            "location" => "/var/log/linux.log",
+            "log_format" => "syslog"
+        }
+    }
+]
+```
+
+
+
+Generates this XML in the `agent.conf` file:
+
+```xml
+<agent_config os="Linux">
+    <localfile>
+        <location>/var/log/linux.log</location>
+        <log_format>syslog</log_format>
+    </localfile>
+</agent_config>
+```
+
+
+
+Please check our Documentation about [Wazuh Centralized Configuration](https://documentation.wazuh.com/3.9/user-manual/reference/centralized-configuration.html#centralized-configuration-process) for detailed information.
 
