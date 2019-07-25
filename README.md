@@ -5,13 +5,13 @@
 [![Documentation](https://img.shields.io/badge/docs-view-green.svg)](https://documentation.wazuh.com)
 [![Documentation](https://img.shields.io/badge/web-view-green.svg)](https://wazuh.com)
 
-Deploy Wazuh platform using Chef cookbooks. Chef recipes are prepared for installing and configuring Agent, Manager (cluster) and RESTful API.
+Deploy the Wazuh platform using Chef cookbooks. Chef recipes are prepared for installing and configuring Agent, Manager (cluster) and RESTful API.
 
 ## Dependencies
 
 Every cookbook will install its own required dependencies, *Berksfile* and *metadata.rb* contain all the information about which dependencies will be installed.
 
-There is software that must be installed in order to ensure the correct installation.
+There is software that must be installed to ensure the correct installation.
 
 - Curl
 - Wget
@@ -24,7 +24,7 @@ There is software that must be installed in order to ensure the correct installa
 * [Elastic Stack (Elasticsearch, Kibana)](https://github.com/wazuh/wazuh-chef/tree/master/wazuh_elastic)
 * [Filebeat](https://github.com/wazuh/wazuh-chef/tree/master/wazuh_filebeat)
 
-Each cookbook has its own README.md
+Each cookbook has its README.md
 
 ## Roles
 
@@ -64,7 +64,7 @@ The following describes how to define the needed JSON files to generate an encry
 
 It contains the username and password that will be installed for Wazuh API authentication. Is required by the manager.
 
-Example of JSON before encryption:
+Example of a configuration file `api_configuration.json` before encryption:
 
 ```json
 {
@@ -75,21 +75,20 @@ Example of JSON before encryption:
 
 ```
 
-#### Generate data bags
+#### Using Data Bags
 
-In order to transfer our credentials securely, Chef provides *[data_bags](https://docs.chef.io/data_bags.html)* that allows encrypting some sensitive data before communication.
+To transfer our credentials securely, Chef provides *[data_bags](https://docs.chef.io/data_bags.html)* that allows encrypting some sensitive data before communication.
 
 The following process describes an example of how to create secrets and data bags to encrypt data.
 
-* Install a key or generate one (with OpenSSL for example) on your Workstation.
+* Install a key or generate one (with OpenSSL for example) on your Workstation ```openssl rand -base64 512 | tr -d '\r\n' > /tmp/encrypted_data_bag_secret```
 
-* Create the required secret by using : ```knife data bag create wazuh_secrets api --secret-file <path> -z```
+* Create the required secret by using : ```knife data bag from file wazuh_secrets ./api_configuration.json --secret-file /tmp/encrypted_data_bag_secret -z```
 
-* Upload your new secrets with ```knife upload data_bags/```
+* Upload your new secrets with ```knife upload /```
 
 * Before installing Wazuh-Manager, Wazuh-Filebeat or Wazuh-Elastic you will need to copy the key in */etc/chef/encrypted_data_bag_secret* (default path) or in the desired path (remember to specify the key path in *knife.rb* and *config.rb*) of your workstation.
 
-  
 
 After encryption, the previous JSON files will have new fields that describe the encryption method and other useful info. For example *api.json* after encryption will look like this:
 
@@ -114,15 +113,31 @@ After encryption, the previous JSON files will have new fields that describe the
 ```
 
 
+#### Using Chef Vault
+
+Chef Vault provides an easier way to manage Data bags and configure them. To configure it you can follow these steps:
+
+* Configure *knife.rb* or *config.rb* and add `knife[:vault_mode] = 'client'` to make the workstation transfer vault to the server.
+
+* Create the vault with:
+
+```
+knife vault create wazuh_secrets api '{"id": "api", "htpasswd_user": "user", "htpasswd_passcode": "password"}' -A "username" -C "manager-1"
+```
+Where `-A` defines the workstation users authorized to modify/edit the vault and `-C` defines the nodes that have access to the defined vault.
+
+After that, the vault will be created and synced with the server. The defined nodes will store the required keys to decrypt the vault content and consume it.
+
+You can check Chef Official Documentation about [Chef Vault](https://docs.chef.io/chef_vault.html) for detailed info.
 
 ## Use through Berkshelf
 
 The easiest way to making use of these cookbooks (especially `wazuh_filebeat` & `wazuh_elastic` until they are published to Supermarket) is by including in your `Berksfile` something like the below:
 
 ```ruby
-cookbook 'wazuh', github: 'wazuh/wazuh-chef', rel: 'wazuh'
-cookbook 'wazuh_filebeat', github: 'wazuh/wazuh-chef', rel: 'wazuh_filebeat'
-cookbook 'wazuh_elastic', github: 'wazuh/wazuh-chef', rel: 'wazuh_elastic'
+cookbook 'wazuh', gitHub: 'wazuh/wazuh-chef', rel: 'wazuh'
+cookbook 'wazuh_filebeat', gitHub: 'wazuh/wazuh-chef', rel: 'wazuh_filebeat'
+cookbook 'wazuh_elastic', gitHub: 'wazuh/wazuh-chef', rel: 'wazuh_elastic'
 ```
 
 This will source all three cookbooks housed in this repo from GitHub.
