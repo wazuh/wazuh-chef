@@ -9,7 +9,7 @@ Deploy the Wazuh platform using Chef cookbooks. Chef recipes are prepared for in
 
 ## Dependencies
 
-Every cookbook will install its own required dependencies, *Berksfile* and *metadata.rb* contains all the information about which dependencies will be installed.
+Every cookbook will install its own required dependencies, *Berksfile* and *metadata.rb* contain all the information about which dependencies will be installed.
 
 There is software that must be installed to ensure the correct installation.
 
