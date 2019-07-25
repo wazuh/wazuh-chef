@@ -135,9 +135,9 @@ You can check Chef Official Documentation about [Chef Vault](https://docs.chef.i
 The easiest way to making use of these cookbooks (especially `wazuh_filebeat` & `wazuh_elastic` until they are published to Supermarket) is by including in your `Berksfile` something like the below:
 
 ```ruby
-cookbook 'wazuh', GitHub: 'wazuh/wazuh-chef', rel: 'wazuh'
-cookbook 'wazuh_filebeat', GitHub: 'wazuh/wazuh-chef', rel: 'wazuh_filebeat'
-cookbook 'wazuh_elastic', GitHub: 'wazuh/wazuh-chef', rel: 'wazuh_elastic'
+cookbook 'wazuh', gitHub: 'wazuh/wazuh-chef', rel: 'wazuh'
+cookbook 'wazuh_filebeat', gitHub: 'wazuh/wazuh-chef', rel: 'wazuh_filebeat'
+cookbook 'wazuh_elastic', gitHub: 'wazuh/wazuh-chef', rel: 'wazuh_elastic'
 ```
 
 This will source all three cookbooks housed in this repo from GitHub.
