@@ -30,18 +30,32 @@ else
   raise "Currently platforn not supported yet. Feel free to open an issue on https://www.github.com/wazuh/wazuh-chef if you consider that support for a specific OS should be added"
 end
 
+chef_gem 'chef-vault' do
+  compile_time true if respond_to?(:compile_time)
+end
+
+require 'chef-vault'
+
 begin
-  api_keys = Chef::EncryptedDataBagItem.load('wazuh_secrets', 'api')
-  log "Api credentials found. Loading them..." do
-    message "-----API KEYS FOUND-----"
-    level :info
+
+  if ChefVault::Item.vault?('wazuh_secrets', 'api')
+    api_keys = ChefVault::Item.load('wazuh_secrets', 'api')
+    log "Chef Vault found: Loading Encrypted credentials" do
+      level :info
+    end
+  else
+    api_keys = Chef::EncryptedDataBagItem.load('wazuh_secrets', 'api')
+    log "Chef - Data Bag found: Loading Encrypted credentials." do
+      level :info
+    end
   end
+
 rescue ArgumentError, Net::HTTPServerException
   api_keys = {'htpasswd_user' => "#{node['api']['user']}", 'htpasswd_passcode' => "#{node['api']['passcode']}"}
   log "No api crendentials. Installation will continue with defaults (foo:bar)..." do
-    message "-----NO API KEYS-----"
     level :info
   end
+
 end
 
 if (node['api']['password_plaintext'] == "yes")
