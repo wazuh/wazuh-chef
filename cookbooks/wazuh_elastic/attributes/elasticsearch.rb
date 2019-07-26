@@ -17,7 +17,7 @@ default['wazuh-elasticsearch']['elasticsearch_cluster_remote_connect'] = "true"
 default['wazuh-elastic']['elasticsearch_path_data'] = "/var/lib/elasticsearch"
 default['wazuh-elastic']['elasticsearch_path_logs'] = "/var/log/elasticsearch"
 default['wazuh-elastic']['elasticsearch_port'] = 9200
-default['wazuh-elastic']['elasticsearch_ip'] = '127.0.0.1'
+default['wazuh-elastic']['elasticsearch_ip'] = '<YOUR_ELASTICSEARCH_IP>'
 default['wazuh-elastic']['elasticsearch_discovery_option'] = 'discovery.type: single-node'
 default['wazuh-elastic']['elasticsearch_cluster_initial_master_nodes'] = "#cluster.initial_master_nodes: ['es-node-01']"
 
