@@ -1,0 +1,45 @@
+---
+driver:
+  name: docker
+  privileged: true
+  use_sudo: true
+  run_command: /bin/systemd
+
+provisioner:
+  name: chef_zero
+  environments_path: "test/environments"
+  data_bags_path: "test/data_bags"
+  encrypted_data_bag_secret_key_path: "test/data_bags/wazuh_secrets/test_data_bag_key"
+
+platforms:
+#  - name: ubuntu-12.04
+#    run_list: apt::default
+#  - name: ubuntu-14.04
+#    run_list: apt::default
+#  - name: centos-6.7
+#  - name: centos-7.2
+  - name: ubuntu-manager_00
+    driver_config:
+      image: ubuntu:16.04
+      platform: ubuntu
+      hostname: manager00_ubuntu
+
+suites:
+  - name: manager-development-master
+    environments_path: "test/environments"
+    data_bags_path: "test/data_bags"
+    encrypted_data_bag_secret_key_path: "test/data_bags/wazuh_secrets/test_data_bag_key"
+    driver:
+      network:
+      - ["private_network", {ip: "172.16.10.10"}]
+    run_list:
+      - recipe[wazuh_manager::repository]
+      - recipe[wazuh_manager::manager]
+      - recipe[wazuh_filebeat::default]
+    attributes:
+    provisioner:
+      client_rb:
+        environment: development-master
+    verifier:
+      name: shell
+      command: py.test -v test/base
