@@ -2,8 +2,8 @@
 driver:
   name: docker
   privileged: true
-  use_sudo: true
-  run_command: /bin/systemd
+  use_sudo: false
+#  run_command: /bin/systemd
 
 provisioner:
   name: chef_zero
@@ -12,17 +12,21 @@ provisioner:
   encrypted_data_bag_secret_key_path: "test/data_bags/wazuh_secrets/test_data_bag_key"
 
 platforms:
-#  - name: ubuntu-12.04
-#    run_list: apt::default
-#  - name: ubuntu-14.04
-#    run_list: apt::default
-#  - name: centos-6.7
-#  - name: centos-7.2
   - name: ubuntu-manager_00
     driver_config:
-      image: ubuntu:16.04
+      image: ubuntu:14.04
       platform: ubuntu
       hostname: manager00_ubuntu
+
+  - name: centos-manager_00
+    driver_config:
+      image: centos:7
+      platform: centos
+      hostname: manager00_centos
+      run_command: /usr/sbin/init
+      dockerfile: test/Dockerfile
+      build_options:
+        rm: true
 
 suites:
   - name: manager-development-master
