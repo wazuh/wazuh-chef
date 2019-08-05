@@ -10,8 +10,8 @@
   },
   "override_attributes": {
     "ossec": {
-      "registration_address": "manager-master.wazuh-test.com",
-      "address": ["manager-master.wazuh-test.com", "manager-client.wazuh-test.com"]
+      "registration_address": "10.1.0.16",
+	      "address": ["10.1.0.16"]
     },
     "filebeat": {
       "ossec_type": "ossec-alerts-development",
