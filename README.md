@@ -145,7 +145,7 @@ This will source all three cookbooks housed in this repo from GitHub.
 ## Choose to register an agent into a manager or not
 Now we give the possibility to choose to register an agent after being configured and installed in a manager. 
 
-As @paulcalabro proposed this change, he justified it by the following statement:
+As @paulcalabro proposed this change in https://github.com/wazuh/wazuh-puppet/issues/106, he justified it by the following statement:
 
 > Sometimes it's necessary to install the Wazuh agent, but not register it with a manager. For example, when working with Amazon Machine Images (AMIs). You want to reduce the time it takes to install the agent by baking the installation into the image, however, you don't want to have duplicate client.keys files by doing registration at the time of image creation.
 
