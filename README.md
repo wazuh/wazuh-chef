@@ -142,9 +142,26 @@ cookbook 'wazuh_elastic', gitHub: 'wazuh/wazuh-chef', rel: 'wazuh_elastic'
 
 This will source all three cookbooks housed in this repo from GitHub.
 
+## Choose to register an agent into a manager or not
+Now we give the possibility to choose to register an agent after being configured and installed in a manager. 
+
+As @paulcalabro proposed this change, he justified it by the following statement:
+
+> Sometimes it's necessary to install the Wazuh agent, but not register it with a manager. For example, when working with Amazon Machine Images (AMIs). You want to reduce the time it takes to install the agent by baking the installation into the image, however, you don't want to have duplicate client.keys files by doing registration at the time of image creation.
+
+
+In order to do so, it's only needed to assign the value `yes` to the variable ` default['ossec']['agent_auth']['register'] ` in the attributes file_ ` wazuh-chef/cookbooks/wazuh_agent/0attributes/authd.rb `:
+
+```
+default['ossec']['agent_auth']['register'] = 'yes'
+```
+
+In other case, we just assign a different value which is not `yes`.
+
 ## Contribute
 
 If you want to contribute to our project please don't hesitate to send a pull request. You can also join our users [mailing list](https://groups.google.com/d/forum/wazuh), by sending an email to [wazuh+subscribe@googlegroups.com](mailto:wazuh+subscribe@googlegroups.com), to ask questions and participate in discussions.
+
 
 ## License and copyright
 
