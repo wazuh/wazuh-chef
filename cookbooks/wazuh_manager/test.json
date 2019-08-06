@@ -10,8 +10,8 @@
   },
   "override_attributes": {
     "ossec": {
-      "registration_address": "10.1.0.15",
-      "address": ["10.1.0.15", ""]
+      "registration_address": MANAGER_IP,
+	      "address": MANAGER_IP
     },
     "filebeat": {
       "ossec_type": "ossec-alerts-development",

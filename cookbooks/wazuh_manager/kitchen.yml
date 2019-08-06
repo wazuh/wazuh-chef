@@ -6,9 +6,6 @@ driver:
 
 provisioner:
   name: chef_zero
-  environments_path: "test/environments"
-  data_bags_path: "test/data_bags"
-  encrypted_data_bag_secret_key_path: "test/data_bags/wazuh_secrets/test_data_bag_key"
 
 platforms:
   - name: ubuntu
@@ -16,24 +13,21 @@ platforms:
       image: ubuntu:14.04
       platform: ubuntu
 
-#  - name: centos-manager_00
-#    driver_config:
-#      image: centos:7
-#      platform: centos
-#      hostname: manager00_centos
-#      run_command: /usr/sbin/init
-#      dockerfile: test/Dockerfile
-#      build_options:
-#        rm: true
+  - name: centos
+    driver_config:
+      image: centos:7
+      platform: centos
+      run_command: /usr/sbin/init
+      dockerfile: test/Dockerfile
+      build_options:
+        rm: true
 
 suites:
-  - name: manager-development-master
-    environments_path: "test/environments"
-    data_bags_path: "test/data_bags"
-    encrypted_data_bag_secret_key_path: "test/data_bags/wazuh_secrets/test_data_bag_key"
+  - name: manager
+    environments_path: <%= ENV['COOKBOOKS_HOME'] %>/wazuh_manager/test/environments
+    data_bags_path: <%= ENV['COOKBOOKS_HOME'] %>/wazuh_manager/test/data_bags
+    encrypted_data_bag_secret_key_path: <%= ENV['COOKBOOKS_HOME'] %>/wazuh_manager/test/data_bags/wazuh_secrets/test_data_bag_key
     driver:
-      network:
-      - ["private_network", {ip: "172.16.10.10"}]
     run_list:
       - recipe[wazuh_manager::repository]
       - recipe[wazuh_manager::manager]
@@ -46,13 +40,11 @@ suites:
       name: shell
       command: py.test -v test/base
 
-  - name: agent-development
-    environments_path: "/home/vagrant/wazuh-chef/cookbooks/wazuh_agent/test/environments"
-    data_bags_path: "/home/vagrant/wazuh-chef/cookbooks/wazuh_agent/test/data_bags"
-    encrypted_data_bag_secret_key_path: "/home/vagrant/wazuh-chef/cookbooks/wazuh_agent/test/data_bags/wazuh_secrets/test_data_bag_key"
+  - name: agent
+    environments_path: <%= ENV['COOKBOOKS_HOME'] %>/wazuh_agent/test/environments
+    data_bags_path: <%= ENV['COOKBOOKS_HOME'] %>/wazuh_agent/test/data_bags
+    encrypted_data_bag_secret_key_path: <%= ENV['COOKBOOKS_HOME'] %>/wazuh_agent/test/data_bags/wazuh_secrets/test_data_bag_key
     driver:
-      network:
-      - ["private_network", { type: "dhcp" }]
     run_list:
       - recipe[wazuh_agent::repository]
       - recipe[wazuh_agent::agent]

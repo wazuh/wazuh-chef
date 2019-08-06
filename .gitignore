@@ -7,3 +7,5 @@
 ./cookbooks/wazuh_elastic/.kitchen/*
 ./cookbooks/wazuh_filebeat/.kitchen
 ./cookbooks/wazuh_filebeat/.kitchen/*
+*.lock
+*.log
