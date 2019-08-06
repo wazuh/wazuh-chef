@@ -9,3 +9,4 @@
 ./cookbooks/wazuh_filebeat/.kitchen/*
 *.lock
 *.log
+*.pyc
