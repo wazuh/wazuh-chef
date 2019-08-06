@@ -1,9 +1,0 @@
----
-username: kitchen
-ssh_key: "/home/vagrant/wazuh-chef/cookbooks/.kitchen/docker_id_rsa"
-image_id: 1999e03cd8b5
-container_id: 37e347c2008ecf0a9abdf0a42c8f992ac5316796b6a12607bf3a58f86d87e854
-hostname: localhost
-port: 32801
-last_action: create
-last_error: Kitchen::ActionFailed
