@@ -13,7 +13,7 @@ fi
 for dist in "${distributions[@]}"
 do
 	echo "Kitchen is creating the new instances with dist=$dist"
-	kitchen create ubuntu
+	kitchen create $dist
 
 	echo "Getting Wazuh managers IPs to the agents"
 	manager_ip="$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' `docker ps | awk '{print $NF}' | grep  $dist | grep manager`)"
