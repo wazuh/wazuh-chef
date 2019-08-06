@@ -150,7 +150,7 @@ As @paulcalabro proposed this change in the issue [106](https://github.com/wazuh
 > Sometimes it's necessary to install the Wazuh agent, but not register it with a manager. For example, when working with Amazon Machine Images (AMIs). You want to reduce the time it takes to install the agent by baking the installation into the image, however, you don't want to have duplicate client.keys files by doing registration at the time of image creation.
 
 
-In order to do so, it's only needed to assign the value `yes` to the variable ` default['ossec']['agent_auth']['register'] ` in the attributes file_ ` wazuh-chef/cookbooks/wazuh_agent/0attributes/authd.rb `:
+In order to do so, it's only needed to assign the value `yes` to the variable ` default['ossec']['agent_auth']['register'] ` in the attributes file_ ` wazuh-chef/cookbooks/wazuh_agent/attributes/authd.rb `:
 
 ```
 default['ossec']['agent_auth']['register'] = 'yes'
