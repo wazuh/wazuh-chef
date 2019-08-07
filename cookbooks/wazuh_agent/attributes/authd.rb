@@ -17,6 +17,7 @@
 # limitations under the License.
 #
 
+default['ossec']['agent_auth']['register'] = 'yes'
 default['ossec']['agent_auth']['name'] = node['hostname']
 default['ossec']['agent_auth']['host'] = node['ossec']['registration_address']
 default['ossec']['agent_auth']['port'] = 1515

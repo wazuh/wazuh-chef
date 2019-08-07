@@ -142,9 +142,21 @@ cookbook 'wazuh_elastic', gitHub: 'wazuh/wazuh-chef', rel: 'wazuh_elastic'
 
 This will source all three cookbooks housed in this repo from GitHub.
 
+## Choose to register an agent into a manager or not
+Now we give the possibility to choose to register an agent after being configured and installed in a manager. 
+
+In order to do so, it's only needed to assign the value `yes` to the variable ` default['ossec']['agent_auth']['register'] ` in the attributes file_ ` wazuh-chef/cookbooks/wazuh_agent/attributes/authd.rb `:
+
+```
+default['ossec']['agent_auth']['register'] = 'yes'
+```
+
+In other case, we just assign a different value which is not `yes`.
+
 ## Contribute
 
 If you want to contribute to our project please don't hesitate to send a pull request. You can also join our users [mailing list](https://groups.google.com/d/forum/wazuh), by sending an email to [wazuh+subscribe@googlegroups.com](mailto:wazuh+subscribe@googlegroups.com), to ask questions and participate in discussions.
+
 
 ## License and copyright
 
