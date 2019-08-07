@@ -5,7 +5,7 @@
 #
 #
 #
-default['filebeat']['elastic_stack_version'] = '6.8.1'
+default['filebeat']['elastic_stack_version'] = '6.8.2'
 default['filebeat']['package_name'] = 'filebeat'
 default['filebeat']['service_name'] = 'filebeat'
 default['filebeat']['logstash_servers'] = "YOUR_ELASTIC_SERVER_IP:5000"
