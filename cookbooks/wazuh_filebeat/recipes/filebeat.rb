@@ -26,6 +26,23 @@ bash 'Elasticsearch_template' do
   EOH
 end
 
+bash 'Import Wazuh module for filebeat' do 
+  code <<-EOH
+  curl -s https://packages-dev.wazuh.com/3.x/filebeat/wazuh-filebeat-0.1.tar.gz | tar -xvz -C /usr/share/filebeat/module
+  EOH
+end
+
+directory '/usr/share/filebeat/module/wazuh' do
+  mode '0755'
+  recursive true
+  action :create
+end
+
+directory '/usr/share/filebeat/module/wazuh' do
+  mode '0755'
+  recursive true
+end
+
 template node['filebeat']['config_path'] do
   source 'filebeat.yml.erb'
   owner 'root'
