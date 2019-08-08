@@ -30,23 +30,25 @@ template 'kibana.yml' do
   mode 0755
 end
 
-
-if platform_family?('debian', 'ubuntu')
-  service "kibana" do
-    supports :start => true, :stop => true, :restart => true, :reload => true
-    action [:restart]
-  end
-elsif platform_family?('rhel', 'redhat', 'centos', 'amazon')
-  service "kibana" do
-    supports :start => true, :stop => true, :restart => true, :reload => true
-    provider Chef::Provider::Service::Init
-    action [:restart]
-  end
-else
-  raise "Currently platforn not supported yet. Feel free to open an issue on https://www.github.com/wazuh/wazuh-chef if you consider that support for a specific OS should be added"
+service "kibana" do
+  supports :start => true, :stop => true, :restart => true, :reload => true
+  action [:restart]
 end
 
-
+if node[:platform_family].include?("centos")
+  if node[:platform_version].include?("6.7")
+    service "kibana" do
+      supports :start => true, :stop => true, :restart => true, :reload => true
+      provider Chef::Provider::Service::Init
+      action [:restart]
+    end    
+ end
+else
+  service "kibana" do
+    supports :start => true, :stop => true, :restart => true, :reload => true
+    action [:restart]
+  end
+end
 
 ruby_block 'wait for elasticsearch' do
   block do
@@ -62,7 +64,6 @@ bash 'Waiting for elasticsearch curl response...' do
   done
   EOH
 end
-
 
 if platform_family?('debian', 'ubuntu')
   bash 'Install Wazuh-APP (can take a while)' do
