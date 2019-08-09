@@ -2,6 +2,7 @@
 
 development_agent_path="$COOKBOOKS_HOME/wazuh_agent/test/environments/development.json"
 template=".template"
+echo $COOKBOOKS_HOME
 
 if [ -z "$1" ]
 then
