@@ -33,7 +33,7 @@ end
 if node[:platform_family].include?("centos")
   if node[:platform_version].include?("6.")
     execute "Do some sed" do
-      command "sed -n '/init_1/d' /usr/share/kibana/x-pack/plugins/code/index.js"
+      command "sed -i '/init_1/d' /usr/share/kibana/x-pack/plugins/code/index.js"
       action :run
     end
   end    
