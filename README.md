@@ -153,6 +153,19 @@ default['ossec']['agent_auth']['register'] = 'yes'
 
 In other case, we just assign a different value which is not `yes`.
 
+
+## In case you're using CentOS 6 with Kibana 7.2.0
+
+`Kibana [7.2.0]`'s default installation is failing on `CentOS6` reporting that the library `GLIBC_2.14` was not found. In order to solve such issue, once `Kibana` is installed then run the command: 
+
+```
+sudo sed -i '/init_1/d' /usr/share/kibana/x-pack/plugins/code/index.js
+```
+This problem was reported in this issue https://github.com/elastic/kibana/issues/40388 and a useful answer guided us to the solution described above. Check the proposed solution [here](https://github.com/elastic/kibana/issues/40388#issuecomment-511237316)
+
+Please be informed, that this issue is already fixed in `Kibana` `7.2.1`
+
+
 ## Contribute
 
 If you want to contribute to our project please don't hesitate to send a pull request. You can also join our users [mailing list](https://groups.google.com/d/forum/wazuh), by sending an email to [wazuh+subscribe@googlegroups.com](mailto:wazuh+subscribe@googlegroups.com), to ask questions and participate in discussions.

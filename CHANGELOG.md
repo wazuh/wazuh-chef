@@ -1,6 +1,26 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Wazuh Chef v3.9.4_7.2.0
+
+### Added
+
+- Update to Wazuh version 3.9.4_7.2.0
+- Added the choice to register an agent or not ([rshad](https://github.com/rshad)) [PR#50](https://github.com/wazuh/wazuh-chef/pull/50)
+
+- Added Filebeat's module installation to the installation tasks ([rshad](https://github.com/rshad)) [PR#55](https://github.com/wazuh/wazuh-chef/pull/55)
+
+### Changed
+
+- Upgraded wazuh_api to accept Vault, Data Bags or none of them to configure Wazuh API ([@jm404] (https://github.com/jm404)) [PR#47](https://github.com/wazuh/wazuh-chef/pull/47)
+
+### Fixed
+
+- Fixed Rootkit paths in wazuh-agent's cookbook configuration ([rshad](https://github.com/rshad)) [PR#48](https://github.com/wazuh/wazuh-chef/pull/48)
+
+- Add agent.conf configuration for Wazuh Manager ([@jm404] (https://github.com/jm404)) [PR#46](https://github.com/wazuh/wazuh-chef/pull/46)
+
+
 ## Wazuh Chef v3.9.3_7.2.0
 
 ### Added
