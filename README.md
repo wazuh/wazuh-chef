@@ -9,7 +9,7 @@ Deploy the Wazuh platform using Chef cookbooks. Chef recipes are prepared for in
 
 ## Dependencies
 
-Every cookbook will install its own required dependencies, *Berksfile* and *metadata.rb* contain all the information about which dependencies will be installed.
+Every cookbook will install its own required dependencies, *Berksfile* and *metadata.rb* contains all the information about which dependencies will be installed.
 
 There is software that must be installed to ensure the correct installation.
 
@@ -19,14 +19,11 @@ There is software that must be installed to ensure the correct installation.
 
 #### Important Note: using Kibana 7.2.0 on CentOS 6
 
-`Kibana [7.2.0]`'s default installation is failing on `CentOS6` reporting that the library `GLIBC_2.14` was not found. In order to solve such issue, once `Kibana` is installed then run the command: 
+There is a known issue in Kibana 7.2.0 when installing on failing on CentOS 6 regarding that the library `GLIBC_2.14` was not found. 
 
-```
-sudo sed -i '/init_1/d' /usr/share/kibana/x-pack/plugins/code/index.js
-```
-This problem was reported in this issue https://github.com/elastic/kibana/issues/40388 and a useful answer guided us to the solution described above. Check the proposed solution [here](https://github.com/elastic/kibana/issues/40388#issuecomment-511237316)
+The problem was reported in this issue https://github.com/elastic/kibana/issues/40388. There is a workaround modifying the Kibana binary [here](https://github.com/elastic/kibana/issues/40388#issuecomment-511237316) that you might find useful.
 
-Please be informed, that this issue is already fixed in `Kibana` `7.2.1`
+If you are using Centos 6 we strongly recommend upgrading to 7.2.1 where the problem is already fixed.
 
 ## Cookbooks
 
@@ -50,7 +47,7 @@ Check roles README for more information about default attributes and how to cust
 
 #### Cloning whole repository
 
-You can clone the repository by running:  ```git clone https://github.com/wazuh/wazuh-chef```  and you will get the whole repository.
+You can clone the repository by running: ```git clone https://github.com/wazuh/wazuh-chef``` and you will get the whole repository.
 
 #### Use through Berkshelf
 
@@ -79,9 +76,9 @@ Example of a configuration file `api_configuration.json` before encryption:
 
 ```json
 {
-  "id": "api",
-  "htpasswd_user": "<YOUR USER>",
-  "htpasswd_passcode": "<YOUR PASSWORD>"
+ "id": "api",
+ "htpasswd_user": "<YOUR USER>",
+ "htpasswd_passcode": "<YOUR PASSWORD>"
 }
 
 ```
@@ -105,21 +102,21 @@ After encryption, the previous JSON files will have new fields that describe the
 
 ```json
 {
-  "id": "api",
-  "htpasswd_user": {
-    "encrypted_data": "whdiITsM/JFBwiAcCE5MaVE2MinRLdDIGbJ0\n",
-    "iv": "NVK/ezXHBsSFuiMm\n",
-    "auth_tag": "NFPZcxGrjqxRSF7v/+i6Kw==\n",
-    "version": 3,
-    "cipher": "aes-256-gcm"
-  },
-  "htpasswd_passcode": {
-    "encrypted_data": "rX952YaNifO1gtcFXHxjteKCk6Zi592FZGgyE1gs0A==\n",
-    "iv": "LThJWRCIB4JaDP4E\n",
-    "auth_tag": "2oS9JDBtNdcRhsOdgg/A9A==\n",
-    "version": 3,
-    "cipher": "aes-256-gcm"
-  }
+ "id": "api",
+ "htpasswd_user": {
+ "encrypted_data": "whdiITsM/JFBwiAcCE5MaVE2MinRLdDIGbJ0\n",
+ "iv": "NVK/ezXHBsSFuiMm\n",
+ "auth_tag": "NFPZcxGrjqxRSF7v/+i6Kw==\n",
+ "version": 3,
+ "cipher": "aes-256-gcm"
+ },
+ "htpasswd_passcode": {
+ "encrypted_data": "rX952YaNifO1gtcFXHxjteKCk6Zi592FZGgyE1gs0A==\n",
+ "iv": "LThJWRCIB4JaDP4E\n",
+ "auth_tag": "2oS9JDBtNdcRhsOdgg/A9A==\n",
+ "version": 3,
+ "cipher": "aes-256-gcm"
+ }
 }
 ```
 
