@@ -58,7 +58,7 @@ bash 'insert_line_limits.conf' do
 end
 
 
-if platform?('centos', 'ubuntu')
+if platform?('centos', 'ubuntu', 'Ubuntu')
   if ( node[:platform_version].include?("6.") || node[:platform_version].include?("14.") )
     link '/usr/bin/java' do
       to '/usr/share/elasticsearch/jdk/bin/java'
