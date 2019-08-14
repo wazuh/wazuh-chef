@@ -12,13 +12,13 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
-- Upgraded wazuh_api to accept Vault, Data Bags or none of them to configure Wazuh API ([@jm404] (https://github.com/jm404)) [PR#47](https://github.com/wazuh/wazuh-chef/pull/47)
+- Upgraded wazuh_api to accept Vault, Data Bags or none of them to configure Wazuh API ([@jm404](https://github.com/jm404)) [PR#47](https://github.com/wazuh/wazuh-chef/pull/47)
 
 ### Fixed
 
 - Fixed Rootkit paths in wazuh-agent's cookbook configuration ([rshad](https://github.com/rshad)) [PR#48](https://github.com/wazuh/wazuh-chef/pull/48)
 
-- Add agent.conf configuration for Wazuh Manager ([@jm404] (https://github.com/jm404)) [PR#46](https://github.com/wazuh/wazuh-chef/pull/46)
+- Add agent.conf configuration for Wazuh Manager ([@jm404](https://github.com/jm404)) [PR#46](https://github.com/wazuh/wazuh-chef/pull/46)
 
 
 ## Wazuh Chef v3.9.3_7.2.0
