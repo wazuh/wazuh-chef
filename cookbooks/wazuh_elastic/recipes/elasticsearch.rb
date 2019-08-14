@@ -57,9 +57,23 @@ bash 'insert_line_limits.conf' do
   not_if "grep -q elasticsearch /etc/security/limits.conf"
 end
 
-link '/usr/bin/java' do
-  to '/usr/share/elasticsearch/jdk/bin/java'
-  not_if { ::File.exist?('/usr/bin/java') }
+
+#if ( node[:platform_family].include?("centos") || node[:platform_family].include?("ubuntu") )
+#  if ( node[:platform_version].include?("6.") || node[:platform_version].include?("14.") )
+#    link '/usr/bin/java' do
+#      to '/usr/share/elasticsearch/jdk/bin/java'
+#      not_if { ::File.exist?('/usr/bin/java') }
+#    end
+#  end 
+#end
+
+if platform_family?('centos', 'ubuntu')
+  if platform_version?('6.', '14.')
+    link '/usr/bin/java' do
+      to '/usr/share/elasticsearch/jdk/bin/java'
+      not_if { ::File.exist?('/usr/bin/java') }
+    end
+  end
 end
 
 
