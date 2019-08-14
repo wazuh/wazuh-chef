@@ -17,6 +17,17 @@ There is software that must be installed to ensure the correct installation.
 - Wget
 - Chef Server Core v12.19.31
 
+#### Important Note: using Kibana 7.2.0 on CentOS 6
+
+`Kibana [7.2.0]`'s default installation is failing on `CentOS6` reporting that the library `GLIBC_2.14` was not found. In order to solve such issue, once `Kibana` is installed then run the command: 
+
+```
+sudo sed -i '/init_1/d' /usr/share/kibana/x-pack/plugins/code/index.js
+```
+This problem was reported in this issue https://github.com/elastic/kibana/issues/40388 and a useful answer guided us to the solution described above. Check the proposed solution [here](https://github.com/elastic/kibana/issues/40388#issuecomment-511237316)
+
+Please be informed, that this issue is already fixed in `Kibana` `7.2.1`
+
 ## Cookbooks
 
 * [Wazuh Agent ](https://github.com/wazuh/wazuh-chef/tree/master/wazuh_agent)
@@ -152,18 +163,6 @@ default['ossec']['agent_auth']['register'] = 'yes'
 ```
 
 In other case, we just assign a different value which is not `yes`.
-
-
-## In case you're using CentOS 6 with Kibana 7.2.0
-
-`Kibana [7.2.0]`'s default installation is failing on `CentOS6` reporting that the library `GLIBC_2.14` was not found. In order to solve such issue, once `Kibana` is installed then run the command: 
-
-```
-sudo sed -i '/init_1/d' /usr/share/kibana/x-pack/plugins/code/index.js
-```
-This problem was reported in this issue https://github.com/elastic/kibana/issues/40388 and a useful answer guided us to the solution described above. Check the proposed solution [here](https://github.com/elastic/kibana/issues/40388#issuecomment-511237316)
-
-Please be informed, that this issue is already fixed in `Kibana` `7.2.1`
 
 
 ## Contribute
