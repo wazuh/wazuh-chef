@@ -57,12 +57,11 @@ bash 'insert_line_limits.conf' do
   not_if "grep -q elasticsearch /etc/security/limits.conf"
 end
 
-bash 'Creating a symbolic link to Java binary if it does not already exist' do
-  link '/usr/share/elasticsearch/jdk/bin/java' do
-    to '/usr/bin/java'
-    not_if { ::File.exist?('/usr/bin/java') }
-  end
+link '/usr/bin/java' do
+  to '/usr/share/elasticsearch/jdk/bin/java'
+  not_if { ::File.exist?('/usr/bin/java') }
 end
+
 
 service "elasticsearch" do
   supports :start => true, :stop => true, :restart => true, :reload => true
