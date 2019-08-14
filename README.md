@@ -102,21 +102,21 @@ After encryption, the previous JSON files will have new fields that describe the
 
 ```json
 {
- "id": "api",
- "htpasswd_user": {
- "encrypted_data": "whdiITsM/JFBwiAcCE5MaVE2MinRLdDIGbJ0\n",
- "iv": "NVK/ezXHBsSFuiMm\n",
- "auth_tag": "NFPZcxGrjqxRSF7v/+i6Kw==\n",
- "version": 3,
- "cipher": "aes-256-gcm"
- },
- "htpasswd_passcode": {
- "encrypted_data": "rX952YaNifO1gtcFXHxjteKCk6Zi592FZGgyE1gs0A==\n",
- "iv": "LThJWRCIB4JaDP4E\n",
- "auth_tag": "2oS9JDBtNdcRhsOdgg/A9A==\n",
- "version": 3,
- "cipher": "aes-256-gcm"
- }
+  "id": "api",
+  "htpasswd_user": {
+    "encrypted_data": "whdiITsM/JFBwiAcCE5MaVE2MinRLdDIGbJ0\n",
+    "iv": "NVK/ezXHBsSFuiMm\n",
+    "auth_tag": "NFPZcxGrjqxRSF7v/+i6Kw==\n",
+    "version": 3,
+    "cipher": "aes-256-gcm"
+  },
+  "htpasswd_passcode": {
+    "encrypted_data": "rX952YaNifO1gtcFXHxjteKCk6Zi592FZGgyE1gs0A==\n",
+    "iv": "LThJWRCIB4JaDP4E\n",
+    "auth_tag": "2oS9JDBtNdcRhsOdgg/A9A==\n",
+    "version": 3,
+    "cipher": "aes-256-gcm"
+  }
 }
 ```
 
