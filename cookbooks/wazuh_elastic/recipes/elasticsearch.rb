@@ -57,17 +57,6 @@ bash 'insert_line_limits.conf' do
   not_if "grep -q elasticsearch /etc/security/limits.conf"
 end
 
-
-if platform?('centos', 'ubuntu', 'Ubuntu')
-  if ( node[:platform_version].include?("6.") || node[:platform_version].include?("14.") )
-    link '/usr/bin/java' do
-      to '/usr/share/elasticsearch/jdk/bin/java'
-      not_if { ::File.exist?('/usr/bin/java') }
-    end
-  end
-end
-
-
 service "elasticsearch" do
   supports :start => true, :stop => true, :restart => true, :reload => true
   action [:enable, :start]

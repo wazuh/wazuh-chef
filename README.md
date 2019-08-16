@@ -154,7 +154,25 @@ default['ossec']['agent_auth']['register'] = 'yes'
 In other case, we just assign a different value which is not `yes`.
 
 
-## In case you're using CentOS 6 with Kibana 7.2.0
+### In case you're using SysV Init systems with Elasticsearch and Kibana 7.2.0
+
+#### Related to Elasticsearch
+
+`Elasticsearch` `7.2.*` does not use bundled JDK in SysV init, so in case of using SysV init operating systems then once `Elasticsearch` is installed and in case there is no JDK previously installed in the system, then you should run the following command:
+
+```
+ln -s /usr/share/elasticsearch/jdk/bin/java /usr/bin/java 
+```
+
+Then restart `Elasticsearch`:
+
+```
+service elasticsearch restart
+```
+
+This issue was resolved in this [PR](https://github.com/elastic/elasticsearch/pull/45593), so in `Elasticsearch` `7.3.1` and `7.4` this issue is no longer existing.
+
+#### Related to Kibana
 
 `Kibana [7.2.0]`'s default installation is failing on `CentOS6` reporting that the library `GLIBC_2.14` was not found. In order to solve such issue, once `Kibana` is installed then run the command: 
 
