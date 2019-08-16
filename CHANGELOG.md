@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 - Update to Wazuh version 3.9.4_7.2.0
-- Added the choice to register an agent or not ([rshad](https://github.com/rshad)) [PR#50](https://github.com/wazuh/wazuh-chef/pull/50)
+- Added the option to choose between registering agent after installation or not ([rshad](https://github.com/rshad)) [PR#50](https://github.com/wazuh/wazuh-chef/pull/50)
 
 - Added Filebeat's module installation to the installation tasks ([rshad](https://github.com/rshad)) [PR#55](https://github.com/wazuh/wazuh-chef/pull/55)
 
