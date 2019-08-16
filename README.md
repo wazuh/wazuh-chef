@@ -9,13 +9,21 @@ Deploy the Wazuh platform using Chef cookbooks. Chef recipes are prepared for in
 
 ## Dependencies
 
-Every cookbook will install its own required dependencies, *Berksfile* and *metadata.rb* contain all the information about which dependencies will be installed.
+Every cookbook will install its own required dependencies, *Berksfile* and *metadata.rb* contains all the information about which dependencies will be installed.
 
 There is software that must be installed to ensure the correct installation.
 
 - Curl
 - Wget
 - Chef Server Core v12.19.31
+
+#### Important Note: using Kibana 7.2.0 on CentOS 6
+
+There is a known issue in Kibana 7.2.0 when installing on failing on CentOS 6 regarding that the library `GLIBC_2.14` was not found. 
+
+The problem was reported in this issue https://github.com/elastic/kibana/issues/40388. There is a workaround modifying the Kibana binary [here](https://github.com/elastic/kibana/issues/40388#issuecomment-511237316) that you might find useful.
+
+If you are using Centos 6 we strongly recommend upgrading to 7.2.1 where the problem is already fixed.
 
 ## Cookbooks
 
@@ -39,7 +47,7 @@ Check roles README for more information about default attributes and how to cust
 
 #### Cloning whole repository
 
-You can clone the repository by running:  ```git clone https://github.com/wazuh/wazuh-chef```  and you will get the whole repository.
+You can clone the repository by running: ```git clone https://github.com/wazuh/wazuh-chef``` and you will get the whole repository.
 
 #### Use through Berkshelf
 
@@ -68,9 +76,9 @@ Example of a configuration file `api_configuration.json` before encryption:
 
 ```json
 {
-  "id": "api",
-  "htpasswd_user": "<YOUR USER>",
-  "htpasswd_passcode": "<YOUR PASSWORD>"
+ "id": "api",
+ "htpasswd_user": "<YOUR USER>",
+ "htpasswd_passcode": "<YOUR PASSWORD>"
 }
 
 ```
@@ -152,6 +160,36 @@ default['ossec']['agent_auth']['register'] = 'yes'
 ```
 
 In other case, we just assign a different value which is not `yes`.
+
+
+### In case you're using SysV Init systems with Elasticsearch and Kibana 7.2.0
+
+#### Related to Elasticsearch
+
+Elasticsearch 7.2.0 is not able to use their bundled JDK in SysV init, resulting in a startup failure.
+
+In order to workaround this problem you can create a symbolic link:
+
+```
+ln -s /usr/share/elasticsearch/jdk/bin/java /usr/bin/java 
+```
+
+Then start `Elasticsearch`:
+
+```
+service elasticsearch start
+```
+
+Please note that this issue was resolved in Elasticsearch 7.3.
+
+#### Related to Kibana
+
+Kibana 7.2.0 default installation is failing on CentOS 6 reporting that the library `GLIBC_2.14` was not found. 
+
+If you require to use Kibana 7.2.0 in a Sysv system, there is a workaround that fixes the problem [here](https://github.com/elastic/kibana/issues/40388#issuecomment-511237316).
+
+Modifying the Kibana binary is strongly discouraged and we recommend upgrading to 7.2.1 where the problem has been fixed.
+
 
 ## Contribute
 

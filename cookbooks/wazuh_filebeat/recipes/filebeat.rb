@@ -28,7 +28,7 @@ end
 
 bash 'Import Wazuh module for filebeat' do 
   code <<-EOH
-  curl -s https://packages-dev.wazuh.com/3.x/filebeat/wazuh-filebeat-0.1.tar.gz | tar -xvz -C /usr/share/filebeat/module
+  curl -s "https://packages.wazuh.com/3.x/filebeat/#{node['filebeat']['wazuh_filebeat_module']}" | tar -xvz -C /usr/share/filebeat/module
   EOH
 end
 

@@ -36,7 +36,7 @@ service "kibana" do
 end
 
 if node[:platform_family].include?("centos")
-  if node[:platform_version].include?("6.7")
+  if node[:platform_version].include?("6.")
     service "kibana" do
       supports :start => true, :stop => true, :restart => true, :reload => true
       provider Chef::Provider::Service::Init
