@@ -55,7 +55,7 @@ If you want to add new fields to customize your installation, you can declare it
 For example: To enable cluster configuration, the following lane would be added to ```/cookbooks/wazuh_manager/attributes/cluster.rb ```.
 
 `````` ruby
-default['ossec']['conf']['cluster']['disabled'] == false
+default['ossec']['conf']['cluster']['disabled'] == no
 ``````
 
 This will transform the **disabled** field of from:

@@ -7,4 +7,4 @@ default['ossec']['conf']['cluster']['port'] = 1516
 default['ossec']['conf']['cluster']['bind_addr'] = '0.0.0.0'
 default['ossec']['conf']['cluster']['nodes']['node'] = "NODE_IP"
 default['ossec']['conf']['cluster']['hidden'] = 'no'
-default['ossec']['conf']['cluster']['disabled'] = 'yes'
+default['ossec']['conf']['cluster']['disabled'] = 'false'

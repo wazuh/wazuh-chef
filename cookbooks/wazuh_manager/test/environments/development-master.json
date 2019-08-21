@@ -14,8 +14,7 @@
       "address": ["manager-master.wazuh-test.com", "manager-client.wazuh-test.com"],
       "cluster_disabled": "no",
       "conf": {
-        "server": {
-          "cluster": {
+        "cluster": {
             "node_name": "node01",
             "node_type": "master",
             "disabled": "no",
@@ -23,7 +22,6 @@
               "node": ["172.16.10.10", "172.16.10.11"]
             },
             "key": "596f6b328c8ca831a03f7c7ca8203e8b"
-          }
         }
       }
     },
