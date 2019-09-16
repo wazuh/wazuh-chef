@@ -1,3 +1,3 @@
-default['wazuh-elastic']['elastic_stack_version'] = '7.2.1'
-default['wazuh-elastic']['wazuh_app_version'] = "3.9.5_7.2.1"
-default['wazuh-elastic']['extensions_version'] = "v3.9.5"
+default['wazuh-elastic']['elastic_stack_version'] = '7.3.2'
+default['wazuh-elastic']['wazuh_app_version'] = "3.10.0_7.3.2"
+default['wazuh-elastic']['extensions_version'] = "v3.10.0"
