@@ -17,35 +17,6 @@ There is software that must be installed to ensure the correct installation.
 - Wget
 - Chef Server Core v12.19.31
 
-### In case you're using SysV Init systems with Elasticsearch and Kibana 7.2.0
-
-#### Related to Elasticsearch
-
-Elasticsearch 7.2.0 is not able to use their bundled JDK in SysV init, resulting in a startup failure.
-
-In order to workaround this problem you can create a symbolic link:
-
-```
-ln -s /usr/share/elasticsearch/jdk/bin/java /usr/bin/java 
-```
-
-Then start `Elasticsearch`:
-
-```
-service elasticsearch start
-```
-
-Please note that this issue was resolved in Elasticsearch 7.3.
-
-#### Related to Kibana
-
-Kibana 7.2.0 default installation is failing on CentOS 6 reporting that the library `GLIBC_2.14` was not found. 
-
-If you require to use Kibana 7.2.0 in a Sysv system, there is a workaround that fixes the problem [here](https://github.com/elastic/kibana/issues/40388#issuecomment-511237316).
-
-Modifying the Kibana binary is strongly discouraged and we recommend upgrading to 7.2.1 where the problem has been fixed.
-
-
 ## Cookbooks
 
 * [Wazuh Agent ](https://github.com/wazuh/wazuh-chef/tree/master/wazuh_agent)
