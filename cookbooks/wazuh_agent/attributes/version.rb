@@ -1,1 +1,1 @@
-default['wazuh-agent']['version'] = "3.10.0"
+default['wazuh-agent']['version'] = "3.10.2"
