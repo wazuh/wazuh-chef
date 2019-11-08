@@ -48,3 +48,10 @@ else
     raise "Platform Family is not in {'debian', 'ubuntu', 'rhel', 'redhat', 'centos', 'amazon'} - Not Supported"
 end
 
+node.override['htpasswd']['install_method'] = 'ruby'
+include_recipe 'htpasswd::default'
+
+htpasswd "/etc/nginx/conf.d/kibana.htpasswd" do
+    user "user-1"
+    password "kibana01"
+end
