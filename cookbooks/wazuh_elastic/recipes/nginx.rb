@@ -28,4 +28,10 @@ bash 'Generate a self-signed ceritificate and a key' do
     openssl req -x509 -batch -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/kibana-access.key -out /etc/ssl/certs/kibana-access.pem
     EOH
 end
-  
+
+template '/etc/nginx/sites-available/default' do
+    source 'nginx.erb'
+    owner 'root'
+    group 'root'
+    mode '0644'
+end
