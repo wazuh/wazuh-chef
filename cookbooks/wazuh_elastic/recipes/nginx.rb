@@ -23,4 +23,9 @@ directory '/etc/ssl/private' do
     action :create
 end
 
+bash 'Generate a self-signed ceritificate and a key' do
+    code <<-EOH
+    openssl req -x509 -batch -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/kibana-access.key -out /etc/ssl/certs/kibana-access.pem
+    EOH
+end
   
