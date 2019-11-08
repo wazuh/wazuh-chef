@@ -35,3 +35,16 @@ template '/etc/nginx/sites-available/default' do
     group 'root'
     mode '0644'
 end
+
+if platform_family?('debian', 'ubuntu')
+    apt_package 'apache2-utils' do
+        action :install
+    end
+elsif platform_family?('rhel', 'redhat', 'centos', 'amazon')
+    yum_package 'apache2-utils' do
+        action :install
+    end
+else
+    raise "Platform Family is not in {'debian', 'ubuntu', 'rhel', 'redhat', 'centos', 'amazon'} - Not Supported"
+end
+
