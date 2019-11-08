@@ -10,3 +10,17 @@ else
     raise "Platform Family is not in {'debian', 'ubuntu', 'rhel', 'redhat', 'centos', 'amazon'} - Not Supported"
 end
 
+
+directory '/etc/ssl/certs' do
+    mode '0755'
+    recursive true
+    action :create
+end
+
+directory '/etc/ssl/private' do
+    mode '0755'
+    recursive true
+    action :create
+end
+
+  
