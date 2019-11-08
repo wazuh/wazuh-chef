@@ -55,3 +55,8 @@ htpasswd "/etc/nginx/conf.d/kibana.htpasswd" do
     user "user-1"
     password "kibana01"
 end
+
+service "nginx" do
+    supports :start => true, :stop => true, :restart => true, :reload => true
+    action [:restart]
+end
