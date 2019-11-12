@@ -3,4 +3,5 @@ source 'https://supermarket.getchef.com'
 
 metadata
 
-cookbook 'hostsfile' 
+cookbook 'hostsfile'
+cookbook 'htpasswd', '~> 0.3.0'
