@@ -1,6 +1,7 @@
 if platform_family?('rhel', 'redhat', 'centos', 'amazon')
-    yum_package 'epl-release' do
+    yum_package 'epel-release' do
         action :install
+    end
 end
 
 
@@ -16,6 +17,18 @@ else
     raise "Platform Family is not in {'debian', 'ubuntu', 'rhel', 'redhat', 'centos', 'amazon'} - Not Supported"
 end
 
+
+directory '/etc/nginx/sites-available' do
+    mode '0755'
+    recursive true
+    action :create
+end
+
+directory '/etc/nginx/sites-enabled' do
+    mode '0755'
+    recursive true
+    action :create
+end
 
 directory '/etc/ssl/certs' do
     mode '0755'
@@ -46,19 +59,8 @@ if platform_family?('debian', 'ubuntu')
     apt_package 'apache2-utils' do
         action :install
     end
-elsif platform_family?('rhel', 'redhat', 'centos', 'amazon')
-    yum_package 'httpd' do
-        action :install
-    end
 else
     raise "Platform Family is not in {'debian', 'ubuntu', 'rhel', 'redhat', 'centos', 'amazon'} - Not Supported"
-end
-
-if platform_family?('rhel', 'redhat', 'centos', 'amazon')
-    service "httpd" do
-        supports :start => true, :stop => true, :restart => true, :reload => true
-        action [:restart]
-    end
 end
 
 
@@ -66,8 +68,8 @@ node.override['htpasswd']['install_method'] = 'ruby'
 include_recipe 'htpasswd::default'
 
 htpasswd "/etc/nginx/conf.d/kibana.htpasswd" do
-    user "user-1"
-    password "kibana01"
+    user "#{node['mginx']['user']}"
+    password "#{node['mginx']['password']}"
 end
 
 service "nginx" do
