@@ -48,7 +48,7 @@ bash 'Generate a self-signed ceritificate and a key' do
     EOH
 end
 
-template '/etc/nginx/sites-available/default' do
+template '/etc/nginx/conf.d/kibana.conf' do
     source 'nginx.erb'
     owner 'root'
     group 'root'
@@ -59,8 +59,6 @@ if platform_family?('debian', 'ubuntu')
     apt_package 'apache2-utils' do
         action :install
     end
-else
-    raise "Platform Family is not in {'debian', 'ubuntu', 'rhel', 'redhat', 'centos', 'amazon'} - Not Supported"
 end
 
 
