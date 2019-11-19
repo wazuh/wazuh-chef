@@ -48,7 +48,7 @@ template node['filebeat']['config_path'] do
   owner 'root'
   group 'root'
   mode '0640'
-  variables(elasticsearch_server_ip: "  hosts: ['#{node['filebeat']['elasticsearch_server_ip']}:9200']")
+  variables(output_server_host: "output.elasticsearch.hosts: ['#{node['filebeat']['elasticsearch_server_ip']}:9200']")
 end
 
 service node['filebeat']['service_name'] do
