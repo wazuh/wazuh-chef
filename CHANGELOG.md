@@ -1,6 +1,15 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Wazuh Chef v3.11.0_7.5.1
+
+### Added
+
+- Update to Wazuh version 3.11.0_7.5.1
+
+- Add Nginx SSL authentication for Kibana ([rshad](https://github.com/rshad)) [PR#69](https://github.com/wazuh/wazuh-chef/pull/69)
+
+
 ## Wazuh Chef v3.10.2_7.3.2
 
 ### Added
