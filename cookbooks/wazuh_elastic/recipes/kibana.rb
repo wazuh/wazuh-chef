@@ -65,6 +65,15 @@ bash 'Waiting for elasticsearch curl response...' do
   EOH
 end
 
+bash 'Remove old Wazuh Kibana Plugin if exists' do
+  code <<-EOH
+  if [ -d /usr/share/kibana/plugins/wazuh ]
+  then
+    sudo -u kibana /usr/share/kibana/bin/kibana-plugin remove wazuh
+  fi
+  EOH
+end
+
 if platform_family?('debian', 'ubuntu')
   bash 'Install Wazuh-APP (can take a while)' do
     code <<-EOH
