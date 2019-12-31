@@ -113,6 +113,3 @@ bash 'Verify Kibana folders owner' do
     chown -R kibana:kibana /usr/share/kibana/plugins
   EOF
 end
-
-
-end
