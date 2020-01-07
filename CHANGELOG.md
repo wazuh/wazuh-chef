@@ -5,7 +5,13 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-- Update to Wazuh version 3.11.1_7.5.1
+- Update to Wazuh version 3.11.1_7.5.1 
+
+- Changes to make `ossec.conf` equivalent to the default version ([rshad](https://github.com/rshad)) [PR#74](https://github.com/wazuh/wazuh-chef/pull/74)
+
+- Implement new API configuration ([@jm404](https://github.com/jm404)) [PR#78](https://github.com/wazuh/wazuh-chef/pull/78)
+
+- Remove Old Wazuh APP ([@jm404](https://github.com/jm404)) [PR#80](https://github.com/wazuh/wazuh-chef/pull/80)
 
 ## Wazuh Chef v3.11.0_7.5.1
 
@@ -16,11 +22,11 @@ All notable changes to this project will be documented in this file.
 - Add Nginx SSL authentication for Kibana ([rshad](https://github.com/rshad)) [PR#69](https://github.com/wazuh/wazuh-chef/pull/69)
 
 
-## Wazuh Chef v3.10.2_7.4.2
+## Wazuh Chef v3.10.2_7.3.2
 
 ### Added
 
-- Update to Wazuh version 3.10.2_7.4.2
+- Update to Wazuh version 3.10.2_7.3.2
 
 
 ## Wazuh Chef v3.10.0_7.3.2
