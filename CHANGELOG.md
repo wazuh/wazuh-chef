@@ -7,8 +7,6 @@ All notable changes to this project will be documented in this file.
 
 - Update to Wazuh version 3.11.1_7.5.1
 
-- Adapt ossec.conf to be equivalent to the one of a default installation ([rshad](https://github.com/rshad)) [PR#74](https://github.com/wazuh/wazuh-chef/pull/74)
-
 ## Wazuh Chef v3.11.0_7.5.1
 
 ### Added
