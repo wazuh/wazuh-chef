@@ -1,10 +1,4 @@
 default['ossec']['conf']['wodle'] = [
-   {   '@name' => 'open-scap',
-        'disabled' => 'yes',
-        'timeout' => '1800',
-        'interval' => '1d',
-        'scan-on-start' => 'yes'
-     },
      {   '@name' => 'cis-cat',
         'disabled' => 'yes',
         'timeout' => '1800',

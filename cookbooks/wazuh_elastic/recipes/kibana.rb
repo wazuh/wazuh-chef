@@ -65,6 +65,15 @@ bash 'Waiting for elasticsearch curl response...' do
   EOH
 end
 
+bash 'Remove old Wazuh Kibana Plugin if exists' do
+  code <<-EOH
+  if [ -d /usr/share/kibana/plugins/wazuh ]
+  then
+    sudo -u kibana /usr/share/kibana/bin/kibana-plugin remove wazuh
+  fi
+  EOH
+end
+
 if platform_family?('debian', 'ubuntu')
   bash 'Install Wazuh-APP (can take a while)' do
     code <<-EOH
@@ -83,10 +92,33 @@ elsif platform_family?('rhel', 'redhat', 'centos', 'amazon')
   end
 end
 
+bash 'Removing .wazuh index if exists' do
+  code <<-EOH
+  curl_response=$(curl -s -XDELETE -sL -w "%{http_code}" -I "http://#{node['wazuh-elastic']['elasticsearch_ip']}:#{node['wazuh-elastic']['elasticsearch_port']}/.wazuh" -o /dev/null)
+  if [ ${curl_response} == 404 ]
+      then
+          echo "Index .wazuh not found"
+  elif [ ${curl_response} == 200 ]
+      then
+          echo "Index .wazuh removed successfully"
+  else
+      echo "Unable to communicate with Elasticsearch API"
+  fi
+  EOH
+end
+
+template 'Configuring API credentials in wazuh.yml file' do
+  path '/usr/share/kibana/plugins/wazuh/wazuh.yml'
+  source 'wazuh.yml.erb'
+  owner 'kibana'
+  group 'root'
+  mode 0644
+  notifies :restart, "service[kibana]", :delayed
+end
+
 bash 'Verify Kibana folders owner' do
   code <<-EOF
     chown -R kibana:kibana /usr/share/kibana/optimize
     chown -R kibana:kibana /usr/share/kibana/plugins
   EOF
-
 end

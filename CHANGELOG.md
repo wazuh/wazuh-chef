@@ -1,6 +1,18 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Wazuh Chef v3.11.1_7.5.1
+
+### Added
+
+- Update to Wazuh version 3.11.1_7.5.1 
+
+- Changes to make `ossec.conf` equivalent to the default version ([rshad](https://github.com/rshad)) [PR#74](https://github.com/wazuh/wazuh-chef/pull/74)
+
+- Implement new API configuration ([@jm404](https://github.com/jm404)) [PR#78](https://github.com/wazuh/wazuh-chef/pull/78)
+
+- Remove Old Wazuh APP ([@jm404](https://github.com/jm404)) [PR#80](https://github.com/wazuh/wazuh-chef/pull/80)
+
 ## Wazuh Chef v3.11.0_7.5.1
 
 ### Added
