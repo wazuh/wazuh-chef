@@ -92,6 +92,12 @@ elsif platform_family?('rhel','centos', 'amazon')
         'location' => '/var/log/secure'
         }
     },
+    {
+      'content!' => {
+        'log_format' => 'syslog',
+        'location' => '/var/log/maillog'
+        }
+    },
   ]
 else
   raise "Currently platforn not supported yet. Feel free to open an issue on https://www.github.com/wazuh/wazuh-chef if you consider that support for a specific OS should be added"

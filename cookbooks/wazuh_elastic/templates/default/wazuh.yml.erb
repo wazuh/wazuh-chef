@@ -124,8 +124,8 @@
 #     user: <user>
 #     password: <password>
 hosts:
-<% if node['wazuh-elastic']['kibana_api_credentials'].length > 0 %>
-<%   node['wazuh-elastic']['kibana_api_credentials'].each do |api| -%>
+<% if node['wazuh-elastic']['kibana_wazuh_api_credentials'].length > 0 %>
+<%   node['wazuh-elastic']['kibana_wazuh_api_credentials'].each do |api| -%>
   - <%= api[:id] %>:
       url: <%= api[:url] %>
       port: <%= api[:port] %>

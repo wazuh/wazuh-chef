@@ -30,26 +30,5 @@ default['ossec']['conf']['wodle'] = [
         'packages' => 'yes',
         'ports' => { '@all' => 'no', 'content!' => 'yes'},
         'processes' => 'yes'
-     },
-     {   '@name' => 'vulnerability-detector',
-        'disabled' => 'yes',
-        'interval' => '5m',
-        'ignore_time' => '6h',
-        'run_on_start' => 'yes',
-        'feed' => [
-            {   '@name' => "ubuntu-18",
-                'disabled' => "yes",
-                'update_interval' => '1h'
-            },
-            {   '@name' => "redhat",
-                'disabled' => "yes",
-                'update_from_year' => '2010',
-                'update_interval' => '1h'
-            },
-            {   '@name' => "debian-9",
-                'disabled' => "yes",
-                'update_interval' => '1h'
-            }
-        ]
-    }
+     }
 ]
