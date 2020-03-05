@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Wazuh Chef v3.11.4_7.6.1
+
+### Added
+
+- Update to Wazuh version 3.11.4_7.6.1
 
 ## Wazuh Chef v3.11.3_7.5.2
 
@@ -13,14 +18,14 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-- Update to Wazuh version 3.11.2_7.5.1 
+- Update to Wazuh version 3.11.2_7.5.1
 
 
 ## Wazuh Chef v3.11.1_7.5.1
 
 ### Added
 
-- Update to Wazuh version 3.11.1_7.5.1 
+- Update to Wazuh version 3.11.1_7.5.1
 
 - Changes to make `ossec.conf` equivalent to the default version ([rshad](https://github.com/rshad)) [PR#74](https://github.com/wazuh/wazuh-chef/pull/74)
 
@@ -88,7 +93,7 @@ All notable changes to this project will be documented in this file.
 
 - Filebeat recipe now supports versioning. ([@jm404](https://github.com/jm404)) [#26b41ce](https://github.com/wazuh/wazuh-chef/commit/26b41ce35edf3177425092e9ecb547401e1b2be2)
 
-  
+
 
 ## Wazuh Chef v3.9.1_7.1.0
 
@@ -104,7 +109,7 @@ All notable changes to this project will be documented in this file.
 
 - Kibana listen to Elasticsearch now uses a dynamic value.  ([@jm404](https://github.com/jm404)) [#5db4bda](https://github.com/wazuh/wazuh-chef/commit/5db4bdaf9acc47668911eeeabeb5de6b13974747)
 
-### Removed 
+### Removed
 
 - Java and Logstash recipes are no longer required and have been removed. ([@jm404](https://github.com/jm404)) [#15cf987](https://github.com/wazuh/wazuh-chef/commit/5db4bdaf9acc47668911eeeabeb5de6b13974747)
 
@@ -125,7 +130,7 @@ All notable changes to this project will be documented in this file.
 - Curl verification to ensure that Elasticsearch is properly installed ([@jm404](https://github.com/jm404)) ([#22](https://github.com/wazuh/wazuh-chef/pull/22))
 - Created roles folder that contains the JSON files for creating the client roles. ([@jm404](https://github.com/jm404)) ([#22](https://github.com/wazuh/wazuh-chef/pull/22))
 
-### Fixed 
+### Fixed
 
 - Resolved Elasticsearch and Kibana RAM problems during installation. ([@jm404](https://github.com/jm404)) ([#25](https://github.com/wazuh/wazuh-chef/pull/25))
 - Configuration URLs for Logstash and elasticsearch ([@jm404](https://github.com/jm404)) ([#25](https://github.com/wazuh/wazuh-chef/pull/25))
