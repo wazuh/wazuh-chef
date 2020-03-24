@@ -1,6 +1,14 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Wazuh Chef v3.12.0_7.6.1
+
+### Added
+
+- Update to Wazuh version 3.12.0_7.6.1
+
+- Upgrade to NodeJS v10 ([@xr09](https://github.com/xr09)) [PR#92](https://github.com/wazuh/wazuh-chef/pull/92)
+
 ## Wazuh Chef v3.11.4_7.6.1
 
 ### Added
