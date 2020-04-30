@@ -34,6 +34,7 @@ default['ossec']['conf']['syscheck']['nodiff'] = '/etc/ssl/private.key'
 default['ossec']['conf']['syscheck']['skip_nfs'] = true
 default['ossec']['conf']['syscheck']['max_eps'] = 100
 default['ossec']['conf']['syscheck']['process_priority'] = 10
-default['ossec']['conf']['syscheck']['synchronization'] = [
-    { '@enabled' => 'yes', '@interval' => '5m', '@max_interval' => '1h', '@max_eps' => '10' }
-] 
+default['ossec']['conf']['syscheck']['synchronization']['enabled'] = 'yes'
+default['ossec']['conf']['syscheck']['synchronization']['interval'] = '5m'
+default['ossec']['conf']['syscheck']['synchronization']['max_interval'] = '1h'
+default['ossec']['conf']['syscheck']['synchronization']['max_eps'] = '10'
