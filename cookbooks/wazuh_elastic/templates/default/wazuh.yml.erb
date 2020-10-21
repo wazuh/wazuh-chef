@@ -21,7 +21,7 @@
 # ------------------------------- Index patterns -------------------------------
 #
 # Default index pattern to use.
-#pattern: wazuh-alerts-3.x-*
+#pattern: wazuh-alerts-4.x-*
 #
 # ----------------------------------- Checks -----------------------------------
 #
@@ -129,7 +129,7 @@ hosts:
   - <%= api[:id] %>:
       url: <%= api[:url] %>
       port: <%= api[:port] %>
-      user: <%= api[:user] %>
+      username: <%= api[:username] %>
       password: <%= api[:password] %>
 <% end -%>
 <% else -%>

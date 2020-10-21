@@ -7,6 +7,12 @@
 
 Deploy the Wazuh platform using Chef cookbooks. Chef recipes are prepared for installing and configuring Agent, Manager (cluster) and RESTful API.
 
+## Compatibility Matrix
+
+| Wazuh version | Elastic | ODFE   |
+|---------------|---------|--------|
+| v4.0.0        | 7.9.2   | -      |
+
 ## Dependencies
 
 Every cookbook will install its own required dependencies, *Berksfile* and *metadata.rb* contains all the information about which dependencies will be installed.

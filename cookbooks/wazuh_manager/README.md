@@ -118,16 +118,6 @@ Generates the ossec.conf file using Gyoku.
 
 Declares wazuh repository and gpg key urls.
 
-#### wazuh_api.rb
-
-Installs Node.js and Wazuh API.  **Important:** You can add your credentials by setting the attributes:
-
-* `['api']['user'] = "foo"`
-* `['api']['passcode'] = "bar"`
-* `['api']['password_plaintext'] = "yes" ` 
-
-If `password_plaintext` is set to `"no"` the password won't be hashed.
-
 ### References
 
 Check https://documentation.wazuh.com/current/user-manual/manager/index.html for more information about Wazuh Manager.
