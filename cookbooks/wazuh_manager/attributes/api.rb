@@ -1,4 +1,4 @@
-default['api']['bind_addr'] = 0.0.0.0
+default['api']['bind_addr'] = '0.0.0.0'
 default['api']['port'] = 55000
 default['api']['behind_proxy_server'] = "no"
 default['api']['https'] = "yes"
