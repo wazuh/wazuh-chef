@@ -7,16 +7,13 @@
 
 
 if platform_family?('debian', 'ubuntu')
-
-  apt_package 'elasticsearch' do
-    version "#{node['wazuh-elastic']['elastic_stack_version']}"
-  end
-
+  apt_package %(elasticsearch-oss opendistroforelasticsearch)
 elsif platform_family?('rhel', 'redhat', 'centos', 'amazon')
-  yum_package 'elasticsearch' do
-    version "#{node['wazuh-elastic']['elastic_stack_version']}-1"
+  yum_package 'opendistroforelasticsearch'
+elsif
+  zypper_package 'opendistroforelasticsearch' do
+    action :install
   end
-
 else
   raise "Currently platforn not supported yet. Feel free to open an issue on https://www.github.com/wazuh/wazuh-chef if you consider that support for a specific OS should be added"
 end
