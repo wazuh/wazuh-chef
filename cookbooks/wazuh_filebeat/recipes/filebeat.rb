@@ -5,53 +5,81 @@
 
 include_recipe 'wazuh_filebeat::repository'
 
-if platform_family?('debian', 'ubuntu')
+# Save Filebeat version
 
+if platform_family?('debian', 'ubuntu')
   apt_package 'filebeat' do
     version "#{node['filebeat']['elastic_stack_version']}"
   end
-
 elsif platform_family?('rhel', 'redhat', 'centos', 'amazon')
   yum_package 'filebeat' do
     version "#{node['filebeat']['elastic_stack_version']}-1"
   end
-
+elsif platform_family?('suse')
+  zypper_repository 'filebeat' do
+    version "#{node['filebeat']['elastic_stack_version']}-1"
+  end
 else
   raise "Currently platforn not supported yet. Feel free to open an issue on https://www.github.com/wazuh/wazuh-chef if you consider that support for a specific OS should be added"
 end
 
-bash 'Elasticsearch_template' do
+# Download the pre-configured Filebeat configuration file used to forward the Wazuh alerts to Elasticsearch
+bash 'Download Filebeat configuration file' do
   code <<-EOH
-  curl -so /etc/filebeat/wazuh-template.json "https://raw.githubusercontent.com/wazuh/wazuh/#{node['filebeat']['extensions_version']}/extensions/elasticsearch/7.x/wazuh-template.json"
+    curl -so /etc/filebeat/filebeat.yml https://raw.githubusercontent.com/wazuh/wazuh-documentation/4.0/resources/open-distro/filebeat/7.x/filebeat.yml
+  EOH
+  action :run
+end
+# Download the alerts template for Elasticsearch:
+bash 'Download alerts template' do
+  code <<-EOH
+    curl -so /etc/filebeat/wazuh-template.json https://raw.githubusercontent.com/wazuh/wazuh/4.0/extensions/elasticsearch/7.x/wazuh-template.json
+    chmod go+r /etc/filebeat/wazuh-template.json
   EOH
 end
 
+# Download the Wazuh module for Filebeat:
 bash 'Import Wazuh module for filebeat' do 
   code <<-EOH
-  curl -s "https://packages.wazuh.com/3.x/filebeat/#{node['filebeat']['wazuh_filebeat_module']}" | tar -xvz -C /usr/share/filebeat/module
+    curl -s "https://packages.wazuh.com/4.x/filebeat/#{node['filebeat']['wazuh_filebeat_module']}" | tar -xvz -C /usr/share/filebeat/module
   EOH
 end
 
-directory '/usr/share/filebeat/module/wazuh' do
-  mode '0755'
-  recursive true
-  action :create
-end
 
-directory '/usr/share/filebeat/module/wazuh' do
-  mode '0755'
-  recursive true
-end
+# Change module permission 
+#directory '/usr/share/filebeat/module/wazuh' do
+#  mode '0755'
+#  recursive true
+#  action :create
+#end
 
+#directory '/usr/share/filebeat/module/wazuh' do
+# mode '0755'
+#  recursive true
+#end
+
+# Edit the file /etc/filebeat/filebeat.yml
 template node['filebeat']['config_path'] do
   source 'filebeat.yml.erb'
   owner 'root'
   group 'root'
   mode '0640'
-  variables(output_server_host: "output.elasticsearch.hosts: ['#{node['filebeat']['elasticsearch_server_ip']}:9200']")
+  variables(output_server_host: "output.elasticsearch.hosts: ['#{node['filebeat']['elasticsearch_server_ip']}:#{node['filebeat']['elasticsearch_server_port']}']")
+end
+
+# Configure Filebeat certificates
+bash 'Configure Filebeat certificates' do
+  code <<-EOH
+    mkdir /etc/filebeat/certs
+    mv /root/certs.tar /etc/filebeat/certs/
+    cd /etc/filebeat/certs/
+    tar -xf certs.tar filebeat.pem filebeat.key root-ca.pem
+    rm certs.tar
+  EOH
 end
 
 service node['filebeat']['service_name'] do
   supports :status => true, :restart => true, :reload => true
   action [:start, :enable]
 end
+
