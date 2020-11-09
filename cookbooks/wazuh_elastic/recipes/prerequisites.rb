@@ -8,7 +8,7 @@ if platform_family?('debian','ubuntu')
     end
     
     # Install apt prerequisites
-    apt_package %(curl apt-transport-https unzip wget software-properties-common)
+    apt_package %(curl apt-transport-https unzip wget software-properties-common libcap2-bin)
 
     # Add the repository for Java Development Kit (JDK)
     case platform_family
@@ -34,6 +34,8 @@ if platform_family?('debian','ubuntu')
     end
     apt_package 'openjdk-11-jdk'
 
+
+
 elsif platform_family?('rhel', 'redhat', 'centos', 'amazon')
     
     # Install all the necessary packages for the installation
@@ -42,14 +44,14 @@ elsif platform_family?('rhel', 'redhat', 'centos', 'amazon')
     end
 
     yum_package 'prerequisites' do
-        package_name ['curl', 'unzip', 'wget', 'java-11-openjdk-devel']
+        package_name ['curl', 'unzip', 'wget', 'java-11-openjdk-devel', 'libcap']
         action :install
     end
 
 elsif platform_family?('suse')
     # Install zypper prerequisites
     zypper_package 'prerequisites' do
-        package_name ['curl', 'unzip', 'wget']
+        package_name ['curl', 'unzip', 'wget', 'libcap2']
     end
 else
     raise "Currently platforn not supported yet. Feel free to open an issue on https://www.github.com/wazuh/wazuh-chef if you consider that support for a specific OS should be added"

@@ -5,36 +5,82 @@
 # Create user and group
 #
 
+# Install the Kibana package
+
 if platform_family?('debian', 'ubuntu')
-  apt_package 'kibana' do
-    version "#{node['wazuh-elastic']['elastic_stack_version']}"
-  end
+  apt_package 'opendistroforelasticsearch-kibana'
 elsif platform_family?('rhel', 'redhat', 'centos', 'amazon')
-  yum_package 'kibana' do
-    version "#{node['wazuh-elastic']['elastic_stack_version']}-1"
-  end
+  yum_package 'opendistroforelasticsearch-kibana'
+elsif platform_family?('suse')
+  zypper_package 'opendistroforelasticsearch-kibana'
 else
   raise "Currently platforn not supported yet. Feel free to open an issue on https://www.github.com/wazuh/wazuh-chef if you consider that support for a specific OS should be added"
 end
 
-template 'kibana.yml' do
-  path '/etc/kibana/kibana.yml'
-  source 'kibana.yml.erb'
+# Download the Kibana configuration file
+
+template '/etc/kibana/kibana.yml' do
+  source 'od_kibana.yml.erb'
   owner 'root'
-  group 'root'
+  group 'kibana'
   variables({
-     kibana_server_port: "server.port: #{node['wazuh-elastic']['kibana_server_port']}",
-     kibana_server_host: "server.host: #{node['wazuh-elastic']['kibana_server_host']}",
-     kibana_elasticsearch_server_hosts: "elasticsearch.hosts: ['#{node['wazuh-elastic']['kibana_elasticsearch_server_hosts']}']"
+    kibana_server_port: "server.port: #{node['wazuh-elastic']['kibana_server_port']}",
+    kibana_server_host: "server.host: #{node['wazuh-elastic']['kibana_server_host']}",
+    kibana_elasticsearch_server_hosts: "elasticsearch.hosts: ['#{node['wazuh-elastic']['kibana_elasticsearch_server_hosts']}']"
   })
   mode 0755
 end
+
+# Update the optimize and plugins directories permissions
+
+bash 'Update the optimize and plugins directories permissions' do
+  code <<-EOH
+    chown -R kibana:kibana /usr/share/kibana/optimize
+    chown -R kibana:kibana /usr/share/kibana/plugins
+  EOH
+end
+
+# Install the Wazuh Kibana plugin
+
+bash 'Install the Wazuh Kibana plugin' do
+  code <<-EOH
+    cd /usr/share/kibana
+    sudo -u kibana bin/kibana-plugin install https://packages.wazuh.com/4.x/ui/kibana/wazuh_kibana-4.0.0_7.9.1-1.zip
+  EOH
+end
+
+# Certificates placement
+
+bash 'Certificates placement' do
+  code <<-EOH
+    mkdir /etc/kibana/certs
+    mv ~/certs.tar /etc/kibana/certs/
+    cd /etc/kibana/certs/
+    tar -xf certs.tar kibana_http.pem kibana_http.key root-ca.pem
+    mv /etc/kibana/certs/kibana_http.key /etc/kibana/certs/kibana.key
+    mv /etc/kibana/certs/kibana_http.pem /etc/kibana/certs/kibana.pem
+    rm -f certs.tar
+  EOH
+end
+
+# Link Kibana’s socket to privileged port 443
+
+execute 'Kibana socket to 443' do
+  command "setcap 'cap_net_bind_service=+ep' /usr/share/kibana/node/bin/node"
+end
+
+# Enable and start the Kibana service
 
 service "kibana" do
   supports :start => true, :stop => true, :restart => true, :reload => true
   action [:restart]
 end
 
+# Check Wazuh Kibana plugin may prompt a message that indicates that it cannot communicate with the Wazuh API.
+#
+# 
+
+=begin
 if node[:platform_family].include?("centos")
   if node[:platform_version].include?("6.")
     service "kibana" do
@@ -122,3 +168,4 @@ bash 'Verify Kibana folders owner' do
     chown -R kibana:kibana /usr/share/kibana/plugins
   EOF
 end
+=end
