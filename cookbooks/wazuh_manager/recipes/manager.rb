@@ -27,6 +27,10 @@ elsif platform_family?('redhat', 'rhel','centos', 'amazon')
   yum_package 'wazuh-manager' do
     version "#{node['wazuh-manager']['version']}-1"
   end
+elsif platform_family?('suse')
+  zypper_package 'wazuh-manager' do
+    version "#{node['wazuh-manager']['version']}-1"
+  end
 else
   raise "Currently platforn not supported yet. Feel free to open an issue on https://www.github.com/wazuh/wazuh-chef if you consider that support for a specific OS should be added"
 end
