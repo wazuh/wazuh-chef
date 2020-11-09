@@ -41,7 +41,7 @@ elsif platform_family?('suse')
     gpgkey "https://artifacts.elastic.co/GPG-KEY-elasticsearch"
     action :create
     not_if do
-      File.exists?("/etc/apt/sources.list.d/elastic-7.x.list")
+      File.exists?("/etc/yum/sources.list.d/elastic-7.x.list")
     end
   end
 else
