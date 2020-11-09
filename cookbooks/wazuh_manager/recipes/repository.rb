@@ -54,11 +54,6 @@ elsif platform_family?('suse')
     baseurl 'https://packages.wazuh.com/4.x/yum'
     action :create
   end
-
-  systemd_unit 'wazuh-manager' do
-    triggers_reload true
-    action :enable :start
-  end
 else
   raise "Currently platforn not supported yet. Feel free to open an issue on https://www.github.com/wazuh/wazuh-chef if you consider that support for a specific OS should be added"
 end
