@@ -2,12 +2,12 @@
 # through the API/UI. File based roles are useful in error scenarios when the
 # API based roles may not be available.
 # Kibana is served by a back end server. This setting specifies the port to use.
-<%= @kibana_server_port %>
+<%= @kibana_server_port %><% end ->
 
 # Specifies the address to which the Kibana server will bind. IP addresses and host names are both valid values.
 # The default is 'localhost', which usually means remote machines will not be able to connect.
 # To allow connections from remote users, set this parameter to a non-loopback address.
-<%= @kibana_server_host %>
+<%= @kibana_server_host %><% end ->
 
 # Enables you to specify a path to mount Kibana at if you are running behind a proxy.
 # Use the `server.rewriteBasePath` setting to tell Kibana if it should remove the basePath
@@ -28,7 +28,7 @@
 #server.name: "your-hostname"
 
 # The URLs of the Elasticsearch instances to use for all your queries.
-<%= @kibana_elasticsearch_server_hosts %>
+<%= @kibana_elasticsearch_server_hosts %><% end ->
 
 # When this setting's value is true Kibana uses the hostname specified in the server.host
 # setting. When the value of this setting is false, Kibana uses the hostname of the host
