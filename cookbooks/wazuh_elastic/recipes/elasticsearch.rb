@@ -12,9 +12,7 @@ if platform_family?('debian', 'ubuntu')
 elsif platform_family?('rhel', 'redhat', 'centos', 'amazon')
   yum_package 'opendistroforelasticsearch'
 elsif platform_family?('suse')
-  zypper_package 'opendistroforelasticsearch' do
-    action :install
-  end
+  zypper_package 'opendistroforelasticsearch'
 else
   raise "Currently platforn not supported yet. Feel free to open an issue on https://www.github.com/wazuh/wazuh-chef if you consider that support for a specific OS should be added"
 end
@@ -52,10 +50,10 @@ template '/etc/elasticsearch/elasticsearch.yml' do
   mode '0660'
   variables ({
     network_host: "network.host: #{node['wazuh-elastic']['elasticsearch_ip']}",
-    node_name: "node.name: #{node['wazuh-elastic']['elasticsearch_node_name']}"
+    node_name: "node.name: #{node['wazuh-elastic']['elasticsearch_node_name']}",
     cluster_initial_master_nodes: "#{node['wazuh-elastic']['elasticsearch_cluster_initial_master_nodes']}",
     path_data: "path.data: #{node['wazuh-elastic']['elasticsearch_path_data']}",
-    path_logs: "path.logs: #{node['wazuh-elastic']['elasticsearch_path_logs']}"
+    path_logs: "path.logs: #{node['wazuh-elastic']['elasticsearch_path_logs']}",
   })
 end
 
@@ -103,6 +101,7 @@ end
 
 directory '/etc/elasticsearch/certs' do
   action :create
+end
 
 remote_file '~/search-guard-tlstool-1.8.zip' do
   source 'https://maven.search-guard.com/search-guard-tlstool/1.8/search-guard-tlstool-1.8.zip'
@@ -121,7 +120,7 @@ template '~/searchguard/search-guard.yml' do
   group 'elasticsearch'
   mode '0660'
   variables ({
-    elasticsearch_ip: "- #{node['wazuh-elastic']['elasticsearch_ip']}"
+    elasticsearch_ip: "- #{node['wazuh-elastic']['elasticsearch_ip']}",
     kibana_ip: "- #{['wazuh-elastic']['kibana_server_host']}"
   })
 end
