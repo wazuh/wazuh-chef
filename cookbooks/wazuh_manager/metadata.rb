@@ -13,7 +13,8 @@ end
 supports 'amazon'
 supports 'fedora'
 supports 'debian', '>= 7.0'
-supports 'ubuntu', '>= 12.04'
+supports 'ubuntu', '>= 14.04'
+supports 'suse'
 
 %w( apt ).each do |pkg|
   depends pkg
