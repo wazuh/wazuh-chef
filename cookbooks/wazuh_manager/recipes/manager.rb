@@ -85,7 +85,7 @@ template "#{node['ossec']['dir']}/etc/decoders/local_decoder.xml" do
 end
 
 
-template '#{node['ossec']['dir']}/api/configuration/api.yaml' do
+template "#{node['ossec']['dir']}/api/configuration/api.yaml" do
   source 'api.yaml.erb'
   owner 'root'
   group 'ossec'
@@ -102,9 +102,9 @@ template '#{node['ossec']['dir']}/api/configuration/api.yaml' do
             logging_path: "path: #{node['api']['logging_path']}",
             cors_enabled: "enabled: #{node['api']['cors']}",
             cors_source_route: "source_route: #{node['api']['cors_source_route']}",
-            cors_expose_headers: "expose_headers: #{node['api']['cors_expose_headers']}",
-            cors_allow_headers: "allow_headers: #{node['api']['cors_allow_headers']}",
-            cors_allow_credentials: "allow_credentials: #{node['api']['cors_allow_credentials']}",
+            cors_expose_headers: "expose_headers: \"#{node['api']['cors_expose_headers']}\"",
+            cors_allow_headers: "allow_headers: \"#{node['api']['cors_allow_headers']}\"",
+            cors_allow_credentials: "allow_credentials: \"#{node['api']['cors_allow_credentials']}\"",
             cache_enabled: "enabled: #{node['api']['cache']}",
             access_max_login_attempts: "max_login_attempts: #{node['api']['access_max_login_attempts']}",
             access_block_time: "block_time: #{node['api']['access_block_time']}",
