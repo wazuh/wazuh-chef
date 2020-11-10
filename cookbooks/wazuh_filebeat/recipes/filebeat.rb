@@ -23,16 +23,15 @@ else
   raise "Currently platforn not supported yet. Feel free to open an issue on https://www.github.com/wazuh/wazuh-chef if you consider that support for a specific OS should be added"
 end
 
-# Download the pre-configured Filebeat configuration file used to forward the Wazuh alerts to Elasticsearch
-temlate  '/etc/filebeat/filebeat.yml' do
+# Edit the file /etc/filebeat/filebeat.yml
+template node['filebeat']['config_path'] do
   source 'filebeat.yml.erb'
   owner 'root'
   group 'root'
   mode '0640'
-  variables (
-    output_elasticsearch_hosts: "hosts: ['#{node['filebeat']['elasticsearch_server_ip']}:#{node['filebeat']['elasticsearch_server_port']}']"
-  )
+  variables(output_server_host: "output.elasticsearch.hosts: ['#{node['filebeat']['elasticsearch_server_ip']}:#{node['filebeat']['elasticsearch_server_port']}']")
 end
+
 # Download the alerts template for Elasticsearch:
 bash 'Download alerts template' do
   code <<-EOH
@@ -48,7 +47,6 @@ bash 'Import Wazuh module for filebeat' do
   EOH
 end
 
-=begin
 # Change module permission 
 directory '/usr/share/filebeat/module/wazuh' do
   mode '0755'
@@ -57,19 +55,17 @@ directory '/usr/share/filebeat/module/wazuh' do
 end
 
 directory '/usr/share/filebeat/module/wazuh' do
- mode '0755'
+  mode '0755'
   recursive true
 end
 
-# Edit the file /etc/filebeat/filebeat.yml
-template node['filebeat']['config_path'] do
-  source 'filebeat.yml.erb'
-  owner 'root'
-  group 'root'
-  mode '0640'
-  variables(output_server_host: "output.elasticsearch.hosts: ['#{node['filebeat']['elasticsearch_server_ip']}:#{node['filebeat']['elasticsearch_server_port']}']")
-end
-=end
+
+
+
+
+
+
+
 
 # Configure Filebeat certificates
 
