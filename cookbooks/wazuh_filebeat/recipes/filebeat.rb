@@ -51,21 +51,7 @@ end
 directory '/usr/share/filebeat/module/wazuh' do
   mode '0755'
   recursive true
-  action :create
 end
-
-directory '/usr/share/filebeat/module/wazuh' do
-  mode '0755'
-  recursive true
-end
-
-
-
-
-
-
-
-
 
 # Configure Filebeat certificates
 
