@@ -120,8 +120,8 @@ template '~/searchguard/search-guard.yml' do
   group 'elasticsearch'
   mode '0660'
   variables ({
-    elasticsearch_ip: "- #{node['wazuh-elastic']['elasticsearch_ip']}",
-    kibana_ip: "- #{['wazuh-elastic']['kibana_server_host']}"
+    elasticsearch_ip: "#{node['wazuh-elastic']['elasticsearch_ip']}",
+    kibana_ip: "#{['wazuh-elastic']['kibana_server_host']}"
   })
 end
 

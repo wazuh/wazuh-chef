@@ -25,11 +25,11 @@
 #  - name: elasticsearch
 #    dn: CN=node-1,OU=Docu,O=Wazuh,L=California,C=US
 #    ip: 
-       <%= @elasticsearch_ip %>
+       - <%= @elasticsearch_ip %>
 #  - name: kibana
 #    dn: CN=kibana,OU=Docu,O=Wazuh,L=California,C=US     
 #    ip:
-       <%= @kibana_ip %>                 
+       - <%= @kibana_ip %>                 
 #
 # Clients certificates
 #clients:
