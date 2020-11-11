@@ -19,5 +19,5 @@ default['wazuh-elastic']['elasticsearch_path_logs'] = "/var/log/elasticsearch"
 default['wazuh-elastic']['elasticsearch_port'] = 9200
 default['wazuh-elastic']['elasticsearch_ip'] = '0.0.0.0'
 default['wazuh-elastic']['elasticsearch_discovery_option'] = 'discovery.type: single-node'
-default['wazuh-elastic']['elasticsearch_cluster_initial_master_nodes'] = "#cluster.initial_master_nodes: ['es-node-01']"
+default['wazuh-elastic']['elasticsearch_cluster_initial_master_nodes'] = "['es-node-01']"
 
