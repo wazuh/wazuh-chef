@@ -6,8 +6,8 @@
 
 #############################################
 include_recipe 'chef-sugar::default'
-include_recipe 'wazuh_elastic::prerequisites'
-include_recipe 'wazuh_elastic::repository'
-include_recipe 'wazuh_elastic::nginx'
-include_recipe 'wazuh_elastic::elasticsearch'
+#include_recipe 'wazuh_elastic::prerequisites'
+#include_recipe 'wazuh_elastic::repository'
+#include_recipe 'wazuh_elastic::nginx
+#include_recipe 'wazuh_elastic::elasticsearch'
 include_recipe 'wazuh_elastic::kibana'
