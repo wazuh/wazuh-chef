@@ -29,7 +29,7 @@ template node['filebeat']['config_path'] do
   owner 'root'
   group 'root'
   mode '0640'
-  variables(output_server_host: "output.elasticsearch.hosts: ['#{node['filebeat']['elasticsearch_server_ip']}:#{node['filebeat']['elasticsearch_server_port']}']")
+  variables(output_elasticsearch_hosts: "hosts: [\"#{node['filebeat']['elasticsearch_server_ip']}:#{node['filebeat']['elasticsearch_server_port']}\"]")
 end
 
 # Download the alerts template for Elasticsearch:
