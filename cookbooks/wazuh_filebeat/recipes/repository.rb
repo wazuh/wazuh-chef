@@ -13,7 +13,7 @@ if platform_family?('debian','ubuntu')
     subscribes :reload, 'package[lsb-release]', :immediately
   end
 
- apt_repository 'Elastic OSS 7.x Apt Repository' do
+ apt_repository 'elastic-7.x' do
     uri 'https://artifacts.elastic.co/packages/oss-7.x/apt'
     key 'https://artifacts.elastic.co/GPG-KEY-elasticsearch'
     distribution "stable"
@@ -24,7 +24,7 @@ if platform_family?('debian','ubuntu')
     end
   end
 elsif platform_family?('rhel', 'redhat', 'centos', 'amazon')
-  yum_repository 'Elastic OSS 7.x Yum Repository' do
+  yum_repository 'elastic-7.x' do
     baseurl "https://artifacts.elastic.co/packages/oss-7.x/yum"
     gpgkey "https://artifacts.elastic.co/GPG-KEY-elasticsearch"
     action :create
@@ -33,7 +33,7 @@ elsif platform_family?('rhel', 'redhat', 'centos', 'amazon')
     end
   end
 elsif platform_family?('suse')
-  zypper_repository 'Elastic OSS 7.x Yum Repository' do
+  zypper_repository 'elastic-7.x' do
     baseurl "https://artifacts.elastic.co/packages/oss-7.x/yum"
     gpgkey "https://artifacts.elastic.co/GPG-KEY-elasticsearch"
     action :create
