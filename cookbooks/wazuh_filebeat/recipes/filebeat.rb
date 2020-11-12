@@ -58,9 +58,9 @@ end
 bash 'Configure Filebeat certificates' do
   code <<-EOH
     mkdir /etc/filebeat/certs
-    mv /root/certs.tar /etc/filebeat/certs/
+    cp /etc/elasticsearch/certs/certs.tar /etc/filebeat/certs/
     cd /etc/filebeat/certs/
-    tar -xf certs.tar filebeat.pem filebeat.key root-ca.pem
+    tar --extract --file=certs.tar filebeat.pem filebeat.key root-ca.pem
     rm certs.tar
   EOH
 end
