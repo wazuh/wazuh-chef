@@ -139,7 +139,7 @@ end
 # In case of more than once instance, copy certs.tar to all of them
 
 execute 'Remove unnecessary files' do
-  command "rm /etc/elasticsearch/certs/client-certificates.readme /etc/elasticsearch/certs/elasticsearch_elasticsearch_config_snippet.yml /tmp/search-guard-tlstool-1.7.zip /etc/elasticsearch/certs/filebeat* -f"
+  command "rm /etc/elasticsearch/certs/client-certificates.readme /etc/elasticsearch/certs/elasticsearch_elasticsearch_config_snippet.yml /tmp/search-guard-tlstool-1.7.zip -f"
 end
 
 # Run elasticsearch service
