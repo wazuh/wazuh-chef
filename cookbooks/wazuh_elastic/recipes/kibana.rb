@@ -57,9 +57,9 @@ end
 
 bash 'Copy kibana key and pem files and root-ca pem file' do
   code <<-EOH
-    mv /etc/elasticsearch/certs/certs.tar /etc/kibana/certs/
+    cp /etc/elasticsearch/certs/certs.tar /etc/kibana/certs/
     cd /etc/kibana/certs/
-    tar -xf /etc/kibana/certs/certs.tar /etc/kibana/certs/kibana_http.pem /etc/kibana/certs/kibana_http.key /etc/kibana/certs/root-ca.pem
+    tar --extract --file=certs.tar kibana_http.pem kibana_http.key root-ca.pem
     mv /etc/kibana/certs/kibana_http.key /etc/kibana/certs/kibana.key
     mv /etc/kibana/certs/kibana_http.pem /etc/kibana/certs/kibana.pem
     rm -f certs.tar
