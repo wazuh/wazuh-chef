@@ -29,7 +29,7 @@ template node['filebeat']['config_path'] do
   owner 'root'
   group 'root'
   mode '0640'
-  variables(output_server_host: "output.elasticsearch.hosts: ['#{node['filebeat']['elasticsearch_server_ip']}:#{node['filebeat']['elasticsearch_server_port']}']")
+  variables(output_elasticsearch_hosts: "hosts: [\"#{node['filebeat']['elasticsearch_server_ip']}:#{node['filebeat']['elasticsearch_server_port']}\"]")
 end
 
 # Download the alerts template for Elasticsearch:
@@ -58,9 +58,9 @@ end
 bash 'Configure Filebeat certificates' do
   code <<-EOH
     mkdir /etc/filebeat/certs
-    mv /root/certs.tar /etc/filebeat/certs/
+    cp /etc/elasticsearch/certs/certs.tar /etc/filebeat/certs/
     cd /etc/filebeat/certs/
-    tar -xf certs.tar filebeat.pem filebeat.key root-ca.pem
+    tar --extract --file=certs.tar filebeat.pem filebeat.key root-ca.pem
     rm certs.tar
   EOH
 end

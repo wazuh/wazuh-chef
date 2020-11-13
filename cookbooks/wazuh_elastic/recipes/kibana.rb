@@ -1,4 +1,4 @@
-#
+
 # Cookbook Name:: wazuh-elastic
 # Recipe:: kibana_install
 
@@ -51,17 +51,37 @@ end
 
 # Certificates placement
 
-bash 'Certificates placement' do
+directory '/etc/kibana/certs' do
+  action :create
+end
+
+bash 'Copy kibana key and pem files and root-ca pem file' do
   code <<-EOH
-    mkdir /etc/kibana/certs
-    mv ~/certs.tar /etc/kibana/certs/
+    cp /etc/elasticsearch/certs/certs.tar /etc/kibana/certs/
     cd /etc/kibana/certs/
-    tar -xf certs.tar kibana_http.pem kibana_http.key root-ca.pem
+    tar --extract --file=certs.tar kibana_http.pem kibana_http.key root-ca.pem
     mv /etc/kibana/certs/kibana_http.key /etc/kibana/certs/kibana.key
     mv /etc/kibana/certs/kibana_http.pem /etc/kibana/certs/kibana.pem
     rm -f certs.tar
   EOH
 end
+
+=begin
+file '/etc/kibana/certs/kibana.key' do
+  content IO.read('/etc/elasticsearch/certs/kibana_http.key')
+  action :create
+end
+
+file '/etc/kibana/certs/kibana.pem' do
+  content IO.read('/etc/elasticsearch/certs/kibana_http.pem')
+  action :create
+end
+
+file '/etc/kibana/certs/root-ca.pem' do
+  content IO.read('/etc/elasticsearch/certs/roo-ca.pem')
+  action :create
+end
+=end
 
 # Link Kibana’s socket to privileged port 443
 

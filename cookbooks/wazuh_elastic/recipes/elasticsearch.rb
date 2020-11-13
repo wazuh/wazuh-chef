@@ -51,7 +51,7 @@ template '/etc/elasticsearch/elasticsearch.yml' do
   variables ({
     network_host: "network.host: #{node['wazuh-elastic']['elasticsearch_ip']}",
     node_name: "node.name: #{node['wazuh-elastic']['elasticsearch_node_name']}",
-    cluster_initial_master_nodes: "#{node['wazuh-elastic']['elasticsearch_cluster_initial_master_nodes']}",
+    cluster_initial_master_nodes: "cluster.initial_master_nodes: #{node['wazuh-elastic']['elasticsearch_cluster_initial_master_nodes']}",
     path_data: "path.data: #{node['wazuh-elastic']['elasticsearch_path_data']}",
     path_logs: "path.logs: #{node['wazuh-elastic']['elasticsearch_path_logs']}",
   })
@@ -78,7 +78,6 @@ bash 'insert_line_limits.conf' do
   not_if "grep -q elasticsearch /etc/security/limits.conf"
 end
 =end
-
 # Elasticsearch roles and users
 
 remote_file '/usr/share/elasticsearch/plugins/opendistro_security/securityconfig/roles.yml' do
@@ -103,25 +102,25 @@ directory '/etc/elasticsearch/certs' do
   action :create
 end
 
-remote_file '~/search-guard-tlstool-1.8.zip' do
+remote_file '/tmp/search-guard-tlstool-1.8.zip' do
   source 'https://maven.search-guard.com/search-guard-tlstool/1.8/search-guard-tlstool-1.8.zip'
 end
 
 archive_file 'search-guard-tlstool-1.8.zip' do
-  path '~/search-guard-tlstool-1.8.zip'
-  destination '~/searchguard'
+  path '/tmp/search-guard-tlstool-1.8.zip'
+  destination '/tmp/searchguard'
 end
 
 # --------------Wazuh single-node cluster--------------
 
-template '~/searchguard/search-guard.yml' do
+template '/tmp/searchguard/search-guard.yml' do
   source 'search-guard.yml.erb'
   owner 'root'
   group 'elasticsearch'
   mode '0660'
   variables ({
     elasticsearch_ip: "#{node['wazuh-elastic']['elasticsearch_ip']}",
-    kibana_ip: "#{['wazuh-elastic']['kibana_server_host']}"
+    kibana_ip: "#{node['wazuh-elastic']['kibana_server_host']}"
   })
 end
 
@@ -130,7 +129,7 @@ end
 # ----------------------------------------------------
 
 execute 'Run the Search Guard’s script to create the certificates' do
-  command "~/searchguard/tools/sgtlstool.sh -c ~/searchguard/search-guard.yml -ca -crt -t /etc/elasticsearch/certs/"
+  command "/tmp/searchguard/tools/sgtlstool.sh -c /tmp/searchguard/search-guard.yml -ca -crt -t /etc/elasticsearch/certs/"
 end
 
 execute 'Compress all the necessary files to be sent to the all the instances' do
@@ -140,7 +139,7 @@ end
 # In case of more than once instance, copy certs.tar to all of them
 
 execute 'Remove unnecessary files' do
-  command "rm /etc/elasticsearch/certs/client-certificates.readme /etc/elasticsearch/certs/elasticsearch_elasticsearch_config_snippet.yml search-guard-tlstool-1.7.zip filebeat* -f"
+  command "rm /etc/elasticsearch/certs/client-certificates.readme /etc/elasticsearch/certs/elasticsearch_elasticsearch_config_snippet.yml /tmp/search-guard-tlstool-1.7.zip -f"
 end
 
 # Run elasticsearch service
@@ -155,7 +154,7 @@ ruby_block 'wait for elasticsearch' do
     loop { break if (TCPSocket.open("#{node['wazuh-elastic']['elasticsearch_ip']}",node['wazuh-elastic']['elasticsearch_port']) rescue nil); puts "Waiting for elasticsearch to start"; sleep 5 }
   end
 end
-
+=begin
 bash 'Verify Elasticsearch folders owner' do
   code <<-EOF
     chown elasticsearch:elasticsearch -R /etc/elasticsearch
@@ -164,7 +163,7 @@ bash 'Verify Elasticsearch folders owner' do
   EOF
   notifies :restart, "service[elasticsearch]", :delayed
 end
-
+=end
 
 execute 'Run the Elasticsearch’s securityadmin script' do
   command  "/usr/share/elasticsearch/plugins/opendistro_security/tools/securityadmin.sh -cd /usr/share/elasticsearch/plugins/opendistro_security/securityconfig/ -nhnv -cacert /etc/elasticsearch/certs/root-ca.pem -cert /etc/elasticsearch/certs/admin.pem -key /etc/elasticsearch/certs/admin.key -h #{node['wazuh-elastic']['elasticsearch_ip']}"
