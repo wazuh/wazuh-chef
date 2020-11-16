@@ -3,21 +3,32 @@
 # Recipe:: default
 # Author:: Wazuh <info@wazuh.com>
 
-include_recipe 'wazuh_filebeat::repository'
+# Install Filebeat package
 
-# Save Filebeat version
-
-if platform_family?('debian', 'ubuntu')
+if platform_family?('debian','ubuntu')
+  package 'lsb-release'
+  ohai 'reload lsb' do
+    plugin 'lsb'
+    # action :nothing
+    subscribes :reload, 'package[lsb-release]', :immediately
+  end
+			
   apt_package 'filebeat' do
-    version "#{node['filebeat']['elastic_stack_version']}"
+    only_if do
+      File.exists?("/etc/apt/sources.list.d/wazuh.list")
+    end
   end
 elsif platform_family?('rhel', 'redhat', 'centos', 'amazon')
   yum_package 'filebeat' do
-    version "#{node['filebeat']['elastic_stack_version']}-1"
+    only_if do
+      File.exists?("/etc/yum.repos.d/wazuh.repo")
+    end
   end
 elsif platform_family?('suse')
-  zypper_repository 'filebeat' do
-    version "#{node['filebeat']['elastic_stack_version']}-1"
+  yum_package 'filebeat' do
+    only_if do
+      File.exists?("/etc/zypp/repos.d/wazuh.repo")
+    end
   end
 else
   raise "Currently platforn not supported yet. Feel free to open an issue on https://www.github.com/wazuh/wazuh-chef if you consider that support for a specific OS should be added"
@@ -52,7 +63,7 @@ directory '/usr/share/filebeat/module/wazuh' do
   mode '0755'
   recursive true
 end
-
+=begin
 # Configure Filebeat certificates
 
 bash 'Configure Filebeat certificates' do
@@ -63,10 +74,11 @@ bash 'Configure Filebeat certificates' do
     tar --extract --file=certs.tar filebeat.pem filebeat.key root-ca.pem
     rm certs.tar
   EOH
+
 end
 
 service node['filebeat']['service_name'] do
   supports :status => true, :restart => true, :reload => true
   action [:start, :enable]
 end
-
+=end
