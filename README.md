@@ -157,6 +157,13 @@ In order to do so, it's only needed to assign the value `yes` to the variable ` 
 default['ossec']['agent_auth']['register'] = 'yes'
 ```
 
+To connect an agent with the manager simply modify the `wazuh-chef/roles/wazuh_agent.json` with the desired IP address:
+
+```
+"registration_address": "<YOUR REGISTRATION IP ADDRESS>",
+"address": "<YOUR MANAGER IP ADDRESS>"
+```
+
 In other case, we just assign a different value which is not `yes`.
 
 ## Contribute
