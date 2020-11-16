@@ -9,7 +9,7 @@ if platform_family?('debian','ubuntu')
       subscribes :reload, "package[lsb-release]", :immediately
     end
     
-    apt_package %(curl apt-transport-https)
+    apt_package %w(curl apt-transport-https)
 
 elsif platform_family?('rhel', 'redhat', 'centos', 'amazon')
     yum_package 'curl'

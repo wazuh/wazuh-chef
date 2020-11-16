@@ -26,18 +26,17 @@ if platform_family?('ubuntu', 'debian')
     subscribes :reload, 'package[lsb-release]', :immediately
   end
 
-  apt_repository 'wazuh-manager' do
-    description 'WAZUH Apt Repository - www.wazuh.com'
+  apt_repository 'wazuh' do
     key 'https://packages.wazuh.com/key/GPG-KEY-WAZUH'
     uri 'http://packages.wazuh.com/4.x/apt/'
     components ['main']
     distribution 'stable'
-    action :create
+    action :add
   end
 
   apt_update
 elsif platform_family?('rhel','redhat', 'centos', 'amazon')
-  yum_repository 'wazuh-manager' do
+  yum_repository 'wazuh' do
     description 'WAZUH Yum Repository - www.wazuh.com'
     gpgcheck true
     gpgkey 'https://packages.wazuh.com/key/GPG-KEY-WAZUH'
@@ -46,7 +45,7 @@ elsif platform_family?('rhel','redhat', 'centos', 'amazon')
     action :create
   end
 elsif platform_family?('suse')
-  zypper_repository 'wazuh-manager' do
+  zypper_repository 'wazuh' do   
     description 'WAZUH Zypper Repository - www.wazuh.com'
     gpgcheck true
     gpgkey 'https://packages.wazuh.com/key/GPG-KEY-WAZUH'
