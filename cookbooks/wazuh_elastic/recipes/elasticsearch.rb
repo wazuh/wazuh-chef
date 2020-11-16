@@ -8,7 +8,7 @@
 # Install opendistroforelasticsearch
 
 if platform_family?('debian', 'ubuntu')
-  apt_package %(elasticsearch-oss opendistroforelasticsearch)
+  apt_package %w(elasticsearch-oss opendistroforelasticsearch)
 elsif platform_family?('rhel', 'redhat', 'centos', 'amazon')
   yum_package 'opendistroforelasticsearch'
 elsif platform_family?('suse')
@@ -132,14 +132,34 @@ execute 'Run the Search Guard’s script to create the certificates' do
   command "/tmp/searchguard/tools/sgtlstool.sh -c /tmp/searchguard/search-guard.yml -ca -crt -t /etc/elasticsearch/certs/"
 end
 
-execute 'Compress all the necessary files to be sent to the all the instances' do
-  command "tar -cf /etc/elasticsearch/certs/certs.tar /etc/elasticsearch/certs/*"
+bash 'Compress all the necessary files to be sent to the all the instances' do
+  code <<-EOF
+    cd /etc/elasticsearch/certs 
+    tar -cf certs.tar *
+  EOF
 end
-
-# In case of more than once instance, copy certs.tar to all of them
 
 execute 'Remove unnecessary files' do
   command "rm /etc/elasticsearch/certs/client-certificates.readme /etc/elasticsearch/certs/elasticsearch_elasticsearch_config_snippet.yml /tmp/search-guard-tlstool-1.7.zip -f"
+end
+
+# Configure Filebeat certificates
+
+bash 'Configure Filebeat certificates' do
+  code <<-EOH
+    mkdir /etc/filebeat/certs
+    cp /etc/elasticsearch/certs/certs.tar /etc/filebeat/certs/
+    cd /etc/filebeat/certs/
+    tar --extract --file=certs.tar filebeat.pem filebeat.key root-ca.pem
+    rm certs.tar
+  EOH
+end
+
+# Run filebeat service
+
+service "filebeat" do
+  supports :status => true, :restart => true, :reload => true
+  action [:start, :enable]
 end
 
 # Run elasticsearch service

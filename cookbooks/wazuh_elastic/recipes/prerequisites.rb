@@ -8,10 +8,10 @@ if platform_family?('debian','ubuntu')
     end
     
     # Install apt prerequisites
-    apt_package %(curl apt-transport-https unzip wget software-properties-common libcap2-bin)
+    apt_package %w(curl apt-transport-https unzip wget software-properties-common libcap2-bin)
 
     # Add the repository for Java Development Kit (JDK)
-    case platform_family
+    case platform_family?
     when 'debian'
         bash 'add backports.list' do
             code <<-EOH

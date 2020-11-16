@@ -12,8 +12,7 @@ if platform_family?('debian','ubuntu')
   end
 
   # Install GPG key and add repository
-  apt_repository "opendistroforelasticsearch" do
-    description "OpenDistro Elasticseach Apt"
+  apt_repository "wazuh" do
     uri "https://packages.wazuh.com/4.x/apt/ "
     key "https://packages.wazuh.com/key/GPG-KEY-WAZUH"
     distribution "stable"
@@ -25,9 +24,8 @@ if platform_family?('debian','ubuntu')
 
   # Update the package information
   apt_update
-
 elsif platform_family?('rhel', 'redhat', 'centos', 'amazon')
-  yum_repository "opendistroforelasticsearch" do
+  yum_repository "wazuh" do
     description "OpenDistro Elasticseach Yum"
     baseurl "https://packages.wazuh.com/4.x/yum/"
     gpgkey "https://packages.wazuh.com/key/GPG-KEY-WAZUH"
@@ -37,7 +35,7 @@ elsif platform_family?('rhel', 'redhat', 'centos', 'amazon')
     end
   end
 elsif platform_family?('suse')
-  zypper_repository "opendistroforelasticsearch" do
+  zypper_repository "wazuh" do
     description "OpenDistro Elasticseach Zypper"
     baseurl "https://packages.wazuh.com/4.x/yum/"
     gpgkey "https://packages.wazuh.com/key/GPG-KEY-WAZUH"
