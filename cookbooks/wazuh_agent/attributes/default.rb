@@ -18,7 +18,5 @@
 #
 # general settings
 default['ossec']['dir'] = '/var/ossec'
-default['ossec']['address'] = nil
+default['ossec']['address'] = '172.19.0.211'
 default['ossec']['ignore_failure'] = true
-
-
