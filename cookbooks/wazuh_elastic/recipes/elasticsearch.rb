@@ -17,30 +17,6 @@ else
   raise "Currently platforn not supported yet. Feel free to open an issue on https://www.github.com/wazuh/wazuh-chef if you consider that support for a specific OS should be added"
 end
 
-=begin
-# Set up elasticsearch configuration file
-
-template '/etc/elasticsearch/elasticsearch.yml' do
-  source 'elasticsearch.yml.erb'
-  owner 'root'
-  group 'elasticsearch'
-  mode '0660'
-  variables({clustername: "cluster.name: #{node['wazuh-elastic']['elasticsearch_cluster_name']}",
-            node_name: "node.name: #{node['wazuh-elastic']['elasticsearch_node_name']}",
-            node_master: "node.master: #{node['wazuh-elastic']['elasticsearch_node_master']}",
-            node_data: "node.data: #{node['wazuh-elastic']['elasticsearch_node_data']}",
-            node_ingest: "node.ingest: #{node['wazuh-elastic']['elasticsearch_node_ingest']}",
-            node_max_local_storage_nodes: "node.max_local_storage_nodes: #{node['wazuh-elastic']['elasticsearch_node_max_local_storage_nodes']}",
-            cluster_remote_connect: "cluster.remote.connect: #{node['wazuh-elasticsearch']['elasticsearch_cluster_remote_connect']}",
-            path_data: "path.data: #{node['wazuh-elastic']['elasticsearch_path_data']}",
-            path_logs: "path.logs: #{node['wazuh-elastic']['elasticsearch_path_logs']}",
-            network_host: "network.host: #{node['wazuh-elastic']['elasticsearch_ip']}",
-            http_port: "http.port: #{node['wazuh-elastic']['elasticsearch_port']}",
-            discovery_option: "#{node['wazuh-elastic']['elasticsearch_discovery_option']}",
-            cluster_initial_master_nodes: "#{node['wazuh-elastic']['elasticsearch_cluster_initial_master_nodes']}" })
-end
-=end
-
 # Set up opendistro for elasticsearch configuration file
 
 template '/etc/elasticsearch/elasticsearch.yml' do
@@ -56,29 +32,6 @@ template '/etc/elasticsearch/elasticsearch.yml' do
     path_logs: "path.logs: #{node['wazuh-elastic']['elasticsearch_path_logs']}",
   })
 end
-
-=begin
-# Set up JVM config file
-
-template '/etc/elasticsearch/jvm.options' do
-  source 'jvm.options.erb'
-  owner 'root'
-  group 'elasticsearch'
-  mode '0660'
-  variables({memmory: node['wazuh-elastic']['elasticsearch_memmory']})
-end
-
-# Set up limits.conf
-
-bash 'insert_line_limits.conf' do
-  code <<-EOH
-  echo "elasticsearch - nofile  65535" >> /etc/security/limits.conf
-  echo "elasticsearch - memlock unlimited" >> /etc/security/limits.conf
-  EOH
-  not_if "grep -q elasticsearch /etc/security/limits.conf"
-end
-=end
-# Elasticsearch roles and users
 
 remote_file '/usr/share/elasticsearch/plugins/opendistro_security/securityconfig/roles.yml' do
   source 'https://raw.githubusercontent.com/wazuh/wazuh-documentation/4.0/resources/open-distro/elasticsearch/roles/roles.yml'
@@ -174,7 +127,7 @@ ruby_block 'wait for elasticsearch' do
     loop { break if (TCPSocket.open("#{node['wazuh-elastic']['elasticsearch_ip']}",node['wazuh-elastic']['elasticsearch_port']) rescue nil); puts "Waiting for elasticsearch to start"; sleep 5 }
   end
 end
-=begin
+
 bash 'Verify Elasticsearch folders owner' do
   code <<-EOF
     chown elasticsearch:elasticsearch -R /etc/elasticsearch
@@ -183,7 +136,6 @@ bash 'Verify Elasticsearch folders owner' do
   EOF
   notifies :restart, "service[elasticsearch]", :delayed
 end
-=end
 
 execute 'Run the Elasticsearch’s securityadmin script' do
   command  "/usr/share/elasticsearch/plugins/opendistro_security/tools/securityadmin.sh -cd /usr/share/elasticsearch/plugins/opendistro_security/securityconfig/ -nhnv -cacert /etc/elasticsearch/certs/root-ca.pem -cert /etc/elasticsearch/certs/admin.pem -key /etc/elasticsearch/certs/admin.key -h #{node['wazuh-elastic']['elasticsearch_ip']}"
