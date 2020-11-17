@@ -14,18 +14,21 @@ if platform_family?('debian','ubuntu')
   end
 			
   apt_package 'filebeat' do
+    version "#{node['filebeat']['version']}" 
     only_if do
       File.exists?("/etc/apt/sources.list.d/wazuh.list")
     end
   end
 elsif platform_family?('rhel', 'redhat', 'centos', 'amazon')
   yum_package 'filebeat' do
+    version "#{node['filebeat']['version']}"
     only_if do
       File.exists?("/etc/yum.repos.d/wazuh.repo")
     end
   end
 elsif platform_family?('suse')
   yum_package 'filebeat' do
+    version "#{node['filebeat']['version']}"
     only_if do
       File.exists?("/etc/zypp/repos.d/wazuh.repo")
     end
@@ -63,22 +66,3 @@ directory '/usr/share/filebeat/module/wazuh' do
   mode '0755'
   recursive true
 end
-=begin
-# Configure Filebeat certificates
-
-bash 'Configure Filebeat certificates' do
-  code <<-EOH
-    mkdir /etc/filebeat/certs
-    cp /etc/elasticsearch/certs/certs.tar /etc/filebeat/certs/
-    cd /etc/filebeat/certs/
-    tar --extract --file=certs.tar filebeat.pem filebeat.key root-ca.pem
-    rm certs.tar
-  EOH
-
-end
-
-service node['filebeat']['service_name'] do
-  supports :status => true, :restart => true, :reload => true
-  action [:start, :enable]
-end
-=end
