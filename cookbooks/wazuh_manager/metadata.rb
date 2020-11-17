@@ -4,7 +4,7 @@ maintainer_email 'info@wazuh.com'
 license          'Apache 2.0'
 description      'Installs and onfigures ossec'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          '0.0.9'
+version          '0.1.0'
 
 %w(redhat centos oracle).each do |el|
   supports el, '>= 6.0'
@@ -13,7 +13,8 @@ end
 supports 'amazon'
 supports 'fedora'
 supports 'debian', '>= 7.0'
-supports 'ubuntu', '>= 12.04'
+supports 'ubuntu', '>= 14.04'
+supports 'suse'
 
 %w( apt ).each do |pkg|
   depends pkg

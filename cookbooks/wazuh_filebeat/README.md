@@ -55,11 +55,7 @@ Recipes
 
 #### default.rb
 
-This recipe imports and executes the recipe *wazuh_filebeat::repository* and *wazuh_filebeat::filebeat*
-
-#### repository.rb
-
-Installs Filebeat repository and creates the */etc/apt/sources.list.d/elastic-6.x.list* file.
+This recipe imports and executes the recipe *wazuh_filebeat::filebeat*
 
 #### filebeat.rb
 
@@ -67,4 +63,4 @@ Install the package Filebeats, create the configuration of */etc/filebeat/filebe
 
 ## References
 
-Check [Wazuh Filebeat Documentation](https://documentation.wazuh.com/current/installation-guide/installing-wazuh-server/wazuh_server_rpm.html#installing-filebeat) for more information about Wazuh and Filebeat.
+Check [Wazuh Filebeat Documentation](https://documentation.wazuh.com/4.0/installation-guide/open-distro/distributed-deployment/step-by-step-installation/wazuh-cluster/wazuh_single_node_cluster.html#installing-filebeat) for more information about Wazuh and Filebeat.

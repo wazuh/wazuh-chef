@@ -18,29 +18,43 @@
 #
 
 if platform_family?('ubuntu', 'debian')
-    package 'lsb-release'
+  package 'lsb-release'
 
-    ohai 'reload lsb' do
-      plugin 'lsb'
-      # action :nothing
-      subscribes :reload, 'package[lsb-release]', :immediately
-    end
+  ohai 'reload lsb' do
+    plugin 'lsb'
+    # action :nothing
+    subscribes :reload, 'package[lsb-release]', :immediately
+  end
 
-    apt_repository 'Wazuh' do
-      uri 'http://packages.wazuh.com/3.x/apt/'
-      key 'https://packages.wazuh.com/key/GPG-KEY-WAZUH'
-      components ['main']
-      distribution 'stable'
-    end
+  apt_repository 'wazuh' do
+    key 'https://packages.wazuh.com/key/GPG-KEY-WAZUH'
+    uri 'http://packages.wazuh.com/4.x/apt/'
+    components ['main']
+    distribution 'stable'
+    action :add
+  end
 
-    apt_update
+  apt_update
 elsif platform_family?('rhel','redhat', 'centos', 'amazon')
-  yum_repository 'Wazuh' do
-    description 'WAZUH Repository - www.wazuh.com'
-    baseurl 'https://packages.wazuh.com/3.x/yum'
+  yum_repository 'wazuh' do
+    description 'WAZUH Yum Repository - www.wazuh.com'
+    gpgcheck true
     gpgkey 'https://packages.wazuh.com/key/GPG-KEY-WAZUH'
+    enabled true 
+    baseurl 'https://packages.wazuh.com/4.x/yum'
+    action :create
+  end
+elsif platform_family?('suse')
+  zypper_repository 'wazuh' do   
+    description 'WAZUH Zypper Repository - www.wazuh.com'
+    gpgcheck true
+    gpgkey 'https://packages.wazuh.com/key/GPG-KEY-WAZUH'
+    enabled true 
+    baseurl 'https://packages.wazuh.com/4.x/yum'
     action :create
   end
 else
   raise "Currently platforn not supported yet. Feel free to open an issue on https://www.github.com/wazuh/wazuh-chef if you consider that support for a specific OS should be added"
 end
+
+

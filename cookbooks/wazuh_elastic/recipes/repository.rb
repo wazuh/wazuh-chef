@@ -11,22 +11,38 @@ if platform_family?('debian','ubuntu')
     subscribes :reload, "package[lsb-release]", :immediately
   end
 
-  apt_repository "elastic-7.x" do
-    uri "https://artifacts.elastic.co/packages/7.x/apt"
-    key "https://artifacts.elastic.co/GPG-KEY-elasticsearch"
+  # Install GPG key and add repository
+  apt_repository "wazuh" do
+    uri "https://packages.wazuh.com/4.x/apt/ "
+    key "https://packages.wazuh.com/key/GPG-KEY-WAZUH"
     distribution "stable"
     components ["main"]
     not_if do
-      File.exists?("/etc/apt/sources.list.d/elastic-7.x.list")
+      File.exists?("/etc/apt/sources.list.d/wazuh.list")
     end
   end  
+
+  # Update the package information
+  apt_update
 elsif platform_family?('rhel', 'redhat', 'centos', 'amazon')
-  yum_repository "elastic-7.x" do
-    description "Elastic repository for 7.x packages"
-    baseurl "https://artifacts.elastic.co/packages/7.x/yum"
-    gpgkey "https://artifacts.elastic.co/GPG-KEY-elasticsearch"
+  yum_repository "wazuh" do
+    description "OpenDistro Elasticseach Yum"
+    baseurl "https://packages.wazuh.com/4.x/yum/"
+    gpgkey "https://packages.wazuh.com/key/GPG-KEY-WAZUH"
     action :create
-    not_if "grep -q elasticsearch /etc/yum.repos.d/elastic-7.x.repo"
+    not_if do
+      File.exists?("/etc/yum.repos.d/wazuh.repo")
+    end
+  end
+elsif platform_family?('suse')
+  zypper_repository "wazuh" do
+    description "OpenDistro Elasticseach Zypper"
+    baseurl "https://packages.wazuh.com/4.x/yum/"
+    gpgkey "https://packages.wazuh.com/key/GPG-KEY-WAZUH"
+    action :create
+    not_if do
+      File.exists?("/etc/zypp/repos.d/wazuh.repo")
+    end
   end
 else
   raise "Currently platforn not supported yet. Feel free to open an issue on https://www.github.com/wazuh/wazuh-chef if you consider that support for a specific OS should be added"

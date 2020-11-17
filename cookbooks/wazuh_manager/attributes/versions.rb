@@ -1,1 +1,1 @@
-default['wazuh-manager']['version'] = "3.13.2"
+default['wazuh-manager']['version'] = "4.0.1"

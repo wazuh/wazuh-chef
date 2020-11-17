@@ -7,6 +7,12 @@
 
 Deploy the Wazuh platform using Chef cookbooks. Chef recipes are prepared for installing and configuring Agent, Manager (cluster) and RESTful API.
 
+## Compatibility Matrix
+
+| Wazuh version | Elastic | ODFE   |
+|---------------|---------|--------|
+| v4.0.1        | -       | v1.11.0|
+
 ## Dependencies
 
 Every cookbook will install its own required dependencies, *Berksfile* and *metadata.rb* contains all the information about which dependencies will be installed.
@@ -149,6 +155,13 @@ In order to do so, it's only needed to assign the value `yes` to the variable ` 
 
 ```
 default['ossec']['agent_auth']['register'] = 'yes'
+```
+
+To connect an agent with the manager simply modify the `wazuh-chef/roles/wazuh_agent.json` with the desired IP address:
+
+```
+"registration_address": "<YOUR REGISTRATION IP ADDRESS>",
+"address": "<YOUR MANAGER IP ADDRESS>"
 ```
 
 In other case, we just assign a different value which is not `yes`.
