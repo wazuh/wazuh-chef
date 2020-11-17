@@ -1,5 +1,5 @@
 ## v0.1.0
-1. Bump to wazuh 4.0.0 version
+1. Bump to wazuh 4.0.1 version
 2. Added suse repository
 ## v0.0.9
 Amazon Linux OS included in repository.rb

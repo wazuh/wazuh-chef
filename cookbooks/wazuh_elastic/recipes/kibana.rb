@@ -45,7 +45,7 @@ end
 bash 'Install the Wazuh Kibana plugin' do
   code <<-EOH
     cd /usr/share/kibana
-    sudo -u kibana bin/kibana-plugin install https://packages.wazuh.com/4.x/ui/kibana/wazuh_kibana-4.0.0_7.9.1-1.zip
+    sudo -u kibana bin/kibana-plugin install https://packages.wazuh.com/4.x/ui/kibana/#{node['wazuh-elastic']['wazuh_app_version']}-1.zip
   EOH
 end
 
