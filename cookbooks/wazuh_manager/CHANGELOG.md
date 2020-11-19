@@ -1,3 +1,5 @@
+## v0.1.1
+1. Included filebeat into manager cookbook
 ## v0.1.0
 1. Bump to wazuh 4.0.1 version
 2. Added suse repository
