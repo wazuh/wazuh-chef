@@ -28,7 +28,7 @@ if platform_family?('ubuntu', 'debian')
 
   apt_repository 'wazuh' do
     key 'https://packages.wazuh.com/key/GPG-KEY-WAZUH'
-    uri 'http://packages.wazuh.com/4.x/apt/'
+    uri "http://packages.wazuh.com/#{node['packages.wazuh.com']['version']}/apt/"
     components ['main']
     distribution 'stable'
     action :add
@@ -41,7 +41,7 @@ elsif platform_family?('rhel','redhat', 'centos', 'amazon')
     gpgcheck true
     gpgkey 'https://packages.wazuh.com/key/GPG-KEY-WAZUH'
     enabled true 
-    baseurl 'https://packages.wazuh.com/4.x/yum'
+    baseurl "https://packages.wazuh.com/#{node['packages.wazuh.com']['version']}/yum"
     action :create
   end
 elsif platform_family?('suse')
@@ -50,7 +50,7 @@ elsif platform_family?('suse')
     gpgcheck true
     gpgkey 'https://packages.wazuh.com/key/GPG-KEY-WAZUH'
     enabled true 
-    baseurl 'https://packages.wazuh.com/4.x/yum'
+    baseurl "https://packages.wazuh.com/#{node['packages.wazuh.com']['version']}/yum"
     action :create
   end
 else
