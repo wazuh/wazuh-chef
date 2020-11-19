@@ -20,12 +20,21 @@ if platform_family?('debian','ubuntu')
     end
   end
 elsif platform_family?('rhel', 'redhat', 'centos', 'amazon')
-  yum_package 'filebeat' do
-    version "#{node['filebeat']['version']}"
-    only_if do
-      File.exists?("/etc/yum.repos.d/wazuh.repo")
+  if node['platform'] == 'rhel' && node['platform_version'] >= '8'
+    dnf_package 'filebeat' do
+      version "#{node['filebeat']['version']}"
+      only_if do
+        File.exists?("/etc/yum.repos.d/wazuh.repo")
+      end
     end
-  end
+  else
+    yum_package 'filebeat' do
+      version "#{node['filebeat']['version']}"
+      only_if do
+        File.exists?("/etc/yum.repos.d/wazuh.repo")
+      end
+    end
+  end 
 elsif platform_family?('suse')
   yum_package 'filebeat' do
     version "#{node['filebeat']['version']}"
@@ -38,35 +47,33 @@ else
 end
 
 # Edit the file /etc/filebeat/filebeat.yml
-=begin
+
 template node['filebeat']['config_path'] do
   source 'filebeat.yml.erb'
   owner 'root'
   group 'root'
   mode '0640'
-  variables(output_elasticsearch_hosts: "hosts: [\"#{node['filebeat']['elasticsearch_server_ip']}:#{node['filebeat']['elasticsearch_server_port']}\"]")
+  variables(
+    output_elasticsearch_hosts: node['filebeat']['yml']['output_elasticsearch_hosts'],                                              
+    output_elasticsearch_protocol: node['filebeat']['yml']['output_elasticsearch_protocol'],   
+    output_elasticsearch_username: node['filebeat']['yml']['output_elasticsearch_username'],   
+    output_elasticsearch_password: node['filebeat']['yml']['output_elasticsearch_password'],   
+    ssl_certificate_authorities: node['filebeat']['yml']['ssl_certificate_authorities'], 
+    ssl_certificate: node['filebeat']['yml']['ssl_certificate'], 
+    ssl_key: node['filebeat']['yml']['ssl_key'], 
+    setup_template_json_enabled: node['filebeat']['yml']['setup_template_json_enabled'], 
+    setup_template_json_path: node['filebeat']['yml']['setup_template_json_path'],
+    setup_template_json_name: node['filebeat']['yml']['setup_template_json_name'], 
+    setup_ilm_overwrite: node['filebeat']['yml']['setup_ilm_overwrite'], 
+    setup_ilm_enabled: node['filebeat']['yml']['setup_ilm_enabled'], 
+    filebeat_modules_module: node['filebeat']['yml']['filebeat_modules_module'], 
+    filebeat_modules_alerts_enabled: node['filebeat']['yml']['filebeat_modules_alerts_enabled'], 
+    filebeat_modules_archives_enabled: node['filebeat']['yml']['filebeat_modules_archives_enabled'] 
+  )
 end
-
-yaml_file "#{node['filebeat']['config_path']}" do
-    owner 'root'
-    group 'root'
-    mode '0640'
-    content node['filebeat']['yml']
-end
-=end
-file "#{node['filebeat']['config_path']}" do
-  owner 'root'
-  group 'root'
-  mode '0640'
-
-  content lazy {
-    {node['filebeat']['yml']}.to_yaml
-  }
-  
-end
-
 
 # Download the alerts template for Elasticsearch:
+
 remote_file "/etc/filebeat/#{node['filebeat']['wazuh_template']}" do
     source "https://raw.githubusercontent.com/wazuh/wazuh/#{node['wazuh']['version']}/extensions/elasticsearch/#{node['elastic']['version']}/#{node['filebeat']['wazuh_template']}"
     owner "root"

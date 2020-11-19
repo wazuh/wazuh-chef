@@ -24,8 +24,14 @@ if platform_family?('ubuntu', 'debian')
     version "#{node['wazuh-manager']['version']}-1"
   end
 elsif platform_family?('redhat', 'rhel','centos', 'amazon')
-  yum_package 'wazuh-manager' do
-    version "#{node['wazuh-manager']['version']}-1"
+  if node['platform'] == 'rhel' && node['platform_version'] >= '8'
+    dnf_package 'wazuh-manager' do
+      version "#{node['wazuh-manager']['version']}-1"
+    end
+  else
+    yum_package 'wazuh-manager' do
+      version "#{node['wazuh-manager']['version']}-1"
+    end
   end
 elsif platform_family?('suse')
   zypper_package 'wazuh-manager' do
