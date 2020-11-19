@@ -1,11 +1,14 @@
 # Syscheck settings
-default['ossec']['conf']['syscheck']['disabled'] = false
-default['ossec']['conf']['syscheck']['frequency'] = 43200
-default['ossec']['conf']['syscheck']['scan_on_start'] = true
-default['ossec']['conf']['syscheck']['auto_ignore'] = [
-    { '@frequency' => '10', '@timeframe' => '3600', 'content!' => false }
-] 
-default['ossec']['conf']['syscheck']['ignore'] = [
+default['ossec']['conf']['syscheck'] = {
+  'disabled' => false,
+  'frequency' => 43200,
+  'scan_on_start' => true,
+  'auto_ignore' => {
+    '@frequency' => '10', 
+    '@timeframe' => '3600', 
+    'content!' => false 
+  }, 
+  'ignore' => [
     '/etc/mtab',
     '/etc/hosts.deny',
     '/etc/mail/statistics',
@@ -23,18 +26,19 @@ default['ossec']['conf']['syscheck']['ignore'] = [
     '/dev/core',
     { '@type' => 'sregex', 'content!' => '^/proc' },
     { '@type' => 'sregex', 'content!' => '.log$|.swp$'}
-]
-
-default['ossec']['conf']['syscheck']['directories'] = [
-  { '@check_all' => true, 'content!' => '/etc,/usr/bin,/usr/sbin' },
-  { '@check_all' => true, 'content!' => '/bin,/sbin,/boot' }
-]
-
-default['ossec']['conf']['syscheck']['nodiff'] = '/etc/ssl/private.key'
-default['ossec']['conf']['syscheck']['skip_nfs'] = true
-default['ossec']['conf']['syscheck']['max_eps'] = 100
-default['ossec']['conf']['syscheck']['process_priority'] = 10
-default['ossec']['conf']['syscheck']['synchronization']['enabled'] = 'yes'
-default['ossec']['conf']['syscheck']['synchronization']['interval'] = '5m'
-default['ossec']['conf']['syscheck']['synchronization']['max_interval'] = '1h'
-default['ossec']['conf']['syscheck']['synchronization']['max_eps'] = '10'
+  ],
+  'directories' => [
+    { '@check_all' => true, 'content!' => '/etc,/usr/bin,/usr/sbin' },
+    { '@check_all' => true, 'content!' => '/bin,/sbin,/boot' }
+  ],
+  'nodiff' => '/etc/ssl/private.key',
+  'skip_nfs' => true,
+  'max_eps' => 100,
+  'process_priority' => 10,
+  'synchronization' => {
+    'enabled' => 'yes',
+    'interval' => '5m',
+    'max_interval' => '1h',
+    'max_eps' => '10'
+  }
+}

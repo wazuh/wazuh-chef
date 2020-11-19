@@ -1,10 +1,14 @@
 # Cluster settings
-default['ossec']['conf']['cluster']['name'] = 'wazuh'
-default['ossec']['conf']['cluster']['node_name'] = 'node01'
-default['ossec']['conf']['cluster']['node_type'] = 'master'
-default['ossec']['conf']['cluster']['key'] = ''
-default['ossec']['conf']['cluster']['port'] = 1516
-default['ossec']['conf']['cluster']['bind_addr'] = '0.0.0.0'
-default['ossec']['conf']['cluster']['nodes']['node'] = "NODE_IP"
-default['ossec']['conf']['cluster']['hidden'] = 'no'
-default['ossec']['conf']['cluster']['disabled'] = 'yes'
+default['ossec']['conf']['cluster'] = {
+    'name' => 'wazuh',
+    'node_name' => 'node01',
+    'node_type' => 'master',
+    'key' => '',
+    'port' => 1516,
+    'bind_addr' => '0.0.0.0',
+    'nodes' => {
+        'node' => "NODE_IP"
+    },
+    'hidden' => 'no',
+    'disabled' => 'yes'
+}
