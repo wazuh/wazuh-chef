@@ -1,21 +1,27 @@
-# Wazuh Manager cookbook
+# Wazuh Server cookbook
 
-This cookbook installs and configure Wazuh Manager and API on specified nodes.
+This cookbook installs and configure Wazuh Manager, API and Filebeat on specified nodes.
 
-### Attributes
+### Attributes 
 
-The ``attributes`` folder contains all the default configuration files in order to generate ossec.conf file.
+* ``filebeat.rb`` contains configuration variables and filebeat.yml content
+* ``versions.rb`` contains version attributes to make it easier when it comes to bump version
+* The rest of files contains all the default configuration files in order to generate ossec.conf 
 
-Check ['ossec.conf']( https://documentation.wazuh.com/3.x/user-manual/reference/ossec-conf/index.html) documentation to see all configuration sections.
+
+Check ['Filebeat section'](https://raw.githubusercontent.com/wazuh/wazuh-documentation/4.0/resources/open-distro/filebeat/7.x/filebeat.yml) to see an example of Filebeat configuration.
+
+Check ['ossec.conf'](https://documentation.wazuh.com/4.0/user-manual/reference/ossec-conf/) documentation
+to see all configuration sections.
 
 ### Installation
 
-Create a role, `wazuh_manager`. Add attributes per above as needed to customize the installation.
+Create a role, `wazuh_server`. Add attributes per above as needed to customize the installation.
 
 ```
   {
-    "name": "wazuh_manager",
-    "description": "Wazuh Manager host",
+    "name": "wazuh_server",
+    "description": "Wazuh Server host",
     "json_class": "Chef::Role",
     "default_attributes": {
 
@@ -25,7 +31,7 @@ Create a role, `wazuh_manager`. Add attributes per above as needed to customize 
     },
     "chef_type": "role",
     "run_list": [
-      "recipe[wazuh::manager]"
+      "recipe[wazuh_server::default]"
     ],
     "env_run_lists": {
 
@@ -35,12 +41,10 @@ Create a role, `wazuh_manager`. Add attributes per above as needed to customize 
 
 If you want to build a Wazuh cluster, you need to create two roles, one role for the **Master** and another one for **Client**:
 
-**Note**: This Chef cookbook only brings compatibility with **CentOS 7**, we are working on add more distributions soon.
-
 ```
   {
-    "name": "wazuh_manager_master",
-    "description": "Wazuh Manager master node",
+    "name": "wazuh_server_master",
+    "description": "Wazuh Server master node",
     "json_class": "Chef::Role",
     "default_attributes": {
 
@@ -63,15 +67,15 @@ If you want to build a Wazuh cluster, you need to create two roles, one role for
     },
     "chef_type": "role",
     "run_list": [
-      "recipe[wazuh::manager]"
+      "recipe[wazuh_server::default]"
     ],
     "env_run_lists": {
 
     }
   }
   {
-    "name": "wazuh_manager_client",
-    "description": "Wazuh Manager client node",
+    "name": "wazuh_server_client",
+    "description": "Wazuh Server client node",
     "json_class": "Chef::Role",
     "default_attributes": {
 
@@ -94,7 +98,7 @@ If you want to build a Wazuh cluster, you need to create two roles, one role for
     },
     "chef_type": "role",
     "run_list": [
-      "recipe[wazuh::manager]"
+      "recipe[wazuh_server::default]"
     ],
     "env_run_lists": {
 
@@ -102,7 +106,7 @@ If you want to build a Wazuh cluster, you need to create two roles, one role for
   }
 ```
 
-Check cluster documentation for more details: <https://documentation.wazuh.com/current/user-manual/manager/wazuh-cluster.html>
+Check [cluster documentation](https://documentation.wazuh.com/4.0/user-manual/configuring-cluster/index.html) for more details
 
 ### Recipes
 
@@ -110,6 +114,9 @@ Check cluster documentation for more details: <https://documentation.wazuh.com/c
 
 Installs the wazuh-manager and required dependencies. Also creates the *local_rules.xml* and *local_decoder.xml* files.
 
+#### filebeat.yml
+
+Install the package Filebeats, create the configuration of */etc/filebeat/filebeat.yml* with defined attributes in the ```attributes``` folder.
 #### common.rb
 
 Generates the ossec.conf file using Gyoku.
@@ -120,5 +127,4 @@ Declares wazuh repository and gpg key urls.
 
 ### References
 
-Check https://documentation.wazuh.com/current/user-manual/manager/index.html for more information about Wazuh Manager.
-
+Check [Wazuh server administration](https://documentation.wazuh.com/4.0/user-manual/manager/index.html) for more information about Wazuh Server.
