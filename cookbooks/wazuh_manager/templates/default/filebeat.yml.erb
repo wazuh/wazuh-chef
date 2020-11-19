@@ -1,22 +1,26 @@
 # Wazuh - Filebeat configuration file
 output.elasticsearch:
-  hosts: [<%= @output_elasticsearch_hosts %>]
-  protocol: [<%= @output_elasticsearch_protocol %>]
-  username: [<%= @output_elasticsearch_username %>]
-  password: [<%= @output_elasticsearch_password %>]
+  hosts: [
+    <% @output_elasticsearch_hosts.each do |ip, port| -%>
+      "<%= ip %>:<%= port %>",
+    <% end -%>
+  ]
+  protocol: <%= @output_elasticsearch_protocol %>
+  username: <%= @output_elasticsearch_username %>
+  password: <%= @output_elasticsearch_password %>
   ssl.certificate_authorities:
-    - [<%= @ssl_certificate_authorities %>]
-  ssl.certificate: [<%= @ssl_certificate %>]
-  ssl.key: [<%= @ssl_key %>]
-setup.template.json.enabled: [<%= @setup_template_json_enabled %>]
-setup.template.json.path: [<%= @setup_template_json_path %>]
-setup.template.json.name: [<%= @setup_template_json_name %>]
-setup.ilm.overwrite: [<%= @setup_ilm_overwrite %>]
-setup.ilm.enabled: [<%= @setup_ilm_enabled %>]
+    - <%= @ssl_certificate_authorities %>
+  ssl.certificate: <%= @ssl_certificate %>
+  ssl.key: <%= @ssl_key %>
+setup.template.json.enabled: <%= @setup_template_json_enabled %>
+setup.template.json.path: <%= @setup_template_json_path %>
+setup.template.json.name: <%= @setup_template_json_name %>
+setup.ilm.overwrite: <%= @setup_ilm_overwrite %>
+setup.ilm.enabled: <%= @setup_ilm_enabled %>
 
 filebeat.modules:
-  - module: [<%= @filebeat_modules_module %>]
+  - module: <%= @filebeat_modules_module %>
     alerts:
-      enabled: [<%= @filebeat_modules_alerts_enabled %>]
+      enabled: <%= @filebeat_modules_alerts_enabled %>
     archives:
-      enabled: [<%= @filebeat_modules_module %>]
+      enabled: <%= @filebeat_modules_archives_enabled %>
