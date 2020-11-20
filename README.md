@@ -21,7 +21,7 @@ There is software that must be installed to ensure the correct installation.
 
 ## Chef 
 
-Chef gives plenty of software packages solution deppending on how you want to distribute the software. Please
+Chef gives plenty of software packages solution depending on how you want to distribute the software. Please
 refer to the [platform overview documentation](https://docs.chef.io/platform_overview/) to know
 all the software products they have.
 
@@ -30,7 +30,7 @@ all the software products they have.
 * [Wazuh Agent ](https://github.com/wazuh/wazuh-chef/tree/master/wazuh_agent)
 * [Wazuh Server (Manager, API and Filebeat)](https://github.com/wazuh/wazuh-chef/tree/master/wazuh_server)
 * [Elasticsearch](https://github.com/wazuh/wazuh-chef/tree/master/wazuh_elastic)
-* [Kibana](https://github.com/wazuh/wazuh-chef/tree/master/wazuh_kibana)
+* Kibana (*future version*)
 
 Each cookbook has its README.md
 
