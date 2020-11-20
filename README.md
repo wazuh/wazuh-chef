@@ -19,16 +19,18 @@ Every cookbook will install its own required dependencies, *Berksfile* and *meta
 
 There is software that must be installed to ensure the correct installation.
 
-- Curl
-- Wget
-- Chef Server Core v12.19.31
+## Chef 
+
+Chef gives plenty of software packages solution deppending on how you want to distribute the software. Please
+refer to the [platform overview documentation](https://docs.chef.io/platform_overview/) to know
+all the software products they have.
 
 ## Cookbooks
 
 * [Wazuh Agent ](https://github.com/wazuh/wazuh-chef/tree/master/wazuh_agent)
-* [Wazuh Manager and API](https://github.com/wazuh/wazuh-chef/tree/master/wazuh_manager)
-* [Elastic Stack (Elasticsearch, Kibana)](https://github.com/wazuh/wazuh-chef/tree/master/wazuh_elastic)
-* [Filebeat](https://github.com/wazuh/wazuh-chef/tree/master/wazuh_filebeat)
+* [Wazuh Server (Manager, API and Filebeat)](https://github.com/wazuh/wazuh-chef/tree/master/wazuh_server)
+* [Elasticsearch](https://github.com/wazuh/wazuh-chef/tree/master/wazuh_elastic)
+* [Kibana](https://github.com/wazuh/wazuh-chef/tree/master/wazuh_kibana)
 
 Each cookbook has its README.md
 
@@ -37,7 +39,9 @@ Each cookbook has its README.md
 You can find predefined roles for a default installation of Wazuh Agent and Manager in the roles folder.
 
 - [Wazuh Agent Role](https://github.com/wazuh/wazuh-chef/tree/master/roles/wazuh_agent.json)
-- [Wazuh Manager Role](https://github.com/wazuh/wazuh-chef/tree/master/roles/wazuh_agent.json)
+- [Wazuh Server Role](https://github.com/wazuh/wazuh-chef/tree/master/roles/wazuh_server.json)
+- [Wazuh Elastic Role](https://github.com/wazuh/wazuh-chef/tree/master/roles/wazuh_elastic.json)
+- [Wazuh Kibana Role](https://github.com/wazuh/wazuh-chef/tree/master/roles/wazuh_kibana.json)
 
 Check roles README for more information about default attributes and how to customize your installation.
 
@@ -49,12 +53,12 @@ You can clone the repository by running: ```git clone https://github.com/wazuh/w
 
 #### Use through Berkshelf
 
-The easiest way to making use of these cookbooks (especially `wazuh_filebeat` & `wazuh_elastic` until they are published to Supermarket) is by including in your `Berksfile` the desired cookbooks as stated below:
+The easiest way to making use of these cookbooks  is by including in your `Berksfile` the desired cookbooks as stated below:
 
 ```ruby
-cookbook "wazuh_agent", git: "https://github.com/wazuh/wazuh-chef.git",rel: 'cookbooks/wazuh_agent'
-cookbook "wazuh_manager", git: "https://github.com/wazuh/wazuh-chef.git",rel: 'cookbooks/wazuh_manager'
-cookbook 'wazuh_filebeat', github: 'https://github.com/wazuh/wazuh-chef.git', rel: 'cookbooks/wazuh_filebeat'
+cookbook "wazuh_agent", git: "https://github.com/wazuh/wazuh-chef.git", rel: 'cookbooks/wazuh_agent'
+cookbook "wazuh_server", git: "https://github.com/wazuh/wazuh-chef.git", rel: 'cookbooks/wazuh_manager'
+cookbook 'wazuh_kibana', github: 'https://github.com/wazuh/wazuh-chef.git', rel: 'cookbooks/wazuh_kibana'
 cookbook 'wazuh_elastic', github: 'https://github.com/wazuh/wazuh-chef.git', rel: 'cookbooks/wazuh_elastic'
 ```
 
@@ -136,35 +140,17 @@ After that, the vault will be created and synced with the server. The defined no
 
 You can check Chef Official Documentation about [Chef Vault](https://docs.chef.io/chef_vault.html) for detailed info.
 
-## Use through Berkshelf
-
-The easiest way to making use of these cookbooks (especially `wazuh_filebeat` & `wazuh_elastic` until they are published to Supermarket) is by including in your `Berksfile` something like the below:
-
-```ruby
-cookbook 'wazuh', gitHub: 'wazuh/wazuh-chef', rel: 'wazuh'
-cookbook 'wazuh_filebeat', gitHub: 'wazuh/wazuh-chef', rel: 'wazuh_filebeat'
-cookbook 'wazuh_elastic', gitHub: 'wazuh/wazuh-chef', rel: 'wazuh_elastic'
-```
-
-This will source all three cookbooks housed in this repo from GitHub.
-
 ## Choose to register an agent into a manager or not
 Now we give the possibility to choose to register an agent after being configured and installed in a manager. 
 
-In order to do so, it's only needed to assign the value `yes` to the variable ` default['ossec']['agent_auth']['register'] ` in the attributes file_ ` wazuh-chef/cookbooks/wazuh_agent/attributes/authd.rb `:
+To connect an agent with the manager simply modify the `wazuh-chef/roles/wazuh_agent.json` with the 
+manager IP address:
 
 ```
-default['ossec']['agent_auth']['register'] = 'yes'
-```
-
-To connect an agent with the manager simply modify the `wazuh-chef/roles/wazuh_agent.json` with the desired IP address:
-
-```
-"registration_address": "<YOUR REGISTRATION IP ADDRESS>",
 "address": "<YOUR MANAGER IP ADDRESS>"
 ```
 
-In other case, we just assign a different value which is not `yes`.
+Since Wazuh 4.0, by default, the agent registers automatically with the manager through enrollment. Configuration details can be found on [Enrollment section](https://documentation.wazuh.com/4.0/user-manual/reference/ossec-conf/client.html#reference-ossec-client).
 
 ## Contribute
 
