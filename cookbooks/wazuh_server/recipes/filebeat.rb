@@ -19,8 +19,8 @@ if platform_family?('debian','ubuntu')
       File.exists?("/etc/apt/sources.list.d/wazuh.list")
     end
   end
-elsif platform_family?('rhel', 'redhat', 'centos', 'amazon')
-  if node['platform'] == 'rhel' && node['platform_version'] >= '8'
+elsif platform_family?('rhel', 'redhat', 'centos')
+  if node['platform_version'] >= '8'
     dnf_package 'filebeat' do
       version "#{node['filebeat']['version']}"
       only_if do

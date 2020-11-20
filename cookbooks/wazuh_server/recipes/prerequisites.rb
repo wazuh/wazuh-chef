@@ -11,8 +11,8 @@ if platform_family?('debian','ubuntu')
     
     apt_package %w(curl apt-transport-https)
 
-elsif platform_family?('rhel', 'redhat', 'centos', 'amazon')
-    if node['platform'] == 'rhel' && node['platform_version'] >= '8'
+elsif platform_family?('rhel', 'redhat', 'centos')
+    if node['platform_version'] >= '8'
         dnf_package 'curl'
     else
         yum_package 'curl' 

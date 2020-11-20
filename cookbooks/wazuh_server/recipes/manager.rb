@@ -23,8 +23,8 @@ if platform_family?('ubuntu', 'debian')
   apt_package 'wazuh-manager' do
     version "#{node['wazuh-manager']['version']}-1"
   end
-elsif platform_family?('redhat', 'rhel','centos', 'amazon')
-  if node['platform'] == 'rhel' && node['platform_version'] >= '8'
+elsif platform_family?('redhat', 'rhel','centos')
+  if node['platform_version'] >= '8'
     dnf_package 'wazuh-manager' do
       version "#{node['wazuh-manager']['version']}-1"
     end

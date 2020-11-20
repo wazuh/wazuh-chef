@@ -1,5 +1,6 @@
 ## v0.1.1
 1. Included filebeat into manager cookbook
+2. Change cookbook name from wazuih_manager to wazuh_server
 ## v0.1.0
 1. Bump to wazuh 4.0.1 version
 2. Added suse repository

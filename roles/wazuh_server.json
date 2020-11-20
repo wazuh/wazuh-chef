@@ -1,6 +1,6 @@
 {
-    "name": "wazuh_manager",
-    "description": "Wazuh Manager host",
+    "name": "wazuh_server",
+    "description": "Wazuh Server host",
     "json_class": "Chef::Role",
     "default_attributes": {
 
@@ -10,7 +10,7 @@
     },
     "chef_type": "role",
     "run_list": [
-      "recipe[wazuh_manager::default]"
+      "recipe[wazuh_server::default]"
     ],
     "env_run_lists": {
 
