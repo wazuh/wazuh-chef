@@ -19,7 +19,7 @@ These cookbooks don't configure Windows systems yet. For manual agent installati
 - yum
 - poise-python
 
-Attributes for Agent and Manager
+Attributes
 ----------
 
 All default attributes files are defined in the ```attributes/``` folder of each cookbook. Chef applies attributes from all attribute files regardless of which recipes were executed. It's important to mention that Chef will load ```default.rb``` first and then will proceed alphabetically. 
@@ -52,7 +52,7 @@ This produces:
 
 If you want to add new fields to customize your installation, you can declare it as a default attribute in its respective .rb file in the attributes folder or add it manually to the role.
 
-For example: To enable cluster configuration, the following lane would be added to ```/cookbooks/wazuh_manager/attributes/cluster.rb ```.
+For example: To enable cluster configuration, the following lane would be added to ```/cookbooks/wazuh_server/attributes/cluster.rb ```.
 
 `````` ruby
 default['ossec']['conf']['cluster']['disabled'] == false
@@ -100,8 +100,8 @@ In case you want to customize your installation using roles, you can declare att
 
 ```json
 {
-    "name": "wazuh_manager",
-    "description": "Wazuh Manager host",
+    "name": "wazuh_server",
+    "description": "Wazuh Server host",
     "json_class": "Chef::Role",
     "default_attributes": {
         "ossec": {
@@ -115,7 +115,7 @@ In case you want to customize your installation using roles, you can declare att
     },
     "chef_type": "role",
     "run_list": [
-      "recipe[wazuh_manager::manager]"
+      "recipe[wazuh_server::manager]"
     ],
     "env_run_lists": {
 
@@ -127,11 +127,9 @@ The same example applies for Wazuh Agent and it's own attributes.
 
 You can get more info about attributes and how the work on the chef documentation: https://docs.chef.io/attributes.html
 
-
-
 ### Centralized Configuration
 
-You can configure your Wazuh [Centralized Configuration](https://documentation.wazuh.com/3.9/user-manual/reference/centralized-configuration.html#centralized-configuration-process) with Chef.
+You can configure your Wazuh [Centralized Configuration](https://documentation.wazuh.com/4.0/user-manual/reference/centralized-configuration.html#centralized-configuration-process) with Chef.
 
 In order to achieve this, the following steps are required:
 
@@ -139,12 +137,10 @@ In order to achieve this, the following steps are required:
 
 The easiest way to achieve this is to modify the Wazuh Manager attributes in the role
 
-
-
 ```
 {
-    "name": "wazuh_manager",
-    "description": "Wazuh Manager host",
+    "name": "wazuh_server",
+    "description": "Wazuh Server host",
     "json_class": "Chef::Role",
     "default_attributes": {
         "ossec": {
@@ -159,7 +155,7 @@ The easiest way to achieve this is to modify the Wazuh Manager attributes in the
     },
     "chef_type": "role",
     "run_list": [
-      "recipe[wazuh_manager::manager]"
+      "recipe[wazuh_server::manager]"
     ],
     "env_run_lists": {
 
@@ -167,11 +163,7 @@ The easiest way to achieve this is to modify the Wazuh Manager attributes in the
   }
 ```
 
-
-
 This, will render all `['ossec']['centralized_configuration']['conf']['agent_config']` variables and convert them to XML using Gyoku
-
-
 
 For example, the following attribute:
 
@@ -186,8 +178,6 @@ default['ossec']['centralized_configuration']['conf']['agent_config']= [
 ]
 ```
 
-
-
 Generates this XML in the `agent.conf` file:
 
 ```xml
@@ -198,8 +188,3 @@ Generates this XML in the `agent.conf` file:
     </localfile>
 </agent_config>
 ```
-
-
-
-Please check our Documentation about [Wazuh Centralized Configuration](https://documentation.wazuh.com/3.9/user-manual/reference/centralized-configuration.html#centralized-configuration-process) for detailed information.
-
