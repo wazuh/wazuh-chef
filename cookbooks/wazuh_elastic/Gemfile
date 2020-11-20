@@ -17,3 +17,5 @@ end
 group :kitchen_vagrant do
   gem 'kitchen-vagrant', '~> 0.19'
 end
+
+gem 'psych', '~> 3.2'

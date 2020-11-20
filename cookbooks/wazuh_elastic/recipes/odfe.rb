@@ -41,82 +41,70 @@ else
 end
 
 # Set up opendistro for elasticsearch configuration file
-
-template '/etc/elasticsearch/elasticsearch.yml' do
+template "#{node['wazuh-elastic']['config_path']}/elasticsearch.yml" do
   source 'od_elasticsearch.yml.erb'
   owner 'root'
   group 'elasticsearch'
   mode '0660'
-  variables (content: 
-    network_host: "network.host: #{node['wazuh-elastic']['elasticsearch_ip']}",
-    node_name: "node.name: #{node['wazuh-elastic']['elasticsearch_node_name']}",
-    cluster_initial_master_nodes: "cluster.initial_master_nodes: #{node['wazuh-elastic']['elasticsearch_cluster_initial_master_nodes']}",
-    path_data: "path.data: #{node['wazuh-elastic']['elasticsearch_path_data']}",
-    path_logs: "path.logs: #{node['wazuh-elastic']['elasticsearch_path_logs']}",
-  })
+  variables (content: Psych.dump(node['odfe']['yml']))
 end
 
-remote_file '/usr/share/elasticsearch/plugins/opendistro_security/securityconfig/roles.yml' do
-  source 'https://raw.githubusercontent.com/wazuh/wazuh-documentation/4.0/resources/open-distro/elasticsearch/roles/roles.yml'
+remote_file "#{node['wazuh-elastic']['plugins_path']}/opendistro_security/securityconfig/roles.yml" do
+  source "https://raw.githubusercontent.com/wazuh/wazuh-documentation/#{node['wazuh']['version']}/resources/open-distro/elasticsearch/roles/roles.yml"
 end
 
-remote_file '/usr/share/elasticsearch/plugins/opendistro_security/securityconfig/roles_mapping.yml' do
-  source 'https://raw.githubusercontent.com/wazuh/wazuh-documentation/4.0/resources/open-distro/elasticsearch/roles/roles_mapping.yml'
+remote_file "#{node['wazuh-elastic']['plugins_path']}/opendistro_security/securityconfig/roles_mapping.yml" do
+  source "https://raw.githubusercontent.com/wazuh/wazuh-documentation/#{node['wazuh']['version']}/resources/open-distro/elasticsearch/roles/roles_mapping.yml"
 end
 
-remote_file '/usr/share/elasticsearch/plugins/opendistro_security/securityconfig/internal_users.yml' do
-  source 'https://raw.githubusercontent.com/wazuh/wazuh-documentation/4.0/resources/open-distro/elasticsearch/roles/internal_users.yml'
+remote_file "#{node['wazuh-elastic']['plugins_path']}/opendistro_security/securityconfig/internal_users.yml" do
+  source "https://raw.githubusercontent.com/wazuh/wazuh-documentation/#{node['wazuh']['version']}/resources/open-distro/elasticsearch/roles/internal_users.yml"
 end
 
 # Certificates creation and deployment
 
 execute 'Remove the demo certificates' do
-  command 'rm /etc/elasticsearch/esnode-key.pem /etc/elasticsearch/esnode.pem /etc/elasticsearch/kirk-key.pem /etc/elasticsearch/kirk.pem /etc/elasticsearch/root-ca.pem -f'
+  command "rm #{node['wazuh-elastic']['config_path']}/esnode-key.pem #{node['wazuh-elastic']['config_path']}/esnode.pem #{node['wazuh-elastic']['config_path']}/kirk-key.pem #{node['wazuh-elastic']['config_path']}/kirk.pem #{node['wazuh-elastic']['config_path']}/root-ca.pem -f"
 end
 
-directory '/etc/elasticsearch/certs' do
+directory "#{node['wazuh-elastic']['config_path']}/certs" do
   action :create
 end
 
-remote_file '/tmp/search-guard-tlstool-1.8.zip' do
-  source 'https://maven.search-guard.com/search-guard-tlstool/1.8/search-guard-tlstool-1.8.zip'
+directory "#{node['search_guard']['config_path']}" do
+  action :create
 end
 
-archive_file 'search-guard-tlstool-1.8.zip' do
-  path '/tmp/search-guard-tlstool-1.8.zip'
-  destination '/tmp/searchguard'
+remote_file "/tmp/#{node['search_guard']['tls_tool']}" do
+  source "https://maven.search-guard.com/search-guard-tlstool/#{node['search_guard']['version']}/#{node['odfe']['search_guard_tls_tool']}"
 end
 
-# --------------Wazuh single-node cluster--------------
+archive_file "#{node['search_guard']['tls_tool']}" do
+  path "/tmp/#{node['odfe']['search_guard_tls_tool']}"
+  destination "#{node['search_guard']['config_path']}"
+end
 
-template '/tmp/searchguard/search-guard.yml' do
+template "#{node['search_guard']['config_path']}/search-guard.yml" do
   source 'search-guard.yml.erb'
   owner 'root'
   group 'elasticsearch'
   mode '0660'
-  variables ({
-    elasticsearch_ip: "#{node['wazuh-elastic']['elasticsearch_ip']}",
-    kibana_ip: "#{node['wazuh-elastic']['kibana_server_host']}"
-  })
+  variables (content: Psych.dump(node['search_guard']['yml'])) 
 end
 
-# --------------Wazuh multi-node cluster--------------
-# ToDO
-# ----------------------------------------------------
-
 execute 'Run the Search Guard’s script to create the certificates' do
-  command "/tmp/searchguard/tools/sgtlstool.sh -c /tmp/searchguard/search-guard.yml -ca -crt -t /etc/elasticsearch/certs/"
+  command "#{node['search_guard']['config_path']}/tools/sgtlstool.sh -c #{node['search_guard']['config_path']}/search-guard.yml -ca -crt -t #{node['wazuh-elastic']['config_path']}/certs/"
 end
 
 bash 'Compress all the necessary files to be sent to the all the instances' do
   code <<-EOF
-    cd /etc/elasticsearch/certs 
+    cd #{node['wazuh-elastic']['config_path']}/certs 
     tar -cf certs.tar *
   EOF
 end
 
 execute 'Remove unnecessary files' do
-  command "rm /etc/elasticsearch/certs/client-certificates.readme /etc/elasticsearch/certs/elasticsearch_elasticsearch_config_snippet.yml /tmp/search-guard-tlstool-1.7.zip -f"
+  command "rm #{node['wazuh-elastic']['config_path']}/certs/client-certificates.readme #{node['wazuh-elastic']['config_path']}/certs/elasticsearch_elasticsearch_config_snippet.yml /tmp/#{node['search_guard']['tls_tool']} -f"
 end
 
 # Configure Filebeat certificates
@@ -124,7 +112,7 @@ end
 bash 'Configure Filebeat certificates' do
   code <<-EOH
     mkdir /etc/filebeat/certs
-    cp /etc/elasticsearch/certs/certs.tar /etc/filebeat/certs/
+    cp #{node['wazuh-elastic']['config_path']}/certs/certs.tar /etc/filebeat/certs/
     cd /etc/filebeat/certs/
     tar --extract --file=certs.tar filebeat.pem filebeat.key root-ca.pem
     rm certs.tar
@@ -153,7 +141,7 @@ end
 
 bash 'Verify Elasticsearch folders owner' do
   code <<-EOF
-    chown elasticsearch:elasticsearch -R /etc/elasticsearch
+    chown elasticsearch:elasticsearch -R #{node['wazuh-elastic']['config_path']}
     chown elasticsearch:elasticsearch -R /usr/share/elasticsearch
     chown elasticsearch:elasticsearch -R /var/lib/elasticsearch
   EOF
@@ -161,7 +149,7 @@ bash 'Verify Elasticsearch folders owner' do
 end
 
 execute 'Run the Elasticsearch’s securityadmin script' do
-  command  "/usr/share/elasticsearch/plugins/opendistro_security/tools/securityadmin.sh -cd /usr/share/elasticsearch/plugins/opendistro_security/securityconfig/ -nhnv -cacert /etc/elasticsearch/certs/root-ca.pem -cert /etc/elasticsearch/certs/admin.pem -key /etc/elasticsearch/certs/admin.key -h #{node['wazuh-elastic']['elasticsearch_ip']}"
+  command  "#{node['wazuh-elastic']['plugins_path']}/opendistro_security/tools/securityadmin.sh -cd #{node['wazuh-elastic']['plugins_path']}/opendistro_security/securityconfig/ -nhnv -cacert #{node['wazuh-elastic']['config_path']}/certs/root-ca.pem -cert #{node['wazuh-elastic']['config_path']}/certs/admin.pem -key #{node['wazuh-elastic']['config_path']}/certs/admin.key -h #{node['wazuh-elastic']['elasticsearch_ip']}"
 end
 
 

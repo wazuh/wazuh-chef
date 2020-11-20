@@ -1,3 +1,8 @@
 default['wazuh-elastic']['elastic_stack_version'] = "7.9.1"
+default['wazuh-elastic']['odfe_version'] = "1.11.0"
 default['wazuh-elastic']['wazuh_app_version'] = "4.0.1_7.9.1"
 default['wazuh-elastic']['extensions_version'] = "v4.0.1"
+default['wazuh']['major']['version'] = "4.x"
+default['wazuh']['version'] = "4.0"
+default['elastic']['major']['version'] = "7.x"
+default['search_guard']['version'] = "1.8"

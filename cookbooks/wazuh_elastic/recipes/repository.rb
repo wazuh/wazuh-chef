@@ -13,7 +13,7 @@ if platform_family?('debian','ubuntu')
 
   # Install GPG key and add repository
   apt_repository "wazuh" do
-    uri "https://packages.wazuh.com/4.x/apt/ "
+    uri "https://packages.wazuh.com/#{node['packages.wazuh.com']['version']}/apt/"
     key "https://packages.wazuh.com/key/GPG-KEY-WAZUH"
     distribution "stable"
     components ["main"]
@@ -24,10 +24,11 @@ if platform_family?('debian','ubuntu')
 
   # Update the package information
   apt_update
+
 elsif platform_family?('rhel', 'redhat', 'centos', 'amazon')
   yum_repository "wazuh" do
     description "OpenDistro Elasticseach Yum"
-    baseurl "https://packages.wazuh.com/4.x/yum/"
+    baseurl "https://packages.wazuh.com/#{node['packages.wazuh.com']['version']}/yum/"
     gpgkey "https://packages.wazuh.com/key/GPG-KEY-WAZUH"
     action :create
     not_if do
@@ -37,7 +38,7 @@ elsif platform_family?('rhel', 'redhat', 'centos', 'amazon')
 elsif platform_family?('suse')
   zypper_repository "wazuh" do
     description "OpenDistro Elasticseach Zypper"
-    baseurl "https://packages.wazuh.com/4.x/yum/"
+    baseurl "https://packages.wazuh.com/#{node['packages.wazuh.com']['version']}/yum/"
     gpgkey "https://packages.wazuh.com/key/GPG-KEY-WAZUH"
     action :create
     not_if do

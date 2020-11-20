@@ -29,23 +29,30 @@ if platform_family?('debian','ubuntu')
     apt_update
 
     # Install all the required utilities
-    execute 'export JAVA_HOME' do
-        command  'export JAVA_HOME=/usr/'
+    bash 'export JAVA_HOME' do
+        environment  'JAVA_HOME' => '/usr/'
     end
     apt_package 'openjdk-11-jdk'
 
 
 
-elsif platform_family?('rhel', 'redhat', 'centos', 'amazon')
+elsif platform_family?('rhel', 'redhat', 'centos')
     
     # Install all the necessary packages for the installation
     execute 'export JAVA_HOME' do
         command  'export JAVA_HOME=/usr/'
     end
 
-    yum_package 'prerequisites' do
-        package_name ['curl', 'unzip', 'wget', 'java-11-openjdk-devel', 'libcap']
-        action :install
+    if node['platform_version'] >= '8'
+        dnf_package 'prerequisites' do
+            package_name ['curl', 'unzip', 'wget', 'java-11-openjdk-devel', 'libcap']
+            action :install
+        end
+    else
+        yum_package 'prerequisites' do
+            package_name ['curl', 'unzip', 'wget', 'java-11-openjdk-devel', 'libcap']
+            action :install
+        end
     end
 
 elsif platform_family?('suse')
