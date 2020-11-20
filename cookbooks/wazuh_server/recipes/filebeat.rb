@@ -47,7 +47,7 @@ else
 end
 
 # Edit the file /etc/filebeat/filebeat.yml
-
+=begin
 template node['filebeat']['config_path'] do
   source 'filebeat.yml.erb'
   owner 'root'
@@ -71,6 +71,13 @@ template node['filebeat']['config_path'] do
     filebeat_modules_archives_enabled: node['filebeat']['yml']['filebeat_modules_archives_enabled'] 
   )
 end
+=end
+template node['filebeat']['config_path'] do
+  source 'filebeat.yml.erb'
+  owner 'root'
+  group 'root'
+  mode '0640'
+  variables(content: 
 
 # Download the alerts template for Elasticsearch:
 
