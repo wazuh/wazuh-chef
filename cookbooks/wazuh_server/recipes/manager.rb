@@ -66,7 +66,7 @@ if node['ossec']['conf']['cluster']['node_type'] == 'master'
   end
 end
 
-include_recipe 'wazuh_manager::common'
+include_recipe 'wazuh_server::common'
 
 template "#{node['ossec']['dir']}/etc/local_internal_options.conf" do
   source 'var/ossec/etc/manager_local_internal_options.conf'
@@ -96,28 +96,7 @@ template "#{node['ossec']['dir']}/api/configuration/api.yaml" do
   owner 'root'
   group 'ossec'
   mode '0660'
-  variables({bind_addr: "host: #{node['api']['bind_addr']}",
-            port: "port: #{node['api']['port']}",
-            behind_proxy_server: "behind_proxy_server: #{node['api']['behind_proxy_server']}",
-            https_enabled: "enabled: #{node['api']['https']}",
-            https_key: "key: #{node['api']['https_key']}",
-            https_cert: "cert: #{node['api']['https_cert']}",
-            https_use_ca: "use_ca: #{node['api']['https_use_ca']}",
-            https_ca: "ca: #{node['api']['https_ca']}",
-            logging_level: "level: #{node['api']['logging_level']}",
-            logging_path: "path: #{node['api']['logging_path']}",
-            cors_enabled: "enabled: #{node['api']['cors']}",
-            cors_source_route: "source_route: \"#{node['api']['cors_source_route']}\"",
-            cors_expose_headers: "expose_headers: \"#{node['api']['cors_expose_headers']}\"",
-            cors_allow_headers: "allow_headers: \"#{node['api']['cors_allow_headers']}\"",
-            cors_allow_credentials: "allow_credentials: #{node['api']['cors_allow_credentials']}",
-            cache_enabled: "enabled: #{node['api']['cache']}",
-            access_max_login_attempts: "max_login_attempts: #{node['api']['access_max_login_attempts']}",
-            access_block_time: "block_time: #{node['api']['access_block_time']}",
-            access_max_request_per_minute: "max_request_per_minute: #{node['api']['access_max_request_per_minute']}",
-            use_only_authd: "use_only_authd: #{node['api']['use_only_authd']}",
-            drop_privileges: "drop_privileges: #{node['api']['drop_privileges']}",
-            experimental_features: "experimental_features: #{node['api']['experimental_features']}" })
+  variables :content => YAML::dump(YAML::dump(node['api']['yml'].to_hash).gsub('!map:Mash',''))
 end
 
 

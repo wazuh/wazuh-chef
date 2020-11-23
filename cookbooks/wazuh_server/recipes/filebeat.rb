@@ -4,6 +4,7 @@
 # Author:: Wazuh <info@wazuh.com>
 
 # Install Filebeat package
+require 'yaml'
 
 if platform_family?('debian','ubuntu')
   package 'lsb-release'
@@ -72,25 +73,26 @@ template node['filebeat']['config_path'] do
   )
 end
 =end
-template node['filebeat']['config_path'] do
+template "#{node['filebeat']['config_path']}/filebeat.yml" do
   source 'filebeat.yml.erb'
   owner 'root'
   group 'root'
   mode '0640'
-  variables(content: 
+  variables :content => YAML::dump(YAML::dump(node['filebeat']['yml'].to_hash).gsub('!map:Mash',''))
+end
 
 # Download the alerts template for Elasticsearch:
 
 remote_file "/etc/filebeat/#{node['filebeat']['wazuh_template']}" do
-    source "https://raw.githubusercontent.com/wazuh/wazuh/#{node['wazuh']['version']}/extensions/elasticsearch/#{node['elastic']['version']}/#{node['filebeat']['wazuh_template']}"
-    owner "root"
-    group "root"
-    mode "0644"
+  source "https://raw.githubusercontent.com/wazuh/wazuh/#{node['wazuh']['version']}/extensions/elasticsearch/#{node['elastic']['version']}/#{node['filebeat']['wazuh_template']}"
+  owner "root"
+  group "root"
+  mode "0644"
 end
 
 # Download the Wazuh module for Filebeat:
 remote_file "/usr/share/filebeat/module/#{node['filebeat']['wazuh_filebeat_module']}" do
-    source "https://packages.wazuh.com/#{node['packages.wazuh.com']['version']}/filebeat/#{node['filebeat']['wazuh_filebeat_module']}"
+  source "https://packages.wazuh.com/#{node['packages.wazuh.com']['version']}/filebeat/#{node['filebeat']['wazuh_filebeat_module']}"
 end
 
 # Change module permission 
