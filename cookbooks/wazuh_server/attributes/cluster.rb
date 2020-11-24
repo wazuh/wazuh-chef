@@ -9,6 +9,6 @@ default['ossec']['conf']['cluster'] = {
     'nodes' => {
         'node' => "NODE_IP"
     },
-    'hidden' => 'no',
-    'disabled' => 'yes'
+    'hidden' => false,
+    'disabled' => true
 }

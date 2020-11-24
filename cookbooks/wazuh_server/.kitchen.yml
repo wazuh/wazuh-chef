@@ -24,17 +24,17 @@ suites:
     data_bags_path: "test/data_bags"
     encrypted_data_bag_secret_key_path: "test/data_bags/wazuh_secrets/test_data_bag_key"
     run_list:
-      - recipe[wazuh_server::manager]
+      - recipe[wazuh_server::default]
+      #- recipe[wazuh_server::prerequisites]
+      #- recipe[wazuh_server::repository]
+      #- recipe[wazuh_server::manager]
+      #- recipe[wazuh_server::filebeat]
     driver:
       network:
         - ["private_network", {ip: "172.16.10.10"}]
       customize:
         memory: 2048
         cpus: 1
-#    provisioner:
-#      client_rb:
-#        environment: development-master
-
   - name: elastic
     run_list:
       - recipe[wazuh_elastic::default]

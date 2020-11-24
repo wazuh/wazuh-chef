@@ -96,7 +96,10 @@ template "#{node['ossec']['dir']}/api/configuration/api.yaml" do
   owner 'root'
   group 'ossec'
   mode '0660'
-  variables :content => YAML::dump(YAML::dump(node['api']['yml'].to_hash).gsub('!map:Mash',''))
+  variables(
+    host: "#{node['api']['ip']}",
+    port: "#{node['api']['port']}"
+  )
 end
 
 

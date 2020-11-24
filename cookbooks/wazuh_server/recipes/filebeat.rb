@@ -48,37 +48,15 @@ else
 end
 
 # Edit the file /etc/filebeat/filebeat.yml
-=begin
-template node['filebeat']['config_path'] do
-  source 'filebeat.yml.erb'
-  owner 'root'
-  group 'root'
-  mode '0640'
-  variables(
-    output_elasticsearch_hosts: node['filebeat']['yml']['output_elasticsearch_hosts'],                                              
-    output_elasticsearch_protocol: node['filebeat']['yml']['output_elasticsearch_protocol'],   
-    output_elasticsearch_username: node['filebeat']['yml']['output_elasticsearch_username'],   
-    output_elasticsearch_password: node['filebeat']['yml']['output_elasticsearch_password'],   
-    ssl_certificate_authorities: node['filebeat']['yml']['ssl_certificate_authorities'], 
-    ssl_certificate: node['filebeat']['yml']['ssl_certificate'], 
-    ssl_key: node['filebeat']['yml']['ssl_key'], 
-    setup_template_json_enabled: node['filebeat']['yml']['setup_template_json_enabled'], 
-    setup_template_json_path: node['filebeat']['yml']['setup_template_json_path'],
-    setup_template_json_name: node['filebeat']['yml']['setup_template_json_name'], 
-    setup_ilm_overwrite: node['filebeat']['yml']['setup_ilm_overwrite'], 
-    setup_ilm_enabled: node['filebeat']['yml']['setup_ilm_enabled'], 
-    filebeat_modules_module: node['filebeat']['yml']['filebeat_modules_module'], 
-    filebeat_modules_alerts_enabled: node['filebeat']['yml']['filebeat_modules_alerts_enabled'], 
-    filebeat_modules_archives_enabled: node['filebeat']['yml']['filebeat_modules_archives_enabled'] 
-  )
-end
-=end
+
 template "#{node['filebeat']['config_path']}/filebeat.yml" do
   source 'filebeat.yml.erb'
   owner 'root'
   group 'root'
   mode '0640'
-  variables :content => YAML::dump(YAML::dump(node['filebeat']['yml'].to_hash).gsub('!map:Mash',''))
+  variables(
+    hosts: node["filebeat"]["elastic_nodes"] 
+  )
 end
 
 # Download the alerts template for Elasticsearch:
