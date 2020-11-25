@@ -1,51 +1,37 @@
-# USE THIS FILE AS A TEMPLATE. UNCOMMENT LINES TO APPLY CUSTOM CONFIGURATION
+# Wazuh - Api configuration file
+host: <%= @host %>
+port: <%= @port %>
+behind_proxy_server: no
 
-<%= @bind_addr %>
-<%= @port %>
-# Set this option to "yes" in case the API is running behind a proxy server. Values: yes, no
-<%= @behind_proxy_server %> 
-# Force the use of authd when adding and removing agents. Values: yes, no
-<%= @use_only_authd %>
-# Drop privileges (Run as ossec user)
-<%= @drop_privileges %>
-# Enable features under development
-<%= @experimental_features %>
-
-#Advanced configuration
+use_only_authd: no
+drop_privileges: yes
+experimental_features: no
 
 https:
- <%= @https_enabled %>
- <%= @https_key %>
- <%= @https_cert %>
- <%= @https_use_ca %>
- <%= @https_ca %>
-
-# Logging configuration
-# Values for API log level: disabled, info, warning, error, debug, debug2 (each level includes the previous level).
+   enabled: yes
+   key: "api/configuration/ssl/server.key"
+   cert: "api/configuration/ssl/server.crt"
+   use_ca: False
+   ca: "api/configuration/ssl/ca.crt"
 
 logs:
- <%= @logging_level %>
- <%= @logging_path %>
-
-# Cross-origin resource sharing: https://github.com/aio-libs/aiohttp-cors#usage
+   level: "info"
+   path: "logs/api.log"
 
 cors:
- <%= @cors_enabled %>
- <%= @cors_source_route %>
- <%= @cors_expose_headers %>
- <%= @cors_allow_headers %>
- <%= @cors_allow_credentials %>
-
-# Cache (time in seconds)
+   enabled: no
+   source_route: "*"
+   expose_headers: "*"
+   allow_headers: "*"
+   allow_credentials: no
 
 cache:
- <%= @cache_enabled %>
- <%= @cache_time %>
-
-# Access parameters
+   enabled: yes
+   time: 0.750
 
 access:
- <%= @access_max_login_attempts %>
- <%= @access_block_time %>
- <%= @access_max_request_per_minute %>
+   max_login_attempts: 50
+   block_time: 300
+   max_request_per_minute: 300
+
  

@@ -1,25 +1,4 @@
 default['api'] = {
-    'bind_addr' => "0.0.0.0",
-    'port' => 55000,
-    'behind_proxy_server' => "no",
-    'https' => "yes",
-    'https_key' => "api/configuration/ssl/server.key",
-    'https_cert' => "api/configuration/ssl/server.crt",
-    'https_use_ca' => "False",
-    'https_ca' => "api/configuration/ssl/ca.crt",
-    'logging_level' => "info",
-    'logging_path' => "logs/api.log",
-    'cors' => "no",
-    'cors_source_route' => "*",
-    'cors_expose_headers' => "*",
-    'cors_allow_headers' => "*",
-    'cors_allow_credentials' => "no",
-    'cache' => "yes",
-    'cache_time' => 0.750,
-    'access_max_login_attempts' => 5, #Should be updated
-    'access_block_time' => 300,
-    'access_max_request_per_minute' => 300,
-    'use_only_authd' => 300,
-    'drop_privileges' => "yes",
-    'experimental_features' => "no"
+    'ip' => '0.0.0.0',
+    'port' => 55000
 }
