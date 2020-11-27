@@ -2,6 +2,11 @@
 
 This cookbook installs and configures Elastic Stack. Please note that it's not obligatory to install the whole stack, recipes can work independently.
 
+#### Chef
+- Chef 12+
+
+#### Cookbooks
+
 ### Attributes
 
 The ``attributes`` folder contains all the default configuration files in order to generate ossec.conf file.

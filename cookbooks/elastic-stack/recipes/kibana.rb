@@ -5,11 +5,12 @@
 
 # Install the Kibana package
 
-if platform_family?('debian', 'ubuntu')
+case node['platform']
+when 'debian', 'ubuntu'
   apt_package 'kibana' do
     version "#{node['elk']['patch_version']}"
   end
-elsif platform_family?('rhel', 'redhat', 'centos')
+when 'redhat', 'centos', 'amazon', 'fedora', 'oracle'
   if node['platform_version'] >= '8'
     dnf_package 'kibana' do
       version "#{node['elk']['patch_version']}"
@@ -19,7 +20,7 @@ elsif platform_family?('rhel', 'redhat', 'centos')
       version "#{node['elk']['patch_version']}"
     end
   end
-elsif platform_family?('suse')
+when 'opensuseleap', 'suse'
   zypper_package 'kibana' do
     version "#{node['elk']['patch_version']}"
   end
@@ -29,28 +30,30 @@ end
 
 # Update the optimize and plugins directories permissions
 
-directory "#{node['kibana']['package_path'}/optimize" do
+directory "#{node['kibana']['package_path']}/optimize" do
   owner 'kibana'
   group 'kibana'
   recursive true
 end
 
-directory "#{node['kibana']['package_path'}/plugins" do
+directory "#{node['kibana']['package_path']}/plugins" do
   owner 'kibana'
   group 'kibana'
   recursive true
 end
+
+# Install the Wazuh Kibana plugin
 
 bash 'Install the Wazuh app plugin for Kibana' do
   code <<-EOH
-    cd #{node['kibana']['package_path'}
-    sudo -u kibana bin/kibana-plugin install https://packages.wazuh.com/wazuhapp/wazuhapp-#{node['wazuh']['kibana_plugin_version']}.zip
+    cd #{node['kibana']['package_path']}
+    sudo -u kibana bin/kibana-plugin install https://packages.wazuh.com/#{node['wazuh']['major_version']}/ui/kibana/wazuh_kibana-#{node['wazuh']['kibana_plugin_version']}-1.zip
   EOH
 end
 
 # Set up Kibana configuration file
 
-template "#{node['kibana']['config_path'}/kibana.yml" do
+template "#{node['kibana']['config_path']}/kibana.yml" do
   source 'kibana.yml.erb'
   owner 'root'
   group 'kibana'
@@ -62,22 +65,9 @@ template "#{node['kibana']['config_path'}/kibana.yml" do
   })
 end
 
-
-bash 'Allow Kibana to bind to port 443' do
-  code <<-EOH
-    setcap 'CAP_NET_BIND_SERVICE=+eip' #{node['kibana']['package_path'}/node/bin/node 
-  EOH
-end
-
-bash 'Optimize Kibana packages' do
-  code <<-EOH
-    NODE_OPTIONS="--max-old-space-size=4096" #{node['kibana']['package_path'}/bin/kibana --optimize --allow-root
-  EOH
-end
-
 bash 'Configure the credentials to access the Wazuh API' do
   code <<-EOH
-    cat >> #{node['kibana']['package_path'}/optimize/wazuh/config/wazuh.yml << EOF
+    cat >> #{node['kibana']['package_path']}/optimize/wazuh/config/wazuh.yml << EOF
     - #{node['kibana']['wazuh_api_credentials']['id']}:
        url: #{node['kibana']['wazuh_api_credentials']['url']}
        port: #{node['kibana']['wazuh_api_credentials']['port']}

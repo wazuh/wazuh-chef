@@ -2,14 +2,41 @@
 # Recipe:: prerequisites
 # Author:: Wazuh <info@wazuh.com>
 
-if platform_family?('debian','ubuntu')
-    package "lsb-release"
+case node['platform'] 
+when 'debian','ubuntu'
+  apt_package 'curl' do
+    action :install
+  end
   
-    ohai "reload lsb" do
-      plugin "lsb"
-      subscribes :reload, "package[lsb-release]", :immediately
+  apt_package 'apt-transport-https' do
+    action :install
+  end
+when 'redhat', 'centos', 'amazon', 'fedora', 'oracle'
+  if node['platform_version'] >= '8'
+    dnf_package 'curl' do
+      action :install
     end
     
-    # Install debian prerequisites
-    apt_package %w(curl apt-transport-https)
+    dnf_package 'libcap' do
+      action :install
+    end
+  else
+    yum_package 'curl' do
+      action :install
+    end
+    
+    yum_package 'libcap' do
+      action :install
+    end
+  end
+when 'opensuseleap', 'suse'
+  zypper_package 'curl' do
+    action :install
+  end
+  
+  zypper_package 'libcap2' do
+    action :install
+  end
+else
+  raise "Currently platforn not supported yet. Feel free to open an issue on https://www.github.com/wazuh/wazuh-chef if you consider that support for a specific OS should be added"
 end

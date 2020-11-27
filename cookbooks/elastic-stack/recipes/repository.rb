@@ -2,7 +2,8 @@
 # Recipe:: repository
 # Author:: Wazuh <info@wazuh.com>
 
-if platform_family?('ubuntu', 'debian')
+case node['platform']
+when 'ubuntu', 'debian'
   package 'lsb-release'
 
   ohai 'reload lsb' do
@@ -15,15 +16,11 @@ if platform_family?('ubuntu', 'debian')
     uri "https://artifacts.elastic.co/packages/#{node['elk']['major_version']}/apt"
     components ['main']
     distribution 'stable'
-    not_if do
-      File.exists?("/etc/apt/sources.list.d/elastic-#{node['elk']['major_version']}.list")
-    end
     action :add
   end
 
   apt_update
-
-elsif platform_family?('redhat', 'centos', 'amazon', 'fedora', 'oracle')
+when 'redhat', 'centos', 'amazon', 'fedora', 'oracle'
   yum_repository 'elastic' do
     description 'Elasticsearch repository for 7.x packages'
     gpgcheck true
@@ -32,8 +29,7 @@ elsif platform_family?('redhat', 'centos', 'amazon', 'fedora', 'oracle')
     baseurl "https://artifacts.elastic.co/packages/#{node['elk']['major_version']}/yum"
     action :create
   end
-
-elsif platform_family?('opensuseleap', 'suse')
+when 'opensuseleap', 'suse'
   zypper_repository 'elastic' do   
     description 'Elasticsearch repository for 7.x packages'
     gpgcheck true
@@ -42,7 +38,6 @@ elsif platform_family?('opensuseleap', 'suse')
     baseurl "https://artifacts.elastic.co/packages/#{node['elk']['major_version']}/yum"
     action :create
   end
-  
 else
   raise "Currently platforn not supported yet. Feel free to open an issue on https://www.github.com/wazuh/wazuh-chef if you consider that support for a specific OS should be added"
 end

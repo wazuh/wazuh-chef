@@ -1,3 +1,7 @@
+# Cookbook Name:: elastic-stack
+# Attributes:: yml
+# Author:: Wazuh <info@wazuh.com>
+
 # Elasticsearch configuration file
 default['elastic']['yml'] = {
     'cluster' => {
