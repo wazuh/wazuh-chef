@@ -26,10 +26,10 @@ verifier:
 
 platforms:
   - name: ubuntu-20.04
-  - name: centos-8
+  - name: centos-8.0
 
 suites:
-  - name: default
+  - name: filebeat-oss
     run_list:
       - recipe[filebeat-oss::default]
     verifier:

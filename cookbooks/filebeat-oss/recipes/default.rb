@@ -1,7 +1,6 @@
 # Cookbook Name:: filebeat
 # Recipe:: default
-# Author:: Wazuh <info@pwazuh.com>
+# Author:: Wazuh <info@wazuh.com>
 
-include_recipe 'apt::default'
-include_recipe 'filebeat::repository'
-include_recipe 'filebeat::filebeat'
+include_recipe 'filebeat-oss::repository'
+include_recipe 'filebeat-oss::filebeat'

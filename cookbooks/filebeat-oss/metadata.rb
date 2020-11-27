@@ -1,19 +1,20 @@
 name 'filebeat-oss'
-maintainer 'The Authors'
-maintainer_email 'you@example.com'
+maintainer 'Wazuh'
+maintainer_email 'info@wazuh.com'
 license 'Apache-2.0'
 description 'Installs/Configures filebeat-oss'
 version '0.1.0'
 chef_version '>= 15.0'
 
-# The `issues_url` points to the location where issues for this cookbook are
-# tracked.  A `View Issues` link will be displayed on this cookbook's page when
-# uploaded to a Supermarket.
-#
-# issues_url 'https://github.com/<insert_org_here>/filebeat-oss/issues'
+%w(redhat centos oracle).each do |el|
+  supports el, '>= 6.0'
+end
+supports 'amazon', '>= 1.0'
+supports 'fedora', '>= 22.0'
+supports 'debian', '>= 7.0'
+supports 'ubuntu', '>= 12.04'
+supports 'suse', '>= 12.0'
+supports 'opensuse', '>= 42.0'
 
-# The `source_url` points to the development repository for this cookbook.  A
-# `View Source` link will be displayed on this cookbook's page when uploaded to
-# a Supermarket.
-#
-# source_url 'https://github.com/<insert_org_here>/filebeat-oss'
+issues_url 'https://github.com/wazuh/wazuh-chef/issues' if respond_to?(:issues_url)
+source_url 'https://github.com/wazuh/wazuh-chef' if respond_to?(:source_url)
