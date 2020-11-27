@@ -14,6 +14,7 @@ if platform_family?('debian','ubuntu')
   apt_package 'filebeat' do
     version "#{node['elk']['patch_version']}" 
   end
+
 elsif platform_family?('redhat', 'centos', 'amazon', 'fedora', 'oracle')
   if node['platform']['version'] >= '8' 
     dnf_package 'filebeat' do
@@ -24,10 +25,12 @@ elsif platform_family?('redhat', 'centos', 'amazon', 'fedora', 'oracle')
       version "#{node['elk']['patch_version']}"
     end
   end
+
 elsif platform_family?('opensuse', 'suse')
   yum_package 'filebeat' do
     version "#{node['elk']['patch_version']}"
   end
+  
 else
   raise "Currently platforn not supported yet. Feel free to open an issue on https://www.github.com/wazuh/wazuh-chef if you consider that support for a specific OS should be added"
 end
@@ -40,14 +43,15 @@ template "#{node['filebeat']['config_path']}/filebeat.yml" do
   group 'root'
   mode '0640'
   variables(
-    output_elasticsearch_hosts: node['filebeat']['elasticsearch_server_ip']
+    output_elasticsearch_hosts: node['filebeat']['elasticsearch_server_ip'],
+    template_json_path: "#{node['filebeat']['config_path']}/#{node['filebeat']['alerts_template']}"
   )
 end
 
 # Download the alerts template for Elasticsearch
 
 remote_file "#{node['filebeat']['config_path']}/#{node['filebeat']['alerts_template']}" do
-  source "https://raw.githubusercontent.com/wazuh/wazuh/v#{node['wazuh']['minor_version']}/extensions/elasticsearch/#{node['elk']['major_version']}/#{node['filebeat']['alerts_template']}"
+  source "https://raw.githubusercontent.com/wazuh/wazuh/v#{node['wazuh']['patch_version']}/extensions/elasticsearch/#{node['elk']['major_version']}/#{node['filebeat']['alerts_template']}"
   owner 'root'
   group 'root'
   mode '0644'
@@ -56,7 +60,7 @@ end
 # Download the Wazuh module for Filebeat
 
 remote_file "#{node['filebeat']['config_path']}/#{node['filebeat']['wazuh_module']}" do
-  source "https://packages.wazuh.com/#{node['wazuh']['minor_version']}/filebeat/#{node['filebeat']['wazuh_module']}"
+  source "https://packages.wazuh.com/#{node['wazuh']['major_version']}/filebeat/#{node['filebeat']['wazuh_module']}"
 end
 
 archive_file "#{node['filebeat']['wazuh_module']}" do
@@ -81,14 +85,3 @@ service "filebeat" do
   supports :start => true, :stop => true, :restart => true, :reload => true
   action [:enable, :start]
 end
-
-# Load the Filebeat template (Elasticsarch must be installed and running)
-
-bash 'Load the Filebeat template' do
-  code <<-EOH
-    filebeat setup --index-management -E setup.template.json.enabled=false
-  EOH
-end
-  
-
-
