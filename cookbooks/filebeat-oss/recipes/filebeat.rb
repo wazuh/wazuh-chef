@@ -35,7 +35,7 @@ template "#{node['filebeat']['config_path']}/filebeat.yml" do
   group 'root'
   mode '0640'
   variables(
-    hosts: node['filebeat']['elasticsearch_server_ip']
+    hosts: node['filebeat']['yml']['output']['elasticsearch']['hosts']
   )
 end
 
