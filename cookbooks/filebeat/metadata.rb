@@ -1,4 +1,4 @@
-name             'wazuh_filebeat'
+name             'filebeat'
 maintainer       'Wazuh'
 maintainer_email 'info@wazuh.com'
 license          'Apache 2.0'
@@ -15,10 +15,6 @@ supports 'debian', '>= 7.0'
 supports 'ubuntu', '>= 12.04'
 supports 'suse', '>= 12.0'
 supports 'opensuse', '>= 42.0'
-
-depends 'apt'
-depends 'yum'
-depends 'zypper'
 
 issues_url 'https://github.com/wazuh/wazuh-chef/issues' if respond_to?(:issues_url)
 source_url 'https://github.com/wazuh/wazuh-chef' if respond_to?(:source_url)
