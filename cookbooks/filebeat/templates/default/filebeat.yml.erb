@@ -7,13 +7,13 @@ filebeat.modules:
       enabled: false
 
 setup.template.json.enabled: true
-setup.template.json.path: '<%= @template_json_path %>'
+setup.template.json.path: '/etc/filebeat/wazuh-template.json'
 setup.template.json.name: 'wazuh'
 setup.template.overwrite: true
 setup.ilm.enabled: false
 
 output.elasticsearch.hosts: [
-  <% @output_elasticsearch_hosts.each do |node| %>
-    "<%= node %>"
+  <% @hosts.each do |node| %>
+    "http://<%= node['ip'] %>:<%= node['port'] %>"
   <% end %>
 ]

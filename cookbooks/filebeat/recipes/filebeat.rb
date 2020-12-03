@@ -4,19 +4,13 @@
 
 # Install Filebeat package
 
-if platform_family?('debian','ubuntu')
-  package 'lsb-release'
-  ohai 'reload lsb' do
-    plugin 'lsb'
-    subscribes :reload, 'package[lsb-release]', :immediately
-  end
-			
+case node['platform']
+when 'debian','ubuntu'
   apt_package 'filebeat' do
     version "#{node['elk']['patch_version']}" 
   end
-
-elsif platform_family?('redhat', 'centos', 'amazon', 'fedora', 'oracle')
-  if node['platform']['version'] >= '8' 
+when 'redhat', 'centos', 'amazon', 'fedora', 'oracle'
+  if node['platform_version'] >= '8' 
     dnf_package 'filebeat' do
       version "#{node['elk']['patch_version']}"
     end
@@ -25,12 +19,10 @@ elsif platform_family?('redhat', 'centos', 'amazon', 'fedora', 'oracle')
       version "#{node['elk']['patch_version']}"
     end
   end
-
-elsif platform_family?('opensuse', 'suse')
+when 'opensuseleap', 'suse'
   yum_package 'filebeat' do
     version "#{node['elk']['patch_version']}"
   end
-  
 else
   raise "Currently platforn not supported yet. Feel free to open an issue on https://www.github.com/wazuh/wazuh-chef if you consider that support for a specific OS should be added"
 end
@@ -43,40 +35,24 @@ template "#{node['filebeat']['config_path']}/filebeat.yml" do
   group 'root'
   mode '0640'
   variables(
-    output_elasticsearch_hosts: node['filebeat']['elasticsearch_server_ip'],
-    template_json_path: "#{node['filebeat']['config_path']}/#{node['filebeat']['alerts_template']}"
+    hosts: node['filebeat']['yml']['output']['elasticsearch']['hosts']
   )
 end
 
 # Download the alerts template for Elasticsearch
 
 remote_file "#{node['filebeat']['config_path']}/#{node['filebeat']['alerts_template']}" do
-  source "https://raw.githubusercontent.com/wazuh/wazuh/v#{node['wazuh']['patch_version']}/extensions/elasticsearch/#{node['elk']['major_version']}/#{node['filebeat']['alerts_template']}"
+  source "https://raw.githubusercontent.com/wazuh/wazuh/#{node['wazuh']['minor_version']}/extensions/elasticsearch/#{node['elk']['major_version']}/#{node['filebeat']['alerts_template']}"
   owner 'root'
   group 'root'
   mode '0644'
 end
 
-# Download the Wazuh module for Filebeat
+# Download Wazuh module for Filebeat
 
-remote_file "#{node['filebeat']['config_path']}/#{node['filebeat']['wazuh_module']}" do
-  source "https://packages.wazuh.com/#{node['wazuh']['major_version']}/filebeat/#{node['filebeat']['wazuh_module']}"
-end
-
-archive_file "#{node['filebeat']['wazuh_module']}" do
-  path "#{node['filebeat']['config_path']}/#{node['filebeat']['wazuh_module']}"
-  destination "#{node['filebeat']['wazuh_module_path']}"
-end
-
-file "#{node['filebeat']['config_path']}/#{node['filebeat']['wazuh_module']}" do
-  action :delete
-end
-
-# Change module permission 
-
-directory '/usr/share/filebeat/module/wazuh' do
-  mode '0755'
-  recursive true
+execute 'Extract Wazuh module' do
+  command "curl -s https://packages.wazuh.com/#{node['wazuh']['major_version']}/filebeat/#{node['filebeat']['wazuh_module']} | tar -xvz -C #{node['filebeat']['wazuh_module_path']}"
+  action :run
 end
 
 # Enable and start service

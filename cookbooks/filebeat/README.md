@@ -3,22 +3,16 @@
 ## Description
 This cookbook installs and configures Filebeat in order on the specified node.
 
-#### Chef
-- Chef 12+
-
-#### Cookbooks
-- apt
-- yum
-- zypper
-
 Attributes
 ----------
 
-Default configuration is defined in ```/attributes/default.rb``` and contains needed parameters to configure the ```filebeat.yml``` file. Check ['Filebeat section'](https://raw.githubusercontent.com/wazuh/wazuh/v4.0.2/extensions/filebeat/7.x/filebeat.yml) to see an example of Filebeat configuration.
+Default configuration is defined in ```/attributes/default.rb``` and contains needed parameters to configure the ```filebeat.yml``` file. 
 
 Important attributes: 
 
-* ```node['filebeat']['elasticsearch_server_ip']```: array with URL of elasticsearch nodes
+* ```node['filebeat']['yml']['output']['elasticsearch']['hosts']```: array elasticsearch nodes network
+parameters (ip and port)
+
 
 ## Installation
 
@@ -26,8 +20,8 @@ Create a role, wazuh_filebeat. Add attributes per above as needed to customize t
 
 ```
   {
-    "name": "wazuh_filebeat",
-    "description": "Wazuh Manager host",
+    "name": "filebeat",
+    "description": "Filebeat host",
     "json_class": "Chef::Role",
     "default_attributes": {
 
@@ -37,7 +31,7 @@ Create a role, wazuh_filebeat. Add attributes per above as needed to customize t
     },
     "chef_type": "role",
     "run_list": [
-      "recipe[wazuh_filebeat::filebeat]"
+      "recipe[filebeat::default]"
     ],
     "env_run_lists": {
 
@@ -45,13 +39,14 @@ Create a role, wazuh_filebeat. Add attributes per above as needed to customize t
   }
 ```
 
-
 Recipes
 -------
 
 #### default.rb
 
-This recipe imports and executes the recipe *wazuh_filebeat::filebeat*
+This recipe imports and executes the following recipes:
+* *repository*
+* *filebeat*
 
 #### repository.rb
 
