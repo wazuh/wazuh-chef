@@ -1,6 +1,10 @@
-server.host: <%= @kibana_server_host %>
-<%= @kibana_elasticsearch_server_hosts %>
-server.port: <%= @kibana_server_port %>
+server.host: <%= @server_host %>
+server.port: <%= @server_port %>
+elasticsearch.hosts: [
+    <% @elasticsearch_hosts.each do |url| %>
+        "<%= url %>"
+    <% end %>
+]
 elasticsearch.ssl.verificationMode: certificate
 elasticsearch.username: kibanaserver
 elasticsearch.password: kibanaserver

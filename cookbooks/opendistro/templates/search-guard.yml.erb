@@ -24,12 +24,16 @@ defaults:
 nodes:
   - name: elasticsearch
     dn: CN=node-1,OU=Docu,O=Wazuh,L=California,C=US
-    ip: 
-      - <%= @elastic_node_ip %>
+    ip:
+      <% @elastic_node_ip.each do |node| %>
+        - <%= node %>
+      <% end %>
   - name: kibana
     dn: CN=kibana,OU=Docu,O=Wazuh,L=California,C=US     
     ip:
-      - <%= @kibana_node_ip %>                  
+      <% @kibana_node_ip.each do |node| %>
+        - <%= node %>
+      <% end %>                  
 
 # Clients certificates
 clients:

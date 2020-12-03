@@ -1,34 +1,40 @@
-# Cookbook Name:: opendistro
-# Recipe:: elasticsearch
-# Author:: Wazuh <info@wazuh.com>
+## Cookbook Name:: opendistro
+## Recipe:: elasticsearch
+## Author:: Wazuh <info@wazuh.com>
 
 # Install opendistroforelasticsearch
 
-if platform_family?('debian', 'ubuntu')
+case node['platform'] 
+when 'debian','ubuntu'
   apt_package 'elasticsearch-oss' do
-    version  "#{node['elk']['patch_version']}-1"
+    version  "#{node['elk']['patch_version']}"
   end
-
   apt_package 'opendistroforelasticsearch' do
     version "#{node['odfe']['patch_version']}-1"
   end
-
-elsif platform_family?('redhat', 'centos', 'amazon', 'fedora', 'oracle')
+when 'redhat', 'centos', 'amazon', 'fedora', 'oracle'
   if node['platform_version'] >= '8'
+    dnf_package 'elasticsearch-oss' do
+      version "#{node['elk']['patch_version']}"
+    end
     dnf_package 'opendistroforelasticsearch' do
       version "#{node['odfe']['patch_version']}-1"
     end
   else
+    yum_package 'elasticsearch-oss' do
+      version "#{node['elk']['patch_version']}"
+    end
     yum_package 'opendistroforelasticsearch' do
       version "#{node['odfe']['patch_version']}-1"
     end
   end
-
-elsif platform_family?('opensuse', 'suse')
-  zypper_package 'opendistroforelasticsearch' do
-    version "#{node['odfe']['patch_version']}-1"
+when 'opensuseleap', 'suse'
+  zypper_package 'elasticsearch-oss' do
+    version "#{node['elk']['patch_version']}"
   end
-
+  zypper_package 'opendistroforelasticsearch' do
+    version "#{node['odfe']['patch_version']}"
+  end
 else
   raise "Currently platforn not supported yet. Feel free to open an issue on https://www.github.com/wazuh/wazuh-chef if you consider that support for a specific OS should be added"
 end
@@ -36,11 +42,26 @@ end
 # Set up opendistro for elasticsearch configuration file
 
 template "#{node['elastic']['config_path']}/elasticsearch.yml" do
-  source 'od_elasticsearch.yml.erb'
+  source 'elasticsearch.yml.erb'
   owner 'root'
   group 'elasticsearch'
   mode '0660'
-  variables (content: Psych.dump(node['odfe']['yml']))
+  variables ({
+    network_host: node['elastic']['yml']['network']['host'],
+    http_port: node['elastic']['yml']['http']['port'],
+    node_name: node['elastic']['yml']['node']['name'],
+    initial_master_nodes: node['elastic']['yml']['cluster']['initial_master_nodes'] 
+  })
+end
+
+# Set up jvm options
+
+template "#{node['elastic']['config_path']}/jvm.options" do
+  source 'jvm.options.erb'
+  owner 'root'
+  group 'elasticsearch'
+  mode '0660'
+  variables({memmory: node['jvm']['memory']})
 end
 
 # Add extra roles and users to Wazuh Kibana plugin
@@ -83,7 +104,7 @@ end
 
 ## Generate and deploy the certificates
 
-directory "#{node['elastic']['config_path']}/certs" do
+directory "#{node['elastic']['certs_path']}" do
   action :create
 end
 
@@ -91,59 +112,97 @@ directory "#{node['searchguard']['config_path']}" do
   action :create
 end
 
-remote_file "#{node['searchguard']['config_path']}/#{node['searchguard']['tls_tool']}" do
-  source "https://maven.search-guard.com/search-guard-tlstool/#{node['search_guard']['version']}/#{node['search_guard']['tls_tool']}"
+remote_file "/tmp/#{node['searchguard']['tls_tool']}" do
+  source "https://maven.search-guard.com/search-guard-tlstool/#{node['searchguard']['version']}/#{node['searchguard']['tls_tool']}"
 end
 
-archive_file "#{node['searchguard']['tls_tool']}" do
-  path "#{node['searchguard']['config_path']}/#{node['searchguard']['tls_tool']}"
-  destination "#{node['search_guard']['config_path']}"
+execute "Unzip #{node['searchguard']['tls_tool']} on #{node['searchguard']['config_path']}" do
+  command "unzip -u /tmp/#{node['searchguard']['tls_tool']} -d #{node['searchguard']['config_path']}"
 end
 
-template "#{node['search_guard']['config_path']}/search-guard.yml" do
+template "#{node['searchguard']['config_path']}/search-guard.yml" do
   source 'search-guard.yml.erb'
   owner 'root'
   group 'elasticsearch'
   mode '0660'
   variables ({
-    elastic_node_ip: node['elastic']['yml']['network']['host'],
-    kibana_node_ip: node['kibana']['yml']['server']['host']
-
+    elastic_node_ip: node['search_guard']['yml']['nodes']['elasticsearch']['ip'],
+    kibana_node_ip: node['search_guard']['yml']['nodes']['kibana']['ip']
+  })
 end
 
+
 execute 'Run the Search Guard’s script to create the certificates' do
-  command "#{node['searchguard']['config_path']}/tools/sgtlstool.sh -c #{node['searchguard']['config_path']}/search-guard.yml -ca -crt -t #{node['elastic']['config_path']}/certs/"
+  command "#{node['searchguard']['config_path']}/tools/sgtlstool.sh -c #{node['searchguard']['config_path']}/search-guard.yml -ca -crt -t #{node['elastic']['certs_path']}/"
 end
 
 bash 'Compress all the necessary files to be sent to the all the instances' do
   code <<-EOF
-    cd #{node['elastic']['config_path']}/certs 
+    cd #{node['elastic']['certs_path']} 
     tar -cf certs.tar *
   EOF
 end
 
-log 'Copy certs.tar to all the servers of the distributed deployment' do
-  message: "Please copy #{node['elastic']['config_path']}/certs/certs.tar to all filebeat nodes"
-  level :warn
+# Copy certs to filebeat and kibana nodes
+
+# Filebeat
+ruby_block 'Copy filebeat certificates' do
+  block do
+    if File.exist?("#{node['filebeat']['certs_path']}")
+      IO.copy_stream("#{node['elastic']['certs_path']}/filebeat.pem", "#{node['filebeat']['certs_path']}/filebeat.pem")
+      IO.copy_stream("#{node['elastic']['certs_path']}/filebeat.key", "#{node['filebeat']['certs_path']}/filebeat.key")
+      IO.copy_stream("#{node['elastic']['certs_path']}/root-ca.pem", "#{node['filebeat']['certs_path']}/root-ca.pem")
+    else
+      Chef::Log.fatal("Please copy the following files to #{node['filebeat']['certs_path']} on 
+      filebeat node. Then run on that node as sudo:
+        - systemctl daemon-reload
+        - systemctl enable filebeat
+        - systemctl start filebeat")
+    end
+  end
+  action :run
+end
+
+# Kibana
+ruby_block 'Copy kibana certificates' do
+  block do
+    if File.exist?("#{node['kibana']['certs_path']}")
+      IO.copy_stream("#{node['elastic']['certs_path']}/kibana_http.key", "#{node['kibana']['certs_path']}/kibana.key")
+      IO.copy_stream("#{node['elastic']['certs_path']}/kibana_http.pem", "#{node['kibana']['certs_path']}/kibana.pem")
+      IO.copy_stream("#{node['elastic']['certs_path']}/root-ca.pem", "#{node['kibana']['certs_path']}/root-ca.pem")
+    else
+      Chef::Log.fatal("Please copy the following files to #{node['kibana']['certs_path']} where 
+      Kibana is installed:
+        - #{node['elastic']['certs_path']}/kibana_http.key (rename as kibana.key) 
+        - #{node['elastic']['certs_path']}/kibana_http.pem (rename as kibana.pem)
+        - #{node['elastic']['certs_path']}/root-ca.pem
+      Then run on Kibana node as sudo:
+        - systemctl daemon-reload
+        - systemctl enable kibana
+        - systemctl start kibana
+      Forget this warning in case Kibana will be installed on the same node as Elasticsearch")
+    end
+  end
+  action :run
 end
 
 ## Remove unnecessary files
 
-file "#{node['elastic']['config_path']}/certs/client-certificates.readme" do
+file "#{node['elastic']['certs_path']}/client-certificates.readme" do
   action :delete
 end
 
-file "#{node['elastic']['config_path']}/certs/elasticsearch_elasticsearch_config_snippet.yml" do
+file "#{node['elastic']['certs_path']}/elasticsearch_elasticsearch_config_snippet.yml" do
   action :delete
 end
 
-file "#{node['searchguard']['config_path']}/#{node['searchguard']['tls_tool']}" do
+file "/tmp/#{node['searchguard']['tls_tool']}" do
   action :delete
 end
 
 # Verify Elasticsearch folders owner 
 
-directory "#{'elastic']['config_path']}" do
+directory "#{node['elastic']['config_path']}" do
   owner 'elasticsearch'
   group 'elasticsearch'
   recursive true
@@ -168,7 +227,7 @@ service "elasticsearch" do
   action [:enable, :start]
 end
 
-ruby_block 'wait for elasticsearch' do
+ruby_block 'Wait for elasticsearch' do
   block do
     loop { break if (TCPSocket.open(
       "#{node['elastic']['yml']['network']['host']}",
@@ -178,7 +237,15 @@ ruby_block 'wait for elasticsearch' do
 end
 
 execute 'Run the Elasticsearch’s securityadmin script' do
-  command  "#{node['elastic']['plugins_path']}/opendistro_security/tools/securityadmin.sh -cd #{node['elastic']['plugins_path']}/opendistro_security/securityconfig/ -nhnv -cacert #{node['elastic']['config_path']}/certs/root-ca.pem -cert #{node['elastic']['config_path']}/certs/admin.pem -key #{node['elastic']['config_path']}/certs/admin.key -h #{node['elastic']['elasticsearch_ip']}"
+  command  "#{node['elastic']['plugins_path']}/opendistro_security/tools/securityadmin.sh -cd #{node['elastic']['plugins_path']}/opendistro_security/securityconfig/ -nhnv -cacert #{node['elastic']['certs_path']}/root-ca.pem -cert #{node['elastic']['certs_path']}/admin.pem -key #{node['elastic']['certs_path']}/admin.key -h #{node['elastic']['yml']['network']['host']}"
 end
 
+bash 'Waiting for elasticsearch curl response...' do
+  code <<-EOH
+  until (curl -XGET https://#{node['elastic']['yml']['network']['host']}:#{node['elastic']['yml']['http']['port']} -u admin:admin -k); do
+    printf 'Waiting for elasticsearch....'
+    sleep 5
+  done
+  EOH
+end
 

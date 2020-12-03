@@ -2,9 +2,7 @@
 # Recipe:: default
 # Author:: Wazuh <info@wazuh.com>
 
-#############################################
-include_recipe 'chef-sugar::default'
-include_recipe 'wazuh_elastic::prerequisites'
-include_recipe 'wazuh_elastic::repository'
-include_recipe 'wazuh_elastic::elasticsearch'
-include_recipe 'wazuh_elastic::kibana'
+#include_recipe 'opendistro::prerequisites'
+#include_recipe 'opendistro::repository'
+#include_recipe 'opendistro::elasticsearch'
+include_recipe 'opendistro::kibana'

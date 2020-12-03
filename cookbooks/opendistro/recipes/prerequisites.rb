@@ -2,7 +2,8 @@
 # Recipe:: prerequisites
 # Author:: Wazuh <info@wazuh.com>
 
-if platform_family?('debian','ubuntu')
+case node['platform'] 
+when 'debian','ubuntu'
     package "lsb-release"
   
     ohai "reload lsb" do
@@ -32,33 +33,31 @@ if platform_family?('debian','ubuntu')
     apt_update
 
     # Install all the required utilities
-    bash 'export JAVA_HOME' do
-        environment  'JAVA_HOME' => '/usr/'
+    execute 'export JAVA_HOME' do
+        command  'export JAVA_HOME=/usr/'
     end
-    apt_package 'openjdk-11-jdk'
-
-elsif platform_family?('redhat', 'centos', 'amazon', 'fedora', 'oracle')
     
+    apt_package 'openjdk-11-jdk'
+when 'redhat', 'centos', 'amazon', 'fedora', 'oracle'   
     # Install all the necessary packages for the installation
     execute 'export JAVA_HOME' do
         command  'export JAVA_HOME=/usr/'
     end
 
     if node['platform_version'] >= '8'
-        dnf_package 'prerequisites' do
+        dnf_package 'Install prerequisites packages' do
             package_name ['curl', 'unzip', 'wget', 'java-11-openjdk-devel', 'libcap']
             action :install
         end
     else
-        yum_package 'prerequisites' do
+        yum_package 'Install prerequisites packages' do
             package_name ['curl', 'unzip', 'wget', 'java-11-openjdk-devel', 'libcap']
             action :install
         end
     end
-
-elsif platform_family?('opensuse', 'suse')
+when 'opensuseleap', 'suse'
     # Install zypper prerequisites
-    zypper_package 'prerequisites' do
+    zypper_package 'Install prerequisites packages' do
         package_name ['curl', 'unzip', 'wget', 'libcap2']
     end
 else

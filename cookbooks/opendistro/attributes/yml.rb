@@ -4,11 +4,16 @@ default['elastic']['yml'] = {
     'network' => {
         'host' => '0.0.0.0'
     },
+    'http' => {
+        'port' => 9200
+    },
     'node' => {
         'name' => "odfe-node-1"
     },
     'cluster' => {
-        'initial_master_nodes' => "#{node['elastic']['yml']['node']['name']}"
+        'initial_master_nodes' => [
+            "odfe-node-1"
+        ]
     }
 }
 
@@ -17,11 +22,11 @@ default['elastic']['yml'] = {
 default['kibana']['yml'] = {
     'server' => {
         'host' => '0.0.0.0',
-        'port' => 5601
+        'port' => 443
     },
     'elasticsearch' => {
         'hosts' => [
-            "https://#{node['wazuh-elastic']['yml']['network']['host']}:#{node['wazuh-elastic']['yml']['http']['port']}"
+            "https://#{node['elastic']['yml']['network']['host']}:#{node['elastic']['yml']['http']['port']}"
         ]
     }
 }
@@ -30,46 +35,16 @@ default['kibana']['yml'] = {
 
 default['search_guard']['yml'] = 
 {
-    "ca" => {
-        "root" => {
-            "dn" => "CN=elasticsearch,OU=Docu,O=Wazuh,L=California,C=US",
-            "keysize" => 2048,
-            "validityDays" => 3650,
-            "pkPassword" => "none",
-            "file" => "root-ca.pem"
-        }
-    },
-    "defaults" => {
-        "validityDays" => 3650,
-        "pkPassword" => "none",
-        "generatedPasswordLength" => 12,
-        "httpsEnabled" => true
-    },
-    "nodes" => [
-        {
-            "name" => "elasticsearch",
-            "dn" => "CN=node-1,OU=Docu,O=Wazuh,L=California,C=US",
-            "ip" => [
-                "#{node['wazuh-elastic']['ip']}"
+    'nodes' => {
+        'elasticsearch' => {
+            'ip' => [
+                "#{node['elastic']['yml']['network']['host']}"
             ]
         },
-        {
-            "name" => "kibana",
-            "dn" => "CN=kibana,OU=Docu,O=Wazuh,L=California,C=US",
-            "ip" => [
-                "#{node['wazuh-kibana']['ip']}"
+        'kibana' => {
+            'ip' => [
+                "#{node['kibana']['yml']['server']['host']}"
             ]
         }
-    ],
-    "clients" => [
-        {
-            "name" => "admin",
-            "dn" => "CN=admin,OU=Docu,O=Wazuh,L=California,C=US",
-            "admin" => true
-        },
-        {
-            "name" => "filebeat",
-            "dn" => "CN=filebeat,OU=Docu,O=Wazuh,L=California,C=US"
-        }
-    ]
+    }
 }

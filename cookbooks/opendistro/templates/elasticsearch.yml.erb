@@ -4,9 +4,14 @@
 # https://documentation.wazuh.com/4.0/installation-guide/open-distro/distributed-deployment/step-by-step-installation/elasticsearch-cluster/elasticsearch-single-node-cluster.html#elasticsearch-configuration
 #
 
-network.host: <%= network_host %>
-node.name: <%= node_name %>
-cluster.initial_master_nodes: <%= initial_master_nodes %>
+network.host: <%= @network_host %>
+node.name: <%= @node_name %>
+cluster.initial_master_nodes: [
+    <% @initial_master_nodes.each do |node| %>
+        "<%= node %>"
+    <% end %>
+] 
+http.port: <%= @http_port %>
 
 opendistro_security.ssl.transport.pemcert_filepath: /etc/elasticsearch/certs/elasticsearch.pem
 opendistro_security.ssl.transport.pemkey_filepath: /etc/elasticsearch/certs/elasticsearch.key

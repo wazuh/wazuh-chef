@@ -2,7 +2,8 @@
 # Recipe:: repository
 # Author:: Wazuh <info@wazuh.com>
 
-if platform_family?('debian','ubuntu')
+case node['platform'] 
+when 'debian','ubuntu'
   package "lsb-release"
 
   ohai "reload lsb" do
@@ -16,27 +17,20 @@ if platform_family?('debian','ubuntu')
     key "https://packages.wazuh.com/key/GPG-KEY-WAZUH"
     distribution "stable"
     components ["main"]
-    not_if do
-      File.exists?("/etc/apt/sources.list.d/wazuh.list")
-    end
   end  
 
   # Update the package information
   apt_update
-
-elsif platform_family?('redhat', 'centos', 'amazon', 'fedora', 'oracle')
+when 'redhat', 'centos', 'amazon', 'fedora', 'oracle'
   yum_repository "wazuh" do
-    description "OpenDistro Elasticseach Yum"
+    description "Opendistroforelasticseach Yum"
     baseurl "https://packages.wazuh.com/#{node['wazuh']['major_version']}/yum/"
     gpgkey "https://packages.wazuh.com/key/GPG-KEY-WAZUH"
     action :create
-    not_if do
-      File.exists?("/etc/yum.repos.d/wazuh.repo")
-    end
   end
-elsif platform_family?('opensuse', 'suse')
+when 'opensuseleap', 'suse'
   zypper_repository "wazuh" do
-    description "OpenDistro Elasticseach Zypper"
+    description "Opendistroforelasticseach Zypper"
     baseurl "https://packages.wazuh.com/#{node['wazuh']['major_version']}/yum/"
     gpgkey "https://packages.wazuh.com/key/GPG-KEY-WAZUH"
     action :create

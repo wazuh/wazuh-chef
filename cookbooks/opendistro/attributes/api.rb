@@ -1,2 +1,11 @@
+# Cookbook Name:: opendistro
+# Attributes:: api
+# Author:: Wazuh <info@wazuh.com>
 
-default['wazuh-elastic']['kibana_wazuh_api_credentials'] = [ { id: "default", url: "https://localhost", port: "55000", username: "wazuh", password: "wazuh" } ]
+default['kibana']['wazuh_api_credentials'] = {
+    'id' => "default", 
+    'url' => "https://localhost", 
+    'port' => 55000, 
+    'username' => "wazuh", 
+    'password' => "wazuh"
+} 
