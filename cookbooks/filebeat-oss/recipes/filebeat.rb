@@ -19,7 +19,7 @@ when 'redhat', 'centos', 'amazon', 'fedora', 'oracle'
       version "#{node['elk']['patch_version']}"
     end
   end
-when 'opensuse', 'suse'
+when 'opensuseleap', 'suse'
   zypper_package 'filebeat' do
     version "#{node['elk']['patch_version']}"
   end  
@@ -34,15 +34,15 @@ template "#{node['filebeat']['config_path']}/filebeat.yml" do
   owner 'root'
   group 'root'
   mode '0640'
-  variables(
+  variables ({
     hosts: node['filebeat']['yml']['output']['elasticsearch']['hosts']
-  )
+  })
 end
 
 # Download the alerts template for Elasticsearch
 
 remote_file "#{node['filebeat']['config_path']}/#{node['filebeat']['alerts_template']}" do
-  source "https://raw.githubusercontent.com/wazuh/wazuh/v#{node['wazuh']['patch_version']}/extensions/elasticsearch/#{node['elk']['major_version']}/#{node['filebeat']['alerts_template']}"
+  source "https://raw.githubusercontent.com/wazuh/wazuh/#{node['wazuh']['minor_version']}/extensions/elasticsearch/#{node['elk']['major_version']}/#{node['filebeat']['alerts_template']}"
   owner 'root'
   group 'root'
   mode '0644'
@@ -50,33 +50,46 @@ end
 
 # Download the Wazuh module for Filebeat
 
-remote_file "#{node['filebeat']['config_path']}/#{node['filebeat']['wazuh_module']}" do
-  source "https://packages.wazuh.com/#{node['wazuh']['major_version']}/filebeat/#{node['filebeat']['wazuh_module']}"
-end
-
-archive_file "#{node['filebeat']['wazuh_module']}" do
-  path "#{node['filebeat']['config_path']}/#{node['filebeat']['wazuh_module']}"
-  destination "#{node['filebeat']['wazuh_module_path']}"
-end
-
-file "#{node['filebeat']['config_path']}/#{node['filebeat']['wazuh_module']}" do
-  action :delete
+execute 'Extract Wazuh module' do
+  command "curl -s https://packages.wazuh.com/#{node['wazuh']['major_version']}/filebeat/#{node['filebeat']['wazuh_module']} | tar -xvz -C #{node['filebeat']['wazuh_module_path']}"
+  action :run
 end
 
 # Configure Filebeat certificates
 
-directory "#{node['filebeat']['config_path']}/certs" do
-    action :create 
+directory "#{node['filebeat']['certs_path']}" do
+  action :create 
 end
 
-log 'filebeat-certificates' do
-    message "Please move the following files on elasticsearch node to #{node['filebeat']['config_path']}/certs: 
-      - filebeat.pem 
-      - filebeat.key 
-      - root-ca.pem. 
-    Once uploaded, run the following commands as sudo: 
-      - systemctl daemon-reload
-      - systemctl enable filebeat
-      - systemctl start filebeat"
-    level :warn
+ruby_block 'Copy certificate files' do
+  block do
+    if File.exist?("#{node['elastic']['certs_path']}")
+      IO.copy_stream("#{node['elastic']['certs_path']}/filebeat.pem", "#{node['filebeat']['certs_path']}/filebeat.pem")
+      IO.copy_stream("#{node['elastic']['certs_path']}/filebeat.key", "#{node['filebeat']['certs_path']}/filebeat.key")
+      IO.copy_stream("#{node['elastic']['certs_path']}/root-ca.pem", "#{node['filebeat']['certs_path']}/root-ca.pem")
+    else 
+      Chef::Log.fatal("Please copy the following files where Elasticserch is installed to 
+        #{node['filebeat']['certs_path']}:
+          - #{node['elastic']['certs_path']}/filebeat.pem
+          - #{node['elastic']['certs_path']}/filebeat.key
+          - #{node['elastic']['certs_path']}/root-ca.pem
+        Then run as sudo:
+          - systemctl daemon-reload
+          - systemctl enable kibana
+          - systemctl start kibana")
+    end
+  end
+  action :run
+end
+
+# Enable and start service 
+
+service "filebeat" do
+  supports :start => true, :stop => true, :restart => true, :reload => true
+  action [:enable, :start]
+  only_if {
+    File.exist?("#{node['filebeat']['certs_path']}/filebeat.pem") &&
+    File.exist?("#{node['filebeat']['certs_path']}/filebeat.key") &&
+    File.exist?("#{node['filebeat']['certs_path']}/root-ca.pem")
+  }
 end

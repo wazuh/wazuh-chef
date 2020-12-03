@@ -2,7 +2,7 @@
 output.elasticsearch:
   hosts: [
     <% @hosts.each do |node| %>
-      "<%= node %>",
+      "<%= node['ip'] %>:<%= node['port'] %>",
     <% end %>
   ]
   protocol: https

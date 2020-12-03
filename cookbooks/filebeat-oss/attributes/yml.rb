@@ -1,15 +1,18 @@
 # Cookbook Name:: filebeat
-# Attribute:: elastic
+# Attribute:: yml
 # Author:: Wazuh <info@wazuh.com>
 
-default['filebeat']['yml'] = [
+default['filebeat']['yml'] = {
     'output' => {
         'elasticsearch' => {
             'hosts' => [
-                "http://0.0.0.0:9200"
+                {
+                    'ip' => '0.0.0.0',
+                    'port' => 9200
+                }
             ]
         }
     }
-]
+}
 
 
