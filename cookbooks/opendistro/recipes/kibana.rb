@@ -61,41 +61,6 @@ execute 'Install Wazuh Kibana plugin' do
   command "sudo -u kibana #{node['kibana']['package_path']}/bin/kibana-plugin install https://packages.wazuh.com/#{node['wazuh']['major_version']}/ui/kibana/wazuh_kibana-#{node['wazuh']['kibana_plugin_version']}-1.zip"
 end
 
-# Create Wazuh-Kibana plugin configuration file
-
-directory "#{node['kibana']['optimize_path']}/wazuh" do
-  owner 'kibana'
-  group 'kibana'
-  action :create
-end
-
-directory "#{node['kibana']['optimize_path']}/wazuh/config" do
-  owner 'kibana'
-  group 'kibana'
-  action :create
-end
-
-directory "#{node['kibana']['optimize_path']}/wazuh/logs" do
-  owner 'kibana'
-  group 'kibana'
-  action :create
-end
-
-template "#{node['kibana']['optimize_path']}/wazuh/config/wazuh.yml" do
-  source 'wazuh.yml.erb'
-  owner 'kibana'
-  group 'kibana'
-  mode '0600'
-  action :create
-  variables ({
-    id: node['kibana']['wazuh_api_credentials']['id'],
-    url: node['kibana']['wazuh_api_credentials']['url'],
-    port: node['kibana']['wazuh_api_credentials']['port'],
-    username: node['kibana']['wazuh_api_credentials']['username'],
-    password: node['kibana']['wazuh_api_credentials']['password']
-  })
-end
-
 # Certificates placement
 
 directory "#{node['kibana']['certs_path']}" do
@@ -139,6 +104,25 @@ service "kibana" do
     File.exist?("#{node['kibana']['certs_path']}/kibana.key") &&
     File.exist?("#{node['kibana']['certs_path']}/root-ca.pem")
   }
+end
+
+# Create Wazuh-Kibana plugin configuration file
+
+template "#{node['kibana']['optimize_path']}/wazuh/config/wazuh.yml" do
+  source 'wazuh.yml.erb'
+  owner 'kibana'
+  group 'kibana'
+  mode '0600'
+  action :create
+  variables ({
+    api_credentials: node['kibana']['wazuh_api_credentials']
+  })
+end
+
+# Restart Kibana service
+
+service "kibana" do
+  action [:restart]
 end
 
 ruby_block 'Wait for elasticsearch' do

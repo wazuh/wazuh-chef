@@ -191,8 +191,11 @@
 
 
 hosts:
-  - <%= @id %>:
-     url: <%= @url %>
-     port: <%= @port %>
-     username: <%= @username %>
-     password: <%= @password %>
+<% @api_credentials.each do |api_user| %>
+  - <%= api_user['id'] %>:
+     url: <%= api_user['url'] %>
+     port: <%= api_user['port'] %>
+     username: <%= api_user['username'] %>
+     password: <%= api_user['password'] %>
+<% end %>
+  
