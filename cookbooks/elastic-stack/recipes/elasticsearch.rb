@@ -90,7 +90,7 @@ service "elasticsearch" do
   action [:enable, :start]
 end
 
-ruby_block 'wait for elasticsearch' do
+ruby_block 'Wait for elasticsearch' do
   block do
     loop { break if (TCPSocket.open(
       "#{node['elastic']['yml']['network']['host']}",

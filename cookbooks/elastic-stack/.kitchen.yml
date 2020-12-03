@@ -13,17 +13,27 @@ verifiers:
 
 platforms:
   - name: ubuntu-20.04
+    driver:
+      network:
+        - ["private_network", {ip: "172.16.11.10"}]
   - name: ubuntu-18.04
+    driver:
+      network:
+        - ["private_network", {ip: "172.16.11.11"}]
   - name: centos-8.0
+    driver:
+      network:
+        - ["private_network", {ip: "172.16.11.12"}]
   - name: centos-7
+    driver:
+      network:
+        - ["private_network", {ip: "172.16.11.13"}]
 
 suites:
   - name: elastic-stack
     run_list:
       - recipe[elastic-stack::default]
     driver:
-      network:
-        - ["private_network", {ip: "172.16.10.11"}]
       customize:
-        memory: 2048
+        memory: 4096
         cpus: 2

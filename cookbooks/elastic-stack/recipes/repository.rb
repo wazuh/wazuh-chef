@@ -11,7 +11,7 @@ when 'ubuntu', 'debian'
     subscribes :reload, 'package[lsb-release]', :immediately
   end
 
-  apt_repository 'elastic-7.x' do
+  apt_repository "elastic-#{node['elk']['major_version']}" do
     key "https://artifacts.elastic.co/GPG-KEY-elasticsearch"
     uri "https://artifacts.elastic.co/packages/#{node['elk']['major_version']}/apt"
     components ['main']
@@ -22,7 +22,7 @@ when 'ubuntu', 'debian'
   apt_update
 when 'redhat', 'centos', 'amazon', 'fedora', 'oracle'
   yum_repository 'elastic' do
-    description 'Elasticsearch repository for 7.x packages'
+    description "Elasticsearch repository for #{node['elk']['major_version']} packages"
     gpgcheck true
     gpgkey "https://artifacts.elastic.co/GPG-KEY-elasticsearch"
     enabled true 
@@ -31,7 +31,7 @@ when 'redhat', 'centos', 'amazon', 'fedora', 'oracle'
   end
 when 'opensuseleap', 'suse'
   zypper_repository 'elastic' do   
-    description 'Elasticsearch repository for 7.x packages'
+    description "Elasticsearch repository for #{node['elk']['major_version']} packages"
     gpgcheck true
     gpgkey "https://artifacts.elastic.co/GPG-KEY-elasticsearch"
     enabled true 

@@ -29,11 +29,11 @@ default['elastic']['yml'] = {
 default['kibana']['yml'] = {
     'server' => {
         'host' => '0.0.0.0',
-        'port' => 443
+        'port' => 5601
     },
     'elasticsearch' => {
         'hosts' => [
-            "https://#{node['elastic']['yml']['network']['host']}:#{node['elastic']['yml']['http']['port']}"
+            "http://#{node['elastic']['yml']['network']['host']}:#{node['elastic']['yml']['http']['port']}"
         ]
     }
 }
