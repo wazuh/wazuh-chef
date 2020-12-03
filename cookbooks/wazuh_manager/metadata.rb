@@ -19,6 +19,3 @@ supports 'opensuse', '>= 42.0'
 
 issues_url 'https://github.com/wazuh/wazuh-chef/issues' if respond_to?(:issues_url)
 source_url 'https://github.com/wazuh/wazuh-chef' if respond_to?(:source_url)
-
-depends 'filebeat-oss'
-depends 'opendistro'
