@@ -1,3 +1,7 @@
+# Cookbook Name:: wazuh-manager
+# Attributes:: woodle
+# Author:: Wazuh <info@wazuh.com
+
 default['ossec']['conf']['wodle'] = [
    {   '@name' => 'open-scap',
       'disabled' => 'yes',

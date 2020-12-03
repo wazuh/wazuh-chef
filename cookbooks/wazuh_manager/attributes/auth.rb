@@ -1,3 +1,7 @@
+# Cookbook Name:: wazuh-manager
+# Attributes:: auth
+# Author:: Wazuh <info@wazuh.com
+
 # Registration service - Authd settings (Manager)
 default['ossec']['conf']['auth'] = {
     'disabled' => false,

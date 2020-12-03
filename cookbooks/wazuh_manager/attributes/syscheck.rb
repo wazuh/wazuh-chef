@@ -1,3 +1,7 @@
+# Cookbook Name:: wazuh-manager
+# Attributes:: syscheck
+# Author:: Wazuh <info@wazuh.com
+
 # Syscheck settings
 default['ossec']['conf']['syscheck'] = {
   'disabled' => false,

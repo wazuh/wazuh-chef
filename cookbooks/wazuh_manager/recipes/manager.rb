@@ -1,55 +1,39 @@
-#
-# Cookbook Name:: wazuh
+# Cookbook Name:: wazuh-manager
 # Recipe:: manager
-#
-# Copyright 2015, Opscode, Inc.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-# http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
-#include_recipe 'chef-sugar::default'
+# Author:: Wazuh <info@wazuh.com>
 
-
-if platform_family?('ubuntu', 'debian')
+case node['platform']
+when 'ubuntu', 'debian'
   apt_package 'wazuh-manager' do
-    version "#{node['wazuh-manager']['version']}-1"
+    version "#{node['wazuh']['patch_version']}-1"
   end
-elsif platform_family?('redhat', 'rhel','centos')
+when 'redhat', 'centos', 'amazon', 'fedora', 'oracle'
   if node['platform_version'] >= '8'
     dnf_package 'wazuh-manager' do
-      version "#{node['wazuh-manager']['version']}-1"
+      version "#{node['wazuh']['patch_version']}-1"
     end
   else
     yum_package 'wazuh-manager' do
-      version "#{node['wazuh-manager']['version']}-1"
+      version "#{node['wazuh']['patch_version']}-1"
     end
   end
-elsif platform_family?('suse')
+when 'opensuseleap', 'suse'
   zypper_package 'wazuh-manager' do
-    version "#{node['wazuh-manager']['version']}-1"
+    version "#{node['wazuh']['patch_version']}-1"
   end
 else
   raise "Currently platforn not supported yet. Feel free to open an issue on https://www.github.com/wazuh/wazuh-chef if you consider that support for a specific OS should be added"
 end
 
-
 # The dependences should be installed only when the cluster is enabled
 if node['ossec']['conf']['cluster']['disabled'] == 'no'
-  if platform_family?('ubuntu', 'debian')
+  case node['platform']
+  when 'ubuntu', 'debian'
     log 'Wazuh_Cluster_not_compatible' do
       message "Wazuh cluster is not compatible with this version with #{node['platform']}"
       level :warn
     end
-  elsif platform_family?('redhat', 'rhel','centos', 'amazon')
+  when 'redhat', 'oracle', 'centos', 'amazon', 'fedora'
     if node['platform_version'].to_i == 7
       package ['python-setuptools', 'python-cryptography']
     end
@@ -66,7 +50,7 @@ if node['ossec']['conf']['cluster']['node_type'] == 'master'
   end
 end
 
-include_recipe 'wazuh_server::common'
+include_recipe 'wazuh_manager::common'
 
 template "#{node['ossec']['dir']}/etc/local_internal_options.conf" do
   source 'var/ossec/etc/manager_local_internal_options.conf'

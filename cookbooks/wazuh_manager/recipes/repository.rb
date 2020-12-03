@@ -1,56 +1,41 @@
-#
-# Cookbook Name:: ossec
+# Cookbook Name:: wazuh-manager
 # Recipe:: repository
-#
-# Copyright 2015, Opscode, Inc.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
+# Author:: Wazuh <info@wazuh.com>
 
-if platform_family?('ubuntu', 'debian')
+case node['platform']
+when 'debian', 'ubuntu'
   package 'lsb-release'
 
   ohai 'reload lsb' do
     plugin 'lsb'
-    # action :nothing
     subscribes :reload, 'package[lsb-release]', :immediately
   end
 
   apt_repository 'wazuh' do
     key 'https://packages.wazuh.com/key/GPG-KEY-WAZUH'
-    uri "http://packages.wazuh.com/#{node['packages.wazuh.com']['version']}/apt/"
+    uri "http://packages.wazuh.com/#{node['wazuh']['major_version']}/apt/"
     components ['main']
     distribution 'stable'
     action :add
   end
 
   apt_update
-elsif platform_family?('rhel','redhat', 'centos', 'amazon')
+when 'redhat', 'centos', 'amazon', 'fedora', 'oracle'   
   yum_repository 'wazuh' do
     description 'WAZUH Yum Repository - www.wazuh.com'
     gpgcheck true
     gpgkey 'https://packages.wazuh.com/key/GPG-KEY-WAZUH'
     enabled true 
-    baseurl "https://packages.wazuh.com/#{node['packages.wazuh.com']['version']}/yum"
+    baseurl "https://packages.wazuh.com/#{node['wazuh']['major_version']}/yum"
     action :create
   end
-elsif platform_family?('suse')
+when 'opensuseleap', 'suse'
   zypper_repository 'wazuh' do   
     description 'WAZUH Zypper Repository - www.wazuh.com'
     gpgcheck true
     gpgkey 'https://packages.wazuh.com/key/GPG-KEY-WAZUH'
     enabled true 
-    baseurl "https://packages.wazuh.com/#{node['packages.wazuh.com']['version']}/yum"
+    baseurl "https://packages.wazuh.com/#{node['wazuh']['major_version']}/yum"
     action :create
   end
 else

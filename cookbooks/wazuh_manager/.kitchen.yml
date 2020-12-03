@@ -14,53 +14,32 @@ verifiers:
 
 platforms:
   - name: ubuntu-20.04
+    driver:
+      network:
+        - ["private_network", {ip: "172.16.10.10"}]
   - name: ubuntu-18.04
+    driver:
+      network:
+        - ["private_network", {ip: "172.16.10.11"}]
   - name: centos-8.0
+    driver:
+      network:
+        - ["private_network", {ip: "172.16.10.12"}]
   - name: centos-7
+    driver:
+      network:
+        - ["private_network", {ip: "172.16.10.13"}]
 
 suites:
-  - name: wazuh-server
+  - name: wazuh-manager
     environments_path: "test/environments"
     data_bags_path: "test/data_bags"
     encrypted_data_bag_secret_key_path: "test/data_bags/wazuh_secrets/test_data_bag_key"
     run_list:
-      - recipe[wazuh_server::default]
-      #- recipe[wazuh_server::prerequisites]
-      #- recipe[wazuh_server::repository]
-      #- recipe[wazuh_server::manager]
-      #- recipe[wazuh_server::filebeat]
+      - recipe[wazuh_manager::default]
     driver:
-      network:
-        - ["private_network", {ip: "172.16.10.10"}]
       customize:
         memory: 2048
-        cpus: 1
-  - name: elastic
-    run_list:
-      - recipe[wazuh_elastic::default]
-    driver:
-      network:
-        - ["private_network", {ip: "172.16.10.11"}]
-      customize:
-        memory: 2048
-        cpus: 2
-  - name: kibana
-    run_list:
-      - recipe[wazuh_kibana::default]
-    driver:
-      network:
-        - ["private_network", {ip: "172.16.10.12"}]
-      customize:
-        memory: 4096
-        cpus: 2
-  - name: agent
-    run_list:
-      - recipe[wazuh_agent::default]
-    driver:
-      network:
-        - ["private_network", {ip: "172.16.10.13"}]
-      customize:
-        memory: 512
         cpus: 1
 
 #driver:

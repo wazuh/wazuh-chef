@@ -1,3 +1,7 @@
+# Cookbook Name:: wazuh-manager
+# Attributes:: rootcheck
+# Author:: Wazuh <info@wazuh.com
+
 # Rootcheck settings
 default['ossec']['conf']['rootcheck'] = {
     'disabled' => false,

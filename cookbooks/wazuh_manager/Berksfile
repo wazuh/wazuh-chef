@@ -2,9 +2,5 @@ source 'https://supermarket.chef.io'
 
 metadata
 
-cookbook 'chef-sugar'
-cookbook 'hostsfile'
-cookbook 'apt'
-cookbook 'yum'
-cookbook 'poise-python'
-cookbook 'zypper'
+cookbook 'filebeat-oss', path: '../filebeat-oss'
+cookbook 'opendistro', path: '../opendistro'

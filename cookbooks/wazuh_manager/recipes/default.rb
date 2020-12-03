@@ -1,5 +1,9 @@
-include_recipe 'apt::default'
-include_recipe 'wazuh_server::prerequisites'
-include_recipe 'wazuh_server::repository'
-include_recipe 'wazuh_server::manager'
-include_recipe 'wazuh_server::filebeat'
+# Cookbook Name:: wazuh-manager
+# Recipe:: default
+# Author:: Wazuh <info@wazuh.com>
+
+include_recipe 'opendistro::default'
+include_recipe 'wazuh_manager::prerequisites'
+include_recipe 'wazuh_manager::repository'
+include_recipe 'wazuh_manager::manager'
+include_recipe 'filebeat-oss::default'

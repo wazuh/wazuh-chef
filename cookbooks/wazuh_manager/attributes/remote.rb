@@ -1,3 +1,7 @@
+# Cookbook Name:: wazuh-manager
+# Attributes:: remote
+# Author:: Wazuh <info@wazuh.com
+
 # Remoted settings
 default['ossec']['conf']['remote'] = {
     'connection' => 'secure',

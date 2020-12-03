@@ -1,3 +1,7 @@
+# Cookbook Name:: wazuh-manager
+# Attributes:: cluster
+# Author:: Wazuh <info@wazuh.com
+
 # Cluster settings
 default['ossec']['conf']['cluster'] = {
     'name' => 'wazuh',

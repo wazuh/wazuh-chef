@@ -1,3 +1,7 @@
+# Cookbook Name:: wazuh-manager
+# Attributes:: command
+# Author:: Wazuh <info@wazuh.com
+
 default['ossec']['conf']['command'] = [
     {
         'name' => 'disable-account',

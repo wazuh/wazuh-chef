@@ -1,3 +1,7 @@
+# Cookbook Name:: wazuh-manager
+# Attributes:: ruleset
+# Author:: Wazuh <info@wazuh.com
+
 # Ruleset settings (Manager)
 default['ossec']['conf']['ruleset'] = {
     'decoder_dir' => [

@@ -1,3 +1,6 @@
+# Cookbook Name:: wazuh-manager
+# Attributes:: sca
+# Author:: Wazuh <info@wazuh.com
 
 default['ossec']['conf']['sca'] = {
     'enabled' => true,

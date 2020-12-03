@@ -1,5 +1,9 @@
+# Cookbook Name:: wazuh-manager
+# Attributes:: localfile
+# Author:: Wazuh <info@wazuh.com
 
-if platform_family?('debian','ubuntu')
+case node['platform']
+when 'ubuntu', 'debian'
   default['ossec']['conf']['localfile'] = [
     {
       'log_format' => 'command',
@@ -52,7 +56,7 @@ if platform_family?('debian','ubuntu')
         }
     }
   ]
-elsif platform_family?("centos","redhat","rhel", "amazon")
+when 'redhat', 'centos', 'amazon', 'fedora', 'oracle'
   default['ossec']['conf']['localfile'] = [
     {
       'log_format' => 'command',

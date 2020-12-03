@@ -1,3 +1,7 @@
+# Cookbook Name:: wazuh-manager
+# Attributes:: global
+# Author:: Wazuh <info@wazuh.com
+
 default['ossec']['conf']['global'] = {
     'jsonout_output' => true,
     'alerts_log' => true,
