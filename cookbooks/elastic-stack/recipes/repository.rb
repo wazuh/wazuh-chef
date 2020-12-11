@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Cookbook Name:: elastic-stack
 # Recipe:: repository
 # Author:: Wazuh <info@wazuh.com>
@@ -12,7 +14,7 @@ when 'ubuntu', 'debian'
   end
 
   apt_repository "elastic-#{node['elk']['major_version']}" do
-    key "https://artifacts.elastic.co/GPG-KEY-elasticsearch"
+    key 'https://artifacts.elastic.co/GPG-KEY-elasticsearch'
     uri "https://artifacts.elastic.co/packages/#{node['elk']['major_version']}/apt"
     components ['main']
     distribution 'stable'
@@ -24,20 +26,20 @@ when 'redhat', 'centos', 'amazon', 'fedora', 'oracle'
   yum_repository 'elastic' do
     description "Elasticsearch repository for #{node['elk']['major_version']} packages"
     gpgcheck true
-    gpgkey "https://artifacts.elastic.co/GPG-KEY-elasticsearch"
-    enabled true 
+    gpgkey 'https://artifacts.elastic.co/GPG-KEY-elasticsearch'
+    enabled true
     baseurl "https://artifacts.elastic.co/packages/#{node['elk']['major_version']}/yum"
     action :create
   end
 when 'opensuseleap', 'suse'
-  zypper_repository 'elastic' do   
+  zypper_repository 'elastic' do
     description "Elasticsearch repository for #{node['elk']['major_version']} packages"
     gpgcheck true
-    gpgkey "https://artifacts.elastic.co/GPG-KEY-elasticsearch"
-    enabled true 
+    gpgkey 'https://artifacts.elastic.co/GPG-KEY-elasticsearch'
+    enabled true
     baseurl "https://artifacts.elastic.co/packages/#{node['elk']['major_version']}/yum"
     action :create
   end
 else
-  raise "Currently platforn not supported yet. Feel free to open an issue on https://www.github.com/wazuh/wazuh-chef if you consider that support for a specific OS should be added"
+  raise 'Currently platforn not supported yet. Feel free to open an issue on https://www.github.com/wazuh/wazuh-chef if you consider that support for a specific OS should be added'
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Configure the Rakefile's tasks.
 
 ###
@@ -6,22 +8,22 @@
 ###
 
 # The company name - used for SSL certificates, and in srvious other places
-COMPANY_NAME = 'Wazuh'.freeze
+COMPANY_NAME = 'Wazuh'
 
 # The Country Name to use for SSL Certificates
-SSL_COUNTRY_NAME = 'US'.freeze
+SSL_COUNTRY_NAME = 'US'
 
 # The State Name to use for SSL Certificates
-SSL_STATE_NAME = 'VA'.freeze
+SSL_STATE_NAME = 'VA'
 
 # The Locality Name for SSL - typically, the city
-SSL_LOCALITY_NAME = 'Leesburg'.freeze
+SSL_LOCALITY_NAME = 'Leesburg'
 
 # What department?
-SSL_ORGANIZATIONAL_UNIT_NAME = 'Operations'.freeze
+SSL_ORGANIZATIONAL_UNIT_NAME = 'Operations'
 
 # The SSL contact email address
-SSL_EMAIL_ADDRESS = 'info@wazuh.com'.freeze
+SSL_EMAIL_ADDRESS = 'info@wazuh.com'
 
 # License for new Cookbooks
 # Can be :apachev2 or :none

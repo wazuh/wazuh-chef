@@ -3,12 +3,9 @@ driver:
 
 provisioner:
   name: chef_zero
-  environments_path: "test/environments"
-  data_bags_path: "test/data_bags"
-  encrypted_data_bag_secret_key_path: "test/data_bags/wazuh_secrets/test_data_bag_key"
   product_version: latest
 
-verifiers:
+verifier:
   name: inspec
 
 platforms:
@@ -37,3 +34,6 @@ suites:
       customize:
         memory: 4096
         cpus: 2
+    verifier:
+      inspec_tests:
+        - path: test/integration/elastic-stack/
