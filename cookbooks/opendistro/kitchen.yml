@@ -1,0 +1,36 @@
+driver:
+  name: vagrant
+
+provisioner:
+  name: chef_zero
+  product_version: latest
+
+verifier:
+  name: inspec
+
+platforms:
+  - name: ubuntu-20.04
+    driver:
+      network:
+        - ["private_network", {ip: "172.16.11.14"}]
+  - name: ubuntu-18.04
+    driver:
+      network:
+        - ["private_network", {ip: "172.16.11.15"}]
+  - name: centos-8.0
+    driver:
+      network:
+        - ["private_network", {ip: "172.16.11.16"}]
+  - name: centos-7
+    driver:
+      network:
+        - ["private_network", {ip: "172.16.11.17"}]
+
+suites:
+  - name: opendistro
+    run_list:
+      - recipe[opendistro::default]
+    driver:
+      customize:
+        memory: 4096
+        cpus: 2

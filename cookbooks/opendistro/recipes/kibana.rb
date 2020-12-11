@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Cookbook Name:: opendistro
 # Recipe:: kibana
 # Author:: Wazuh <info@wazuh.com>
@@ -7,24 +9,24 @@
 case node['platform']
 when 'debian', 'ubuntu'
   apt_package 'opendistroforelasticsearch-kibana' do
-    version "#{node['odfe']['patch_version']}"
+    version (node['odfe']['patch_version']).to_s
   end
 when 'redhat', 'centos', 'amazon', 'fedora', 'oracle'
   if node['platform_version'] >= '8'
     dnf_package 'opendistroforelasticsearch-kibana' do
-      version "#{node['odfe']['patch_version']}"
+      version (node['odfe']['patch_version']).to_s
     end
   else
     yum_package 'opendistroforelasticsearch-kibana' do
-      version "#{node['odfe']['patch_version']}"
+      version (node['odfe']['patch_version']).to_s
     end
   end
 when 'opensuseleap', 'suse'
   zypper_package 'opendistroforelasticsearch-kibana' do
-    version "#{node['odfe']['patch_version']}"
+    version (node['odfe']['patch_version']).to_s
   end
 else
-  raise "Currently platforn not supported yet. Feel free to open an issue on https://www.github.com/wazuh/wazuh-chef if you consider that support for a specific OS should be added"
+  raise 'Currently platforn not supported yet. Feel free to open an issue on https://www.github.com/wazuh/wazuh-chef if you consider that support for a specific OS should be added'
 end
 
 # Create Kibana configuration file
@@ -34,25 +36,25 @@ template "#{node['kibana']['config_path']}/kibana.yml" do
   owner 'root'
   group 'kibana'
   variables({
-    server_port: "#{node['kibana']['yml']['server']['port']}",
-    server_host: "#{node['kibana']['yml']['server']['host']}",
-    elasticsearch_hosts: node['kibana']['yml']['elasticsearch']['hosts']
-  })
-  mode 0755
+              server_port: (node['kibana']['yml']['server']['port']).to_s,
+              server_host: (node['kibana']['yml']['server']['host']).to_s,
+              elasticsearch_hosts: node['kibana']['yml']['elasticsearch']['hosts']
+            })
+  mode 0o755
 end
 
-# Change Kibana folders owner 
+# Change Kibana folders owner
 
-directory "#{node['kibana']['optimize_path']}" do
+directory (node['kibana']['optimize_path']).to_s do
   owner 'kibana'
   group 'kibana'
-  recursive true 
+  recursive true
 end
 
-directory "#{node['kibana']['plugins_path']}" do
+directory (node['kibana']['plugins_path']).to_s do
   owner 'kibana'
   group 'kibana'
-  recursive true 
+  recursive true
 end
 
 # Install the Wazuh Kibana plugin
@@ -63,20 +65,20 @@ end
 
 # Certificates placement
 
-directory "#{node['kibana']['certs_path']}" do
+directory (node['kibana']['certs_path']).to_s do
   action :create
 end
 
 ruby_block 'Copy certificate files' do
   block do
-    if File.exist?("#{node['elastic']['certs_path']}")
+    if File.exist?((node['elastic']['certs_path']).to_s)
       IO.copy_stream("#{node['elastic']['certs_path']}/kibana_http.pem", "#{node['kibana']['certs_path']}/kibana.pem")
       IO.copy_stream("#{node['elastic']['certs_path']}/kibana_http.key", "#{node['kibana']['certs_path']}/kibana.key")
       IO.copy_stream("#{node['elastic']['certs_path']}/root-ca.pem", "#{node['kibana']['certs_path']}/root-ca.pem")
     else
-      Chef::Log.fatal("Please copy the following files where Elasticsearch is installed to 
+      Chef::Log.fatal("Please copy the following files where Elasticsearch is installed to
         #{node['kibana']['certs_path']}:
-          - #{node['elastic']['certs_path']}/kibana_http.key (rename as kibana.key) 
+          - #{node['elastic']['certs_path']}/kibana_http.key (rename as kibana.key)
           - #{node['elastic']['certs_path']}/kibana_http.pem (rename as kibana.pem)
           - #{node['elastic']['certs_path']}/root-ca.pem
         Then run as sudo:
@@ -96,14 +98,14 @@ end
 
 # Enable and start the Kibana service
 
-service "kibana" do
-  supports :start => true, :stop => true, :restart => true, :reload => true
-  action [:enable, :start]
-  only_if {
+service 'kibana' do
+  supports start: true, stop: true, restart: true, reload: true
+  action %i[enable start]
+  only_if do
     File.exist?("#{node['kibana']['certs_path']}/kibana.pem") &&
-    File.exist?("#{node['kibana']['certs_path']}/kibana.key") &&
-    File.exist?("#{node['kibana']['certs_path']}/root-ca.pem")
-  }
+      File.exist?("#{node['kibana']['certs_path']}/kibana.key") &&
+      File.exist?("#{node['kibana']['certs_path']}/root-ca.pem")
+  end
 end
 
 # Create Wazuh-Kibana plugin configuration file
@@ -114,34 +116,48 @@ template "#{node['kibana']['optimize_path']}/wazuh/config/wazuh.yml" do
   group 'kibana'
   mode '0600'
   action :create
-  variables ({
-    api_credentials: node['kibana']['wazuh_api_credentials']
-  })
+  variables({
+              api_credentials: node['kibana']['wazuh_api_credentials']
+            })
 end
 
 # Restart Kibana service
 
-service "kibana" do
+service 'kibana' do
   action [:restart]
 end
 
 ruby_block 'Wait for elasticsearch' do
   block do
-    loop { break if (TCPSocket.open(
-      "#{node['elastic']['yml']['network']['host']}",
-      node['elastic']['yml']['http']['port']) rescue nil); 
-      puts "Waiting elasticsearch...."; sleep 1 
-    }
+    loop do
+      break if begin
+        TCPSocket.open(
+          (node['elastic']['yml']['network']['host']).to_s,
+          node['elastic']['yml']['http']['port']
+        )
+      rescue StandardError
+        nil
+      end
+
+      puts 'Waiting elasticsearch....'; sleep 1
+    end
   end
 end
 
 ruby_block 'Wait for kibana' do
   block do
-    loop { break if (TCPSocket.open(
-      "#{node['kibana']['yml']['server']['host']}",
-      node['kibana']['yml']['server']['port']) rescue nil); 
-      puts "Waiting kibana...."; sleep 60
-    }
+    loop do
+      break if begin
+        TCPSocket.open(
+          (node['kibana']['yml']['server']['host']).to_s,
+          node['kibana']['yml']['server']['port']
+        )
+      rescue StandardError
+        nil
+      end
+
+      puts 'Waiting kibana....'; sleep 60
+    end
   end
 end
 
