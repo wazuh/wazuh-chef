@@ -26,4 +26,4 @@ jobs:
         PLATFORM: ubuntu
         RELEASE: 18
         RUN_COMMAND: /sbin/init
-        VAGRANT_INSTANCE: elastic-stack-ubuntu-1804
+        VAGRANT_INSTANCE: wazuh-manager-ubuntu-1804
