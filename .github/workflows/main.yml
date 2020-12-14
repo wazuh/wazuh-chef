@@ -9,7 +9,7 @@ on:
       - feature-cookbooks
 
 jobs:
-  test:
+  ubuntu18:
     runs-on: ubuntu-latest
     steps:
     - name: Check out code
@@ -19,7 +19,11 @@ jobs:
       with:
         ruby-version: 2.6
         bundler-cache: true
-    - name: Install dependencies
-      run: bundle install
-    - name: Install Chef Workstation
-      uses: actionshub/chef-install@main
+    - name: Ubuntu 18.04 - Wazuh Manager
+      uses: ./.github/actions/manager
+      env:
+        IMAGE: jrei/systemd-ubuntu:18.04
+        PLATFORM: ubuntu
+        RELEASE: 18
+        RUN_COMMAND: /sbin/init
+        VAGRANT_INSTANCE: elastic-stack-ubuntu-1804

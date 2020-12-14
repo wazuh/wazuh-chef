@@ -1,0 +1,5 @@
+name: test-manager
+description: Test Wazuh manager Chef install
+runs:
+  using: docker
+  image: 'Dockerfile'
