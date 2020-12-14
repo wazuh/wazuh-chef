@@ -1,12 +1,8 @@
 driver:
-  name: dokken
-  chef_version: latest 
-
-transport:
-  name: dokken
+  name: vagrant
 
 provisioner:
-  name: dokken
+  name: chef_zero
 
 verifier:
   name: inspec
@@ -14,22 +10,25 @@ verifier:
 platforms:
   - name: ubuntu-20.04
     driver:
-      image: dokken/ubuntu-20.04
+      box: bento/ubuntu-20.04
       network:
         - ["private_network", {ip: "172.16.11.10"}]
+
   - name: ubuntu-18.04
     driver:
-      image: dokken/ubuntu-18.04
+      box: bento/ubuntu-18.04
       network:
         - ["private_network", {ip: "172.16.11.11"}]
+
   - name: centos-8
     driver:
-      image: dokken/centos-8
+      box: bento/centos-8
       network:
         - ["private_network", {ip: "172.16.11.12"}]
+        
   - name: centos-7
     driver:
-      image: dokken/centos-7
+      box: bento/centos-7
       network:
         - ["private_network", {ip: "172.16.11.13"}]
 
