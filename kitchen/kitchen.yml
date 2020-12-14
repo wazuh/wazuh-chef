@@ -1,31 +1,31 @@
 driver:
-  name: docker
-  use_sudo: false
-  use_internal_docker_network: true
-  remove_images: true
+  name: dokken
+  chef_version: latest 
+
+transport:
+  name: dokken
 
 provisioner:
-  name: chef_zero
-  product_version: latest
+  name: dokken
 
 verifier:
   name: inspec
 
 platforms:
-  - name: ubuntu-20.04
-    driver:
+  - driver:
+      image: dokken/ubuntu-20.04
       network:
         - ["private_network", {ip: "172.16.11.10"}]
-  - name: ubuntu-18.04
-    driver:
+  - driver:
+      image: dokken/ubuntu-18.04
       network:
         - ["private_network", {ip: "172.16.11.11"}]
-  - name: centos-8.0
-    driver:
+  - driver:
+      image: dokken/centos-8
       network:
         - ["private_network", {ip: "172.16.11.12"}]
-  - name: centos-7
-    driver:
+  - driver:
+      image: dokken/centos-7
       network:
         - ["private_network", {ip: "172.16.11.13"}]
 
