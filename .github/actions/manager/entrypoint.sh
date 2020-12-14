@@ -14,4 +14,4 @@ echo "Installing dependencies"
 bundle install
 
 echo "Kitchen is creating the new instances"
-bundle exec kitchen create $VAGRANT_INSTANCE
+bundle exec kitchen test $VAGRANT_INSTANCE
