@@ -12,19 +12,23 @@ verifier:
   name: inspec
 
 platforms:
-  - driver:
+  - name: ubuntu-20.04
+    driver:
       image: dokken/ubuntu-20.04
       network:
         - ["private_network", {ip: "172.16.11.10"}]
-  - driver:
+  - name: ubuntu-18.04
+    driver:
       image: dokken/ubuntu-18.04
       network:
         - ["private_network", {ip: "172.16.11.11"}]
-  - driver:
+  - name: centos-8
+    driver:
       image: dokken/centos-8
       network:
         - ["private_network", {ip: "172.16.11.12"}]
-  - driver:
+  - name: centos-7
+    driver:
       image: dokken/centos-7
       network:
         - ["private_network", {ip: "172.16.11.13"}]
