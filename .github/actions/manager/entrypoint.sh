@@ -13,5 +13,10 @@ cd kitchen
 echo "Installing dependencies"
 bundle install
 
+echo "Install vagrant"
+git clone https://github.com/dotcloud/docker.git
+cd vagrant
+bundle install
+
 echo "Kitchen is creating the new instances"
 kitchen test $VAGRANT_INSTANCE
