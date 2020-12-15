@@ -1,5 +1,9 @@
 driver:
-  name: vagrant
+  name: dokken
+  chef_version: latest
+
+transport:
+  name: dokken
 
 provisioner:
   name: chef_zero
