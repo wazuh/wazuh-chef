@@ -16,13 +16,20 @@ jobs:
         uses: actions/checkout@master
       - name: Install Chef
         uses: actionshub/chef-install@master
-      - name: Ubuntu 18.04 - Wazuh Manager
-        uses: ./.github/actions/manager
+      - name: Dokken
+        uses: actionshub/kitchen-dokken@creation
         env:
-          IMAGE: jrei/systemd-ubuntu:18.04
-          PLATFORM: ubuntu
-          RELEASE: 18
-          RUN_COMMAND: /sbin/init
-          VAGRANT_INSTANCE: wazuh-manager-ubuntu-1804
+          suite: default
+          os: ubuntu-1804
+          CHEF_LICENSE: accept-no-persist
+          KITCHEN_LOCAL_YAML: kitchen.dokken.yml
+      #- name: Ubuntu 18.04 - Wazuh Manager
+      #  uses: ./.github/actions/manager
+      #  env:
+      #    IMAGE: jrei/systemd-ubuntu:18.04
+      #    PLATFORM: ubuntu
+      #    RELEASE: 18
+      #    RUN_COMMAND: /sbin/init
+      #    VAGRANT_INSTANCE: wazuh-manager-ubuntu-1804
 
  

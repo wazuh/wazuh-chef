@@ -30,4 +30,4 @@ suites:
         cpus: 2
     verifier:
       inspec_tests:
-        - path: test/integration/elastic-stack/
+        - path: kitchen/test/integration/elastic-stack/
