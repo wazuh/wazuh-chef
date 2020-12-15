@@ -1,12 +1,12 @@
 driver:
   name: dokken
-  chef_version: latest
+  chef_version: latest # or 15 or 15.0 or 15.0.300 or curent
 
 transport:
   name: dokken
 
 provisioner:
-  name: chef_zero
+  name: dokken
 
 verifier:
   name: inspec
@@ -14,25 +14,25 @@ verifier:
 platforms:
   - name: ubuntu-20.04
     driver:
-      box: bento/ubuntu-20.04
+      image: dokken/ubuntu-20.04
       network:
         - ["private_network", {ip: "172.16.11.10"}]
 
   - name: ubuntu-18.04
     driver:
-      box: bento/ubuntu-18.04
+      image: dokken/ubuntu-18.04
       network:
         - ["private_network", {ip: "172.16.11.11"}]
 
   - name: centos-8
     driver:
-      box: bento/centos-8
+      image: dokken/centos-8
       network:
         - ["private_network", {ip: "172.16.11.12"}]
         
   - name: centos-7
     driver:
-      box: bento/centos-7
+      image: dokken/centos-7
       network:
         - ["private_network", {ip: "172.16.11.13"}]
 
@@ -102,3 +102,46 @@ suites:
     verifier:
       inspec_tests:
         - path: test/integration/wazuh-agent/
+
+
+
+
+
+
+
+
+
+
+
+
+
+#driver:
+#  name: vagrant
+#
+#verifier:
+#  name: inspec
+#
+#platforms:
+#  - name: ubuntu-20.04
+#    driver:
+#      box: bento/ubuntu-20.04
+#      network:
+#        - ["private_network", {ip: "172.16.11.10"}]
+#
+#  - name: ubuntu-18.04
+#    driver:
+#      box: bento/ubuntu-18.04
+#      network:
+#        - ["private_network", {ip: "172.16.11.11"}]
+#
+#  - name: centos-8
+#    driver:
+#      box: bento/centos-8
+#      network:
+#        - ["private_network", {ip: "172.16.11.12"}]
+#        
+#  - name: centos-7
+#    driver:
+#      box: bento/centos-7
+#      network:
+#        - ["private_network", {ip: "172.16.11.13"}]
