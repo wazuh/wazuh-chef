@@ -11,20 +11,6 @@ on:
 jobs:
   kitchen-test:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        os:
-          #- 'debian-9'
-          #- 'debian-10'
-          #- 'centos-7'
-          #- 'centos-8'
-          #- 'ubuntu-1604'
-          - 'ubuntu-1804'
-          #- 'opensuse-leap-15'
-        suite:
-          - 'default'
-      fail-fast: false
-
     steps:
       - name: Check out code
         uses: actions/checkout@master
