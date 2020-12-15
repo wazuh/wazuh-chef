@@ -17,7 +17,7 @@ jobs:
       - name: Install Chef
         uses: actionshub/chef-install@master
       - name: Test-Kitchen
-        run: kitchen create elastic-stack-ubuntu-1804
+        run: kitchen test elastic-stack-ubuntu-1804
 
       #- name: Ubuntu 18.04 - Wazuh Manager
       #  uses: ./.github/actions/manager
