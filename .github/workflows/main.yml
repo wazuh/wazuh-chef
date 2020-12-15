@@ -16,13 +16,9 @@ jobs:
         uses: actions/checkout@master
       - name: Install Chef
         uses: actionshub/chef-install@master
-      - name: Dokken
-        uses: actionshub/kitchen-dokken@creation
-        env:
-          suite: default
-          os: ubuntu-1804
-          CHEF_LICENSE: accept-no-persist
-          KITCHEN_LOCAL_YAML: kitchen.dokken.yml
+      - name: Test-Kitchen
+        run: kitchen create elastic-stack-ubuntu-1804
+
       #- name: Ubuntu 18.04 - Wazuh Manager
       #  uses: ./.github/actions/manager
       #  env:
