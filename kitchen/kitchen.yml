@@ -43,9 +43,12 @@ verifier:
   name: inspec
 
 platforms:
-- name: centos-7
-  driver:
-    image: dokken/centos-7
+  - name: centos-7
+    driver:
+      image: dokken/centos-7
+  - name: ubuntu-18.04
+    driver:
+      image: dokken/ubuntu-18.04
 
 suites:
   - name: elastic-stack
