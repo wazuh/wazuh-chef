@@ -14,7 +14,7 @@ echo "Installing dependencies"
 bundle install
 
 echo "Install vagrant"
-git clone https://github.com/dotcloud/docker.git
+git clone https://github.com/hashicorp/vagrant.git
 cd vagrant
 bundle install
 
