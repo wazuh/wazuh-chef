@@ -42,4 +42,4 @@ jobs:
         os: ${{ matrix.os }}
       env:
         CHEF_LICENSE: accept-no-persist
-        KITCHEN_LOCAL_YAML: ./kitchen/kitchen.dokken.yml
+        KITCHEN_LOCAL_YAML: kitchen.dokken.yml
