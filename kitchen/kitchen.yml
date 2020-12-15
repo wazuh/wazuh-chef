@@ -38,6 +38,7 @@ transport:
 
 provisioner:
   name: dokken
+  chef_license: accept
 
 verifier:
   name: inspec
@@ -46,6 +47,7 @@ platforms:
   - name: centos-7
     driver:
       image: dokken/centos-7
+
   - name: ubuntu-18.04
     driver:
       image: dokken/ubuntu-18.04
