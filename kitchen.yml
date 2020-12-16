@@ -30,7 +30,7 @@ platforms:
         - ["private_network", {ip: "172.16.11.13"}]
 
 suites:
-  - name: elastic-stack
+  - name: default
     run_list:
       - recipe[elastic-stack::default]
     driver:
