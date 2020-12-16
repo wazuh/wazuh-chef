@@ -1,0 +1,64 @@
+name: Kitchen tests for Wazuh Chef
+
+on:
+  push:
+    branches: 
+      - feature-cookbooks
+  pull_request:
+    branches:
+      - feature-cookbooks
+
+jobs:
+  ruby:
+      strategy:
+        fail-fast: false
+        matrix:
+          ruby: [2.4, 2.5, 2.6]
+      runs-on: ubuntu-latest
+      steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+      - name: Install dependencies
+        run: bundle install
+  kitchen-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os:
+          #- 'debian-9'
+          #- 'debian-10'
+          #- 'centos-7'
+          #- 'centos-8'
+          - 'ubuntu-2004'
+          #- 'ubuntu-1804'
+          #- 'opensuse-leap-15'
+        suite:
+          - 'default'
+    steps:
+      - name: Check out code
+        uses: actions/checkout@master
+      - name: Install Chef
+        uses: actionshub/chef-install@master
+      - name: Dokken
+        uses: actionshub/kitchen-dokken@master
+        env:
+          CHEF_LICENSE: accept-no-persist
+          KITCHEN_LOCAL_YAML: kitchen.dokken.yml
+        with:
+          suite: ${{ matrix.suite }}
+          os: ${{ matrix.os }}
+
+      #- name: Ubuntu 18.04 - Wazuh Manager
+      #  uses: ./.github/actions/manager
+      #  env:
+      #    IMAGE: jrei/systemd-ubuntu:18.04
+      #    PLATFORM: ubuntu
+      #    RELEASE: 18
+      #    RUN_COMMAND: /sbin/init
+      #    VAGRANT_INSTANCE: wazuh-manager-ubuntu-1804
+
+ 
