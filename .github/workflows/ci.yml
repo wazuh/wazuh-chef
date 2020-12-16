@@ -10,20 +10,21 @@ on:
 
 jobs:
   ruby:
-      strategy:
-        fail-fast: false
-        matrix:
-          ruby: [2.4, 2.5, 2.6]
-      runs-on: ubuntu-latest
-      steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: ${{ matrix.ruby }}
-      - name: Install dependencies
-        run: bundle install
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby: [2.4, 2.5, 2.6]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Setup Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby }}
+    - name: Install dependencies
+      run: bundle install
+      
   kitchen-test:
     runs-on: ubuntu-latest
     strategy:
@@ -42,7 +43,7 @@ jobs:
       - name: Check out code
         uses: actions/checkout@master
       - name: Install Chef
-        uses: actionshub/chef-install@master
+        uses: actionshub/chef-install@main
       - name: Dokken
         uses: actionshub/kitchen-dokken@master
         env:
@@ -51,14 +52,5 @@ jobs:
         with:
           suite: ${{ matrix.suite }}
           os: ${{ matrix.os }}
-
-      #- name: Ubuntu 18.04 - Wazuh Manager
-      #  uses: ./.github/actions/manager
-      #  env:
-      #    IMAGE: jrei/systemd-ubuntu:18.04
-      #    PLATFORM: ubuntu
-      #    RELEASE: 18
-      #    RUN_COMMAND: /sbin/init
-      #    VAGRANT_INSTANCE: wazuh-manager-ubuntu-1804
 
  
