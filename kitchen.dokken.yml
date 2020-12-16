@@ -30,4 +30,59 @@ suites:
         cpus: 2
     verifier:
       inspec_tests:
-        - path: kitchen/test/integration/elastic-stack/
+        - path: cookbooks/elastic-stack/test/integration
+
+  - name: opendistro
+    run_list: 
+      - recipe['opendistro::default']
+    driver:
+      customize:
+        memory: 4096
+        cpus: 2
+    verifier:
+      inspec_tests:
+        - path: cookbooks/opendistro/test/integration
+
+  - name: filebeat
+    run_list: 
+      - recipe['filebeat::default']
+    driver:
+      customize:
+        memory: 512
+        cpus: 1
+    verifier:
+      inspec_tests:
+        - path: cookbooks/filebeat/test/integration
+
+  - name: filebeat-oss
+    run_list: 
+      - recipe['filebeat-oss::default']
+    driver:
+      customize:
+        memory: 512
+        cpus: 1
+    verifier:
+      inspec_tests:
+        - path: cookbooks/filebeat-oss/test/integration     
+
+  - name: wazuh-manager
+    run_list: 
+      - recipe['wazuh-manager::default']
+    driver:
+      customize:
+        memory: 2048
+        cpus: 1
+    verifier:
+      inspec_tests:
+        - path: cookbooks/wazuh-manager/test/integration     
+
+  - name: wazuh-agent
+    run_list: 
+      - recipe['wazuh-agent::default']
+    driver:
+      customize:
+        memory: 512
+        cpus: 1
+    verifier:
+      inspec_tests:
+        - path: cookbooks/wazuh-agent/test/integration   

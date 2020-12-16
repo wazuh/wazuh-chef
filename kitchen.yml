@@ -1,56 +1,33 @@
-#driver:
-#  name: vagrant
-#
-#verifier:
-#  name: inspec
-#
-#platforms:
-#  - name: ubuntu-20.04
-#    driver:
-#      box: bento/ubuntu-20.04
-#      network:
-#        - ["private_network", {ip: "172.16.11.10"}]
-#
-#  - name: ubuntu-18.04
-#    driver:
-#      box: bento/ubuntu-18.04
-#      network:
-#        - ["private_network", {ip: "172.16.11.11"}]
-#
-#  - name: centos-8
-#    driver:
-#      box: bento/centos-8
-#      network:
-#        - ["private_network", {ip: "172.16.11.12"}]
-#        
-#  - name: centos-7
-#    driver:
-#      box: bento/centos-7
-#      network:
-#        - ["private_network", {ip: "172.16.11.13"}]
-
 driver:
-  name: dokken
-  chef_version: latest # or 15 or 15.0 or 15.0.300 or curent
-
-transport:
-  name: dokken
-
-provisioner:
-  name: dokken
-  chef_license: accept
+  name: vagrant
 
 verifier:
   name: inspec
 
 platforms:
-  - name: centos-7
+  - name: ubuntu-20.04
     driver:
-      image: dokken/centos-7
+      box: bento/ubuntu-20.04
+      network:
+        - ["private_network", {ip: "172.16.11.10"}]
 
   - name: ubuntu-18.04
     driver:
-      image: dokken/ubuntu-18.04
+      box: bento/ubuntu-18.04
+      network:
+        - ["private_network", {ip: "172.16.11.11"}]
+
+  - name: centos-8
+    driver:
+      box: bento/centos-8
+      network:
+        - ["private_network", {ip: "172.16.11.12"}]
+        
+  - name: centos-7
+    driver:
+      box: bento/centos-7
+      network:
+        - ["private_network", {ip: "172.16.11.13"}]
 
 suites:
   - name: elastic-stack
@@ -62,7 +39,7 @@ suites:
         cpus: 2
     verifier:
       inspec_tests:
-        - path: test/integration/elastic-stack/
+        - path: cookbooks/elastic-stack/test/integration
 
   - name: opendistro
     run_list: 
@@ -73,7 +50,7 @@ suites:
         cpus: 2
     verifier:
       inspec_tests:
-        - path: test/integration/opendistro/
+        - path: cookbooks/opendistro/test/integration
 
   - name: filebeat
     run_list: 
@@ -84,7 +61,7 @@ suites:
         cpus: 1
     verifier:
       inspec_tests:
-        - path: test/integration/filebeat/
+        - path: cookbooks/filebeat/test/integration
 
   - name: filebeat-oss
     run_list: 
@@ -95,7 +72,7 @@ suites:
         cpus: 1
     verifier:
       inspec_tests:
-        - path: test/integration/filebeat-oss/      
+        - path: cookbooks/filebeat-oss/test/integration     
 
   - name: wazuh-manager
     run_list: 
@@ -106,7 +83,7 @@ suites:
         cpus: 1
     verifier:
       inspec_tests:
-        - path: test/integration/wazuh-manager/
+        - path: cookbooks/wazuh-manager/test/integration     
 
   - name: wazuh-agent
     run_list: 
@@ -117,7 +94,7 @@ suites:
         cpus: 1
     verifier:
       inspec_tests:
-        - path: test/integration/wazuh-agent/
+        - path: cookbooks/wazuh-agent/test/integration   
 
 
 
