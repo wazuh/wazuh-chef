@@ -13,5 +13,3 @@ group :cookbooks do
     cookbook 'elastic-stack', path: './cookbooks/elastic-stack'
     cookbook 'opendistro', path: './cookbooks/opendistro'
 end
-
-g
