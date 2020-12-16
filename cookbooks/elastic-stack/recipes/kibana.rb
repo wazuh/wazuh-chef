@@ -125,15 +125,6 @@ ruby_block 'Wait for kibana' do
   end
 end
 
-bash 'Waiting for kibana curl response...' do
-  code <<-EOH
-  until (curl -XGET http://#{node['kibana']['yml']['server']['host']}:#{node['kibana']['yml']['server']['port']}); do
-    printf 'Waiting for kibana....'
-    sleep 5
-  done
-  EOH
-end
-
 log 'Access Kibana web interface' do
   message "URL: http://#{node['kibana']['yml']['server']['host']}:#{node['kibana']['yml']['server']['port']}
   user: admin
