@@ -24,14 +24,12 @@ jobs:
           # opensuse-leap-15,
         ]
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
     - name: Check out code
-      uses: actions/checkout@master
+      uses: actions/checkout@v2
     - name: Setup Ruby
-      uses: ruby/setup-ruby@v1
+      uses: actions/setup-ruby@v1
       with:
-        ruby-version: 2.7
+        ruby-version: '2.7'
     - name: Install Chef
       uses: actionshub/chef-install@main
     - name: Test elastic-stack cookbook
