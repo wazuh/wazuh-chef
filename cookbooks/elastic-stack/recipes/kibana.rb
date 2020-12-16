@@ -45,16 +45,12 @@ end
 
 # Update the optimize and plugins directories permissions
 
-directory "#{node['kibana']['package_path']}/optimize" do
-  owner 'kibana'
-  group 'kibana'
-  recursive true
+execute "Change #{node['kibana']['package_path']}/optimize owner" do
+  command "sudo chown -R kibana:kibana #{node['kibana']['package_path']}/optimize"
 end
 
-directory "#{node['kibana']['package_path']}/plugins" do
-  owner 'kibana'
-  group 'kibana'
-  recursive true
+execute "Change #{node['kibana']['package_path']}/plugins owner" do
+  command "sudo chown -R kibana:kibana #{node['kibana']['package_path']}/plugins"
 end
 
 # Install the Wazuh Kibana plugin
@@ -72,7 +68,7 @@ template "#{node['kibana']['package_path']}/optimize/wazuh/config/wazuh.yml" do
   source 'wazuh.yml.erb'
   owner 'kibana'
   group 'kibana'
-  mode 0o755
+  mode 0755
   action :create
   variables({
               api_credentials: node['kibana']['wazuh_api_credentials']
