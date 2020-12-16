@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby: [2.4, 2.5, 2.6]
+        ruby: [2.5, 2.6, 2.7]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
@@ -24,33 +24,158 @@ jobs:
         ruby-version: ${{ matrix.ruby }}
     - name: Install dependencies
       run: bundle install
-      
-  kitchen-test:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        os:
-          #- 'debian-9'
-          #- 'debian-10'
-          #- 'centos-7'
-          #- 'centos-8'
-          - 'ubuntu-2004'
-          #- 'ubuntu-1804'
-          #- 'opensuse-leap-15'
-        suite:
-          - 'default'
+  
+  chef:
+    needs: ruby
+    runs-on: ubuntu-latest 
     steps:
       - name: Check out code
         uses: actions/checkout@master
       - name: Install Chef
         uses: actionshub/chef-install@main
-      - name: Dokken
-        uses: actionshub/kitchen-dokken@master
-        env:
-          CHEF_LICENSE: accept-no-persist
-          KITCHEN_LOCAL_YAML: kitchen.dokken.yml
-        with:
-          suite: ${{ matrix.suite }}
-          os: ${{ matrix.os }}
 
+  elastic-stack:
+    needs: [ruby, chef]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [
+          # amazonlinux-2,
+          # debian-9,
+          # debian-10,
+          # centos-7,
+          # centos-8,
+          ubuntu-20.04,
+          # ubuntu-18.04,
+          # opensuse-leap-15,
+        ]
+    steps:
+      - name: Check out code
+        uses: actions/checkout@master
+      - name: Elastic-Stack
+        uses: ./.github/actions
+        env:
+          COOKBOOK_NAME: elastic-stack
+          OS: ${{ matrix.os }}
+  
+  #opendistro:
+  #  needs: [ruby, chef]
+  #  runs-on: ubuntu-latest
+  #  strategy:
+  #    matrix:
+  #      os: [
+  #        # debian-9,
+  #        # debian-10,
+  #        # centos-7,
+  #        # centos-8,
+  #        ubuntu-20.04,
+  #        # ubuntu-18.04,
+  #        # opensuse-leap-15,
+  #        # fedora-latest
+  #      ]
+  #  steps:
+  #    - name: Check out code
+  #      uses: actions/checkout@master
+  #    - name: Opendistro
+  #      uses: ./.github/actions
+  #      env:
+  #        COOKBOOK_NAME: opendistro
+  #        OS: ${{ matrix.os }}
+  #
+  #filebeat:
+  #  needs: [ruby, chef]
+  #  runs-on: ubuntu-latest
+  #  strategy:
+  #    matrix:
+  #      os: [
+  #        # debian-9,
+  #        # debian-10,
+  #        # centos-7,
+  #        # centos-8,
+  #        ubuntu-20.04,
+  #        # ubuntu-18.04,
+  #        # opensuse-leap-15,
+  #        # fedora-latest
+  #      ]
+  #  steps:
+  #    - name: Check out code
+  #      uses: actions/checkout@master
+  #    - name: Filebeat
+  #      uses: ./.github/actions
+  #      env:
+  #        COOKBOOK_NAME: filebeat
+  #        OS: ${{ matrix.os }}
+  #
+  #
+  #filebeat-oss:
+  #  needs: [ruby, chef]
+  #  runs-on: ubuntu-latest
+  #  strategy:
+  #    matrix:
+  #      os: [
+  #        # debian-9,
+  #        # debian-10,
+  #        # centos-7,
+  #        # centos-8,
+  #        ubuntu-20.04,
+  #        # ubuntu-18.04,
+  #        # opensuse-leap-15,
+  #        # fedora-latest
+  #      ]
+  #  steps:
+  #    - name: Check out code
+  #      uses: actions/checkout@master
+  #    - name: Filebeat-OSS
+  #      uses: ./.github/actions
+  #      env:
+  #        COOKBOOK_NAME: filebeat-oss
+  #        OS: ${{ matrix.os }}
+  #
+  #wazuh-manager:
+  #  needs: [ruby, chef]
+  #  runs-on: ubuntu-latest
+  #  strategy:
+  #    matrix:
+  #      os: [
+  #        # debian-9,
+  #        # debian-10,
+  #        # centos-7,
+  #        # centos-8,
+  #        ubuntu-20.04,
+  #        # ubuntu-18.04,
+  #        # opensuse-leap-15,
+  #        # fedora-latest
+  #      ]
+  #  steps:
+  #    - name: Check out code
+  #      uses: actions/checkout@master
+  #    - name: Wazuh Manager
+  #      uses: ./.github/actions
+  #      env:
+  #        COOKBOOK_NAME: wazuh_manager
+  #        OS: ${{ matrix.os }}
+  #
+  #wazuh-agent:
+  #  needs: [ruby, chef]
+  #  runs-on: ubuntu-latest
+  #  strategy:
+  #    matrix:
+  #      os: [
+  #        # debian-9,
+  #        # debian-10,
+  #        # centos-7,
+  #        # centos-8,
+  #        ubuntu-20.04,
+  #        # ubuntu-18.04,
+  #        # opensuse-leap-15,
+  #        # fedora-latest
+  #      ]
+  #  steps:
+  #    - name: Check out code
+  #      uses: actions/checkout@master
+  #    - name: Wazuh Agent 
+  #      uses: ./.github/actions
+  #      env:
+  #        COOKBOOK_NAME: wazuh_agent
+  #        OS: ${{ matrix.os }}
  
