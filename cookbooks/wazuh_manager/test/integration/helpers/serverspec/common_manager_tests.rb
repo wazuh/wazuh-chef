@@ -30,31 +30,31 @@ describe 'wazuh::manager' do
     it { should be_owned_by 'root' }
     it { should be_grouped_into 'root' }
   end
-  describe process('ossec-integratord') do
+  describe process('wazuh-integratord') do
     it { should be_running }
     its(:user) { should eq 'ossecm' }
   end
-  describe process('ossec-authd') do
+  describe process('wazuh-authd') do
     it { should be_running }
     its(:user) { should eq 'root' }
   end
-  describe process('ossec-analysisd') do
+  describe process('wazuh-analysisd') do
     it { should be_running }
     its(:user) { should eq 'ossec' }
   end
-  describe process('ossec-logcollector') do
+  describe process('wazuh-logcollector') do
     it { should be_running }
     its(:user) { should eq 'root' }
   end
-  describe process('ossec-remoted') do
+  describe process('wazuh-remoted') do
     it { should be_running }
     its(:user) { should eq 'ossecr' }
   end
-  describe process('ossec-syscheckd') do
+  describe process('wazuh-syscheckd') do
     it { should be_running }
     its(:user) { should eq 'root' }
   end
-  describe process('ossec-monitord') do
+  describe process('wazuh-monitord') do
     it { should be_running }
     its(:user) { should eq 'ossec' }
   end

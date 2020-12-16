@@ -109,5 +109,5 @@ service 'wazuh' do
   supports status: true, restart: true
   action [:enable, :restart]
   only_if "test -s #{dir}/etc/client.keys"
-  not_if ("ps axu | grep ossec-agentd | grep -v grep && ps axu | grep ossec-logcollector | grep -v grep && ps axu | grep ossec-syscheckd | grep -v grep ")
+  not_if ("ps axu | grep wazuh-agentd | grep -v grep && ps axu | grep wazuh-logcollector | grep -v grep && ps axu | grep wazuh-syscheckd | grep -v grep ")
 end

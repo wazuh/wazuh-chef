@@ -55,8 +55,8 @@ end
 # Auth need to be enable only in master node.
 if node['ossec']['conf']['cluster']['node_type'] == 'master'
   execute 'Enable Authd' do
-    command '/var/ossec/bin/ossec-control enable auth'
-    not_if "ps axu | grep ossec-authd | grep -v grep"
+    command '/var/ossec/bin/wazuh-control enable auth'
+    not_if "ps axu | grep wazuh-authd | grep -v grep"
   end
 end
 

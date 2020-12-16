@@ -42,16 +42,16 @@ describe 'wazuh::manager' do
     expect(chef_run).to_not install_package('not_libssl-dev')
   end
 
-  it 'runs a bash script Creating ossec-authd key and cert' do
-    expect(chef_run).to run_bash('Creating ossec-authd key and cert')
+  it 'runs a bash script Creating wazuh-authd key and cert' do
+    expect(chef_run).to run_bash('Creating wazuh-authd key and cert')
   end
 
   it 'runs a bash script Install nodejs' do
     expect(chef_run).to run_bash('Install nodejs')
   end
 
-  it 'service restart ossec-authd' do
-    expect(chef_run).to start_service('ossec-authd')
+  it 'service restart wazuh-authd' do
+    expect(chef_run).to start_service('wazuh-authd')
   end
 
   it 'packages to compile Wazuh-ossec Ubuntu' do

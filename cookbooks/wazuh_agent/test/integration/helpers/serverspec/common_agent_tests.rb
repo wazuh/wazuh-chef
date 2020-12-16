@@ -18,15 +18,15 @@ describe 'wazuh::agent' do
     it { should be_owned_by 'root' }
     it { should be_grouped_into 'ossec' }
   end
-  describe process('ossec-syscheckd') do
+  describe process('wazuh-syscheckd') do
     it { should be_running }
     its(:user) { should eq 'root' }
   end
-  describe process('ossec-agentd') do
+  describe process('wazuh-agentd') do
     it { should be_running }
     its(:user) { should eq 'ossec' }
   end
-  describe process('ossec-logcollector') do
+  describe process('wazuh-logcollector') do
     it { should be_running }
     its(:user) { should eq 'root' }
   end
