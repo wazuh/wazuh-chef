@@ -26,10 +26,10 @@ jobs:
     steps:
     - name: Check out code
       uses: actions/checkout@v2
-    - name: Setup Ruby
-      uses: actions/setup-ruby@v1
-      with:
-        ruby-version: '2.7'
+    #- name: Setup Ruby
+    #  uses: actions/setup-ruby@v1
+    #  with:
+    #    ruby-version: '2.7'
     #- name: Install Chef
     #  uses: actionshub/chef-install@main
     #  with:

@@ -58,7 +58,7 @@ platforms:
       #pid_one_command: /bin/systemd
       #intermediate_instructions:
       #  - RUN /usr/bin/apt-get update
-      #run_command: /sbin/init
+      run_command: /sbin/init
 
   - name: opensuse-leap-15
     driver:

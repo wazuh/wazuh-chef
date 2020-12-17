@@ -9,4 +9,4 @@ echo "Installing dependencies..."
 bundle install
 
 echo "Test cookbook with kitchen... (create, converge, verify and destroy)"
-kitchen test $COOKBOOK_NAME-$OS
+bundle exec kitchen test $COOKBOOK_NAME-$OS
