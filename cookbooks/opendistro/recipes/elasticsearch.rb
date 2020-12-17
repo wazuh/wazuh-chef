@@ -66,6 +66,14 @@ template "#{node['elastic']['config_path']}/jvm.options" do
   variables({ memmory: node['jvm']['memory'] })
 end
 
+bash 'insert_line_limits.conf' do
+  code <<-EOH
+  echo "elasticsearch - nofile  65535" >> /etc/security/limits.conf
+  echo "elasticsearch - memlock unlimited" >> /etc/security/limits.conf
+  EOH
+  not_if 'grep -q elasticsearch /etc/security/limits.conf'
+end
+
 # Add extra roles and users to Wazuh Kibana plugin
 
 remote_file "#{node['elastic']['plugins_path']}/opendistro_security/securityconfig/roles.yml" do
