@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
-describe packages(/elasticsearch-oss/) do
-  its('statuses') { should cmp 'installed' }
+describe package('elasticsearch-oss') do
+  it { should be_installed }
+  it { should be_enabled }
 end
 
-describe packages(/opendistroforelasticsearch/) do
-  its('statuses') { should cmp 'installed' }
+describe package('opendistroforelasticsearch') do
+  it { should be_installed }
+  it { should be_enabled }
 end
 
 describe elasticsearch do
@@ -58,8 +60,6 @@ describe file('/etc/elasticsearch/root-ca.pem') do
 end
 
 describe service('elasticsearch') do
-  it { should be_installed }
-  it { should be_enabled }
   it { should be_running }
 end
 
