@@ -37,6 +37,12 @@ jobs:
       env:
         COOKBOOK_NAME: elastic-stack
         OS: ${{ matrix.os }}
+    - name: Print out logs if fail
+      if: ${{ failure() }}
+      working-directory: ./.github/actions
+      run: ./failure.sh
+      env:
+        OS: ${{ matrix.os }}
   
   #opendistro:
   #  needs: [ruby, chef]
