@@ -40,7 +40,9 @@ jobs:
     - name: Print out logs if fail
       if: ${{ failure() }}
       working-directory: ./.github/actions
-      run: ./failure.sh
+      run: |
+        chmod 755 failure.sh
+        ./failure.sh
       env:
         OS: ${{ matrix.os }}
   
