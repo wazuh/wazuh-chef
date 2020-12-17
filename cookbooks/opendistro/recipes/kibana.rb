@@ -43,18 +43,14 @@ template "#{node['kibana']['config_path']}/kibana.yml" do
   mode 0o755
 end
 
-# Change Kibana folders owner
+# Update the optimize and plugins directories permissions
 
-directory (node['kibana']['optimize_path']).to_s do
-  owner 'kibana'
-  group 'kibana'
-  recursive true
+execute "Change #{node['kibana']['package_path']}/optimize owner" do
+  command "sudo chown -R kibana:kibana #{node['kibana']['package_path']}/optimize"
 end
 
-directory (node['kibana']['plugins_path']).to_s do
-  owner 'kibana'
-  group 'kibana'
-  recursive true
+execute "Change #{node['kibana']['package_path']}/plugins owner" do
+  command "sudo chown -R kibana:kibana #{node['kibana']['package_path']}/plugins"
 end
 
 # Install the Wazuh Kibana plugin
