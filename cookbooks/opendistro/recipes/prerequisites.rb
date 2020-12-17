@@ -4,7 +4,7 @@
 # Recipe:: prerequisites
 # Author:: Wazuh <info@wazuh.com>
 
-package '%w(curl unzip wget)' do
+package %w(curl unzip wget) do
   action :install
 end
 
