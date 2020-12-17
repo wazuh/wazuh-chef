@@ -4,14 +4,13 @@ driver:
   # because Docker and SystemD
   privileged: true
   chef_version: <%= ENV['CHEF_VERSION'] || 'current' %>
-  env: [CHEF_LICENSE=accept]
 
 transport:
   name: dokken
 
 provisioner:
   name: dokken
-  driver:
+  chef_license: accept
 
 verifier:
   name: inspec
