@@ -11,15 +11,15 @@ bundle install
 
 case $OS in
     ubuntu-18.04)
-        $OS=ubuntu-1804
+        OS_NAME=ubuntu-1804
         ;;
     ubuntu-20.04)
-        $OS=ubuntu-2004
+        OS_NAME=ubuntu-2004
         ;;
     *)
-        echo -n "Not Ubuntu OS"
+        OS_NAME=$OS
         ;;
 esac
 
 echo "Test cookbook with kitchen... (create, converge, verify and destroy)"
-kitchen test $COOKBOOK_NAME-$OS
+kitchen test $COOKBOOK_NAME-$OS_NAME
