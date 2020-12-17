@@ -34,27 +34,15 @@ jobs:
       uses: actionshub/chef-install@main
       with:
         version: latest
-    - name: Test-Kitchen
-      uses: actionshub/test-kitchen@main
-      with:
-        suite: ${{ matrix.suite }}
-        os: ${{ matrix.os }}
+    - name: Test elastic-stack cookbook
+      uses: ./.github/actions
       env:
-        CHEF_LICENSE: accept-no-persist
-        KITCHEN_LOCAL_YAML: ./cookbooks/elastic-stack/kitchen.yml
-    #- name: Test elastic-stack cookbook
-    #  uses: ./.github/actions
-    #  env:
-    #    COOKBOOK_NAME: elastic-stack
-    #    OS: ${{ matrix.os }}
-    #- name: Print out logs if fail
-    #  if: ${{ failure() }}
-    #  working-directory: ./.github/actions
-    #  run: |
-    #    chmod 755 failure.sh
-    #    ./failure.sh
-    #  env:
-    #    OS: ${{ matrix.os }}
+        COOKBOOK_NAME: elastic-stack
+        OS: ${{ matrix.os }}
+    - name: Print out logs if fail
+      if: ${{ failure() }}
+      working-directory: ./cookbooks/elastic-stack
+      run: kitchen diagnose --all
   
   #opendistro:
   #  needs: [ruby, chef]
