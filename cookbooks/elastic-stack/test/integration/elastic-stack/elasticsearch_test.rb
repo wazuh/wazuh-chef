@@ -1,5 +1,10 @@
 # frozen_string_literal: true
 
+describe package('elasticsearch') do
+  it { should be_installed }
+  it { should be_enabled }
+end 
+
 describe file('/etc/elasticsearch/elasticsearch.yml') do
   its('owner') { should cmp 'root' }
   its('group') { should cmp 'elasticsearch' }
