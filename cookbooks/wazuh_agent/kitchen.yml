@@ -12,6 +12,9 @@ transport:
 provisioner:
   name: dokken
 
+verifier:
+  name: inspec
+
 platforms:
   - name: amazonlinux-2
     driver:
