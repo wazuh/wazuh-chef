@@ -89,10 +89,12 @@ if agent_auth['password']
   args << ' -P ' + agent_auth['password']
 end
 
-execute "#{dir}/bin/agent-auth #{args}" do
+execute 'wazuh agent auth' do
+  command "#{dir}/bin/agent-auth #{args}"
   timeout 30
   ignore_failure node['ossec']['ignore_failure']
   only_if { agent_auth['register'] == 'yes' && agent_auth['host'] && !File.size?("#{dir}/etc/client.keys") }
+  sensitive true
 end
 
 include_recipe 'wazuh_agent::common'
