@@ -27,7 +27,7 @@ if platform_family?('ubuntu', 'debian')
   end
 
   apt_repository 'wazuh' do
-    uri 'http://packages.wazuh.com/4.x/apt/'
+    uri 'https://packages.wazuh.com/4.x/apt/'
     key 'https://packages.wazuh.com/key/GPG-KEY-WAZUH'
     components ['main']
     distribution 'stable'
