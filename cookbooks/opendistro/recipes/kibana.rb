@@ -59,6 +59,22 @@ execute 'Install Wazuh Kibana plugin' do
   command "sudo -u kibana #{node['kibana']['package_path']}/bin/kibana-plugin install https://packages.wazuh.com/#{node['wazuh']['major_version']}/ui/kibana/wazuh_kibana-#{node['wazuh']['kibana_plugin_version']}-1.zip"
 end
 
+# Create Wazuh-Kibana plugin configuration file
+
+template "#{node['kibana']['optimize_path']}/wazuh/config/wazuh.yml" do
+  source 'wazuh.yml.erb'
+  owner 'kibana'
+  group 'kibana'
+  mode '0600'
+  action :create
+  variables({
+              api_credentials: node['kibana']['wazuh_api_credentials']
+            })
+  only_if {
+    Dir.exist?("#{node['kibana']['optimize_path']}/wazuh/config")
+  }
+end
+
 # Certificates placement
 
 directory (node['kibana']['certs_path']).to_s do
@@ -104,18 +120,7 @@ service 'kibana' do
   end
 end
 
-# Create Wazuh-Kibana plugin configuration file
 
-template "#{node['kibana']['optimize_path']}/wazuh/config/wazuh.yml" do
-  source 'wazuh.yml.erb'
-  owner 'kibana'
-  group 'kibana'
-  mode '0600'
-  action :create
-  variables({
-              api_credentials: node['kibana']['wazuh_api_credentials']
-            })
-end
 
 # Restart Kibana service
 

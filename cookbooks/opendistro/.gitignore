@@ -1,5 +1,0 @@
-.kitchen
-Berksfile.lock
-Gemfile.lock
-.kitchen.docker_totvs.yml
-.DS_Store

@@ -12,6 +12,9 @@ transport:
 provisioner:
   name: dokken
 
+verifier:
+  name: inspec
+  
 platforms:
   - name: amazonlinux-2
     driver:
@@ -71,4 +74,4 @@ suites:
         cpus: 2
     verifier:
       inspec_tests:
-        - path: test/integration
+        - path: test/integration/opendistro
