@@ -13,7 +13,7 @@ end
 
 # Check processes 
 
-describe command('ps -ef | grep ossec-moduless') do
+describe command('ps -ef | grep wazuh-modulesd') do
     its('exit_status') { should eq 0 }
 end 
 
@@ -54,6 +54,10 @@ describe command('ps -ef | grep ossec-apid') do
 end 
 
 # Check OSSEC dir
+
+describe file('/etc/ossec-init.conf') do
+    it { should be_symlink }
+end
 
 describe file('/var/ossec') do
     it { should be_directory }
