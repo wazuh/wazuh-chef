@@ -16,7 +16,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-include_recipe 'apt::default'
 include_recipe 'wazuh_agent::repository'
 
 if platform_family?('ubuntu', 'debian')
