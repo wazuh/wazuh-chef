@@ -1,6 +1,7 @@
 ---
 driver:
   name: dokken
+  # because Docker and SystemD
   privileged: true
   chef_version: <%= ENV['CHEF_VERSION'] || 'current' %>
 
@@ -13,19 +14,61 @@ provisioner:
 
 verifier:
   name: inspec
-  
+
 platforms:
-  - name: <%= ENV['PLATFORM'] %>
+  - name: amazonlinux-2
     driver:
-      image: dokken/<%= ENV['PLATFORM'] %>
-      hostname: <%= ENV['COOKBOOK'] %>_<%= ENV['PLATFORM'] %>
-      run_command: <%= ENV['RUN_COMMAND'] %>
-      privileged: true
+      image: dokken/amazonlinux-2
+      pid_one_command: /usr/lib/systemd/systemd
+
+  - name: debian-9
+    driver:
+      image: dokken/debian-9
+      pid_one_command: /bin/systemd
+      intermediate_instructions:
+        - RUN /usr/bin/apt-get update
+
+  - name: debian-10
+    driver:
+      image: dokken/debian-10
+      pid_one_command: /bin/systemd
+      intermediate_instructions:
+        - RUN /usr/bin/apt-get update
+
+  - name: centos-7
+    driver:
+      image: dokken/centos-7
+      pid_one_command: /usr/lib/systemd/systemd
+
+  - name: centos-8
+    driver:
+      image: dokken/centos-8
+      pid_one_command: /usr/lib/systemd/systemd
+
+  - name: ubuntu-18.04
+    driver:
+      image: dokken/ubuntu-18.04
+      pid_one_command: /bin/systemd
+      intermediate_instructions:
+        - RUN /usr/bin/apt-get update
+
+  - name: ubuntu-20.04
+    driver:
+      image: dokken/ubuntu-20.04
+      pid_one_command: /bin/systemd
+      intermediate_instructions:
+        - RUN /usr/bin/apt-get update
+
+  - name: opensuse-leap-15
+    driver:
+      image: dokken/opensuse-leap-15
+      pid_one_command: /bin/systemd
 
 suites:
-  - name: <%= ENV['COOKBOOK'] %>
+  - name: wazuh_agent
     run_list:
-      - recipe[<%= ENV['COOKBOOK'] %>::default]
+      - recipe[wazuh_agent::default]
+    driver:
     verifier:
       inspec_tests:
-        - path: cookbooks/<%= ENV['COOKBOOK'] %>/test/integration/<%= ENV['COOKBOOK'] %>
+        - path: cookbooks/wazuh_agent/test/integration/wazuh_agent
