@@ -20,7 +20,7 @@ when 'redhat', 'centos', 'amazon', 'fedora', 'oracle'
     end
   end
 when 'opensuseleap', 'suse'
-  yum_package 'filebeat' do
+  zypper_package 'filebeat' do
     version "#{node['elk']['patch_version']}"
   end
 else
