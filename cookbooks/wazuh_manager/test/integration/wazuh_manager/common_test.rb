@@ -55,7 +55,7 @@ end
 
 # Check OSSEC dir
 
-describe file('/etc/ossec-init.conf') do
+describe file('/var/ossec/etc/ossec-init.conf') do
     it { should be_symlink }
 end
 
@@ -78,13 +78,6 @@ describe file('/etc/ossec-init.conf') do
     its('owner') { should cmp 'root' }
     its('group') { should cmp 'ossec' }
     its('mode') { should cmp '0640' }
-end
-
-describe file('/var/ossec/etc/ossec.conf') do 
-    it { should exist }
-    its('owner') { should cmp 'root' }
-    its('group') { should cmp 'ossec' }
-    its('mode') { should cmp '0440' }
 end
 
 describe file('/var/ossec/etc/shared/default/agent.conf') do 
