@@ -7,13 +7,8 @@ describe 'elastic-stack::repository' do
       it { should exist }
       it { should be_enabled }
     end
-  when 'redhat'
-    describe yum.repo('https://artifacts.elastic.co/packages/7.x/yum') do
-      it { should exist }
-      it { should be_enabled }
-    end
-  when 'suse'
-    describe yum.repo('https://artifacts.elastic.co/packages/7.x/yum') do
+  when 'redhat', 'suse'
+    describe yum.repo('elastic') do
       it { should exist }
       it { should be_enabled }
     end
