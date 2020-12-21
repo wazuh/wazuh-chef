@@ -14,11 +14,11 @@ jobs:
     strategy:
       matrix:
         os: [
-          # amazonlinux-2,
+          amazonlinux-2,
           # debian-9,
           # debian-10,
           # centos-7,
-          # centos-8,
+          centos-8,
           ubuntu-2004,
           # ubuntu-1804,
           # opensuse-leap-15,
@@ -38,21 +38,4 @@ jobs:
         suite: filebeat
         os: ${{ matrix.os }}
         action: test
-    
-    #- name: Test filebeat cookbook
-    #  uses: ./.github/actions
-    #  env:
-    #    COOKBOOK_NAME: filebeat
-    #    OS: ${{ matrix.os }}
-    #- name: Print out logs if fail
-    #  if: ${{ failure() }}
-    #  working-directory: ./.github/actions
-    #  run: |
-    #    chmod 755 failure.sh
-    #    ./failure.sh
-    #  env:
-    #    COOKBOOK_NAME: filebeat
-    #    OS: ${{ matrix.os }}
-  
- 
  
