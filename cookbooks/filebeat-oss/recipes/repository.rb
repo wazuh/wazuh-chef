@@ -26,7 +26,7 @@ when 'redhat', 'centos', 'amazon', 'fedora', 'oracle'
     gpgcheck true
     gpgkey 'https://packages.wazuh.com/key/GPG-KEY-WAZUH'
     enabled true 
-    baseurl "https://packages.wazuh.com/#{node['wazuh']['major_version']}/yum"
+    baseurl "https://packages.wazuh.com/#{node['wazuh']['major_version']}/yum/"
     action :create
   end
 when 'opensuseleap', 'suse'
@@ -35,7 +35,7 @@ when 'opensuseleap', 'suse'
     gpgcheck true
     gpgkey 'https://packages.wazuh.com/key/GPG-KEY-WAZUH'
     enabled true 
-    baseurl "https://packages.wazuh.com/#{node['wazuh']['major_version']}/yum"
+    baseurl "https://packages.wazuh.com/#{node['wazuh']['major_version']}/yum/"
     action :create
   end
 else
