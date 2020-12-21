@@ -63,6 +63,11 @@ platforms:
     driver:
       image: dokken/opensuse-leap-15
       pid_one_command: /bin/systemd
+  
+  - name: fedora-latest
+    driver:
+      image: dokken/fedora-latest
+      pid_one_command: /usr/lib/systemd/systemd
 
 suites:
   - name: wazuh_agent
@@ -72,3 +77,38 @@ suites:
     verifier:
       inspec_tests:
         - path: cookbooks/wazuh_agent/test/integration/wazuh_agent
+  - name: wazuh_manager
+    run_list:
+      - recipe[wazuh_manager::default]
+    driver:
+    verifier:
+      inspec_tests:
+        - path: cookbooks/wazuh_manager/test/integration/wazuh_manager
+  - name: opendistro
+    run_list:
+      - recipe[opendistro::default]
+    driver:
+    verifier:
+      inspec_tests:
+        - path: cookbooks/opendistro/test/integration/opendistro
+  - name: elastic-stack
+    run_list:
+      - recipe[elastic-stack::default]
+    driver:
+    verifier:
+      inspec_tests:
+        - path: cookbooks/elastic-stack/test/integration/elastic-stack
+  - name: filebeat
+    run_list:
+      - recipe[filebeat::default]
+    driver:
+    verifier:
+      inspec_tests:
+        - path: cookbooks/filebeat/test/integration/filebeat
+  - name: filebeat-oss
+    run_list:
+      - recipe[filebeat-oss::default]
+    driver:
+    verifier:
+      inspec_tests:
+        - path: cookbooks/filebeat-oss/test/integration/filebeat-oss
