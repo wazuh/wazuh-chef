@@ -15,14 +15,8 @@ jobs:
       matrix:
         os: [
           amazonlinux-2,
-          # debian-9,
-          # debian-10,
-          # centos-7,
           centos-8,
           ubuntu-2004,
-          # ubuntu-1804,
-          # opensuse-leap-15,
-          # fedora-latest,
         ]
     steps:
     - name: Check out code
@@ -38,4 +32,5 @@ jobs:
         suite: filebeat
         os: ${{ matrix.os }}
         action: test
+  
  
