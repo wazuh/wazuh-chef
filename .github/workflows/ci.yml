@@ -9,7 +9,7 @@ on:
       - feature-cookbooks
 
 jobs:
-  kitchen-tests:
+  filebeat:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -22,33 +22,37 @@ jobs:
           ubuntu-2004,
           # ubuntu-1804,
           # opensuse-leap-15,
-          # fedora-latest
+          # fedora-latest,
         ]
     steps:
     - name: Check out code
       uses: actions/checkout@v2
-    #- name: Setup Ruby
-    #  uses: actions/setup-ruby@v1
-    #  with:
-    #    ruby-version: '2.7'
-    #- name: Install Chef
-    #  uses: actionshub/chef-install@main
-    #  with:
-    #    version: latest
-    - name: Test filebeat cookbook
-      uses: ./.github/actions
+    - name: Install Chef
+      uses: actionshub/chef-install@main
+    - name: Kitchen Test
+      uses: actionshub/test-kitchen@main
       env:
-        COOKBOOK_NAME: filebeat
-        OS: ${{ matrix.os }}
-    - name: Print out logs if fail
-      if: ${{ failure() }}
-      working-directory: ./.github/actions
-      run: |
-        chmod 755 failure.sh
-        ./failure.sh
-      env:
-        COOKBOOK_NAME: filebeat
-        OS: ${{ matrix.os }}
+        CHEF_LICENSE: accept-no-persist
+        KITCHEN_LOCAL_YAML: kitchen.yml
+      with:
+        suite: filebeat
+        os: ${{ matrix.os }}
+        action: test
+    
+    #- name: Test filebeat cookbook
+    #  uses: ./.github/actions
+    #  env:
+    #    COOKBOOK_NAME: filebeat
+    #    OS: ${{ matrix.os }}
+    #- name: Print out logs if fail
+    #  if: ${{ failure() }}
+    #  working-directory: ./.github/actions
+    #  run: |
+    #    chmod 755 failure.sh
+    #    ./failure.sh
+    #  env:
+    #    COOKBOOK_NAME: filebeat
+    #    OS: ${{ matrix.os }}
   
  
  
