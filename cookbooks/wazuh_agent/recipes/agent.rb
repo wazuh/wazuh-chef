@@ -26,7 +26,7 @@ when 'debian', 'ubuntu'
 when 'redhat', 'centos', 'amazon', 'fedora', 'oracle'
   if node['platform_version'] >= '8'
     dnf_package 'wazuh-agent' do
-      version "#{node['wazuh']['patch-version']}"
+      version "#{node['wazuh']['patch_version']}"
     end
   else
     yum_package 'wazuh-agent' do
