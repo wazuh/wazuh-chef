@@ -9,7 +9,7 @@ on:
       - feature-cookbooks
 
 jobs:
-  filebeat:
+  kitchen-test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -20,8 +20,8 @@ jobs:
         cookbook: [
           filebeat,
           filebeat-oss,
-          #wazuh_agent,
-          #wazuh_manager,
+          wazuh_agent,
+          wazuh_manager,
           #elastic-stack,
           #opendistro
         ]
