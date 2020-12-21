@@ -21,7 +21,7 @@ include_recipe 'wazuh_agent::repository'
 case node['platform']
 when 'debian', 'ubuntu'
   apt_package 'wazuh-agent' do
-    version "#{node['wazuh']['patch_version']}"
+    version "#{node['wazuh']['patch_version']}-1"
   end
 when 'redhat', 'centos', 'amazon', 'fedora', 'oracle'
   if node['platform_version'] >= '8'
