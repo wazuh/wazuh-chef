@@ -61,6 +61,11 @@ end
 
 # Create Wazuh-Kibana plugin configuration file
 
+execute 'Create wazuh.yml parent folders' do
+  command "sudo -u kibana mkdir -p #{node['kibana']['package_path']}/optimize/wazuh && \
+           sudo -u kibana mkdir -p #{node['kibana']['package_path']}/optimize/wazuh/config"
+end
+
 template "#{node['kibana']['optimize_path']}/wazuh/config/wazuh.yml" do
   source 'wazuh.yml.erb'
   owner 'kibana'
@@ -120,13 +125,7 @@ service 'kibana' do
   end
 end
 
-
-
-# Restart Kibana service
-
-service 'kibana' do
-  action [:restart]
-end
+# Wait for elastic and kibana services
 
 ruby_block 'Wait for elasticsearch' do
   block do
@@ -139,8 +138,6 @@ ruby_block 'Wait for elasticsearch' do
       rescue StandardError
         nil
       end
-
-      puts 'Waiting elasticsearch....'; sleep 1
     end
   end
 end
@@ -156,8 +153,6 @@ ruby_block 'Wait for kibana' do
       rescue StandardError
         nil
       end
-
-      puts 'Waiting kibana....'; sleep 60
     end
   end
 end

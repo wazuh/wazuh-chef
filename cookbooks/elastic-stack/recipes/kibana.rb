@@ -55,6 +55,11 @@ end
 
 # Install the Wazuh Kibana plugin
 
+execute 'Create wazuh.yml parent folders' do
+  command "sudo -u kibana mkdir -p #{node['kibana']['package_path']}/optimize/wazuh && \
+           sudo -u kibana mkdir -p #{node['kibana']['package_path']}/optimize/wazuh/config"
+end
+
 execute 'Install the Wazuh app plugin for Kibana' do
   command "sudo -u kibana #{node['kibana']['package_path']}/bin/kibana-plugin install https://packages.wazuh.com/#{node['wazuh']['major_version']}/ui/kibana/wazuh_kibana-#{node['wazuh']['kibana_plugin_version']}-1.zip"
   not_if do
@@ -73,9 +78,6 @@ template "#{node['kibana']['package_path']}/optimize/wazuh/config/wazuh.yml" do
   variables({
               api_credentials: node['kibana']['wazuh_api_credentials']
             })
-  only_if do
-    File.exist?("#{node['kibana']['package_path']}/optimize/wazuh/config/wazuh.yml")
-  end
 end
 
 # Enable and start the Kibana service
@@ -115,8 +117,6 @@ ruby_block 'Wait for kibana' do
       rescue StandardError
         nil
       end
-
-      puts 'Waiting kibana....'; sleep 60
     end
   end
 end
