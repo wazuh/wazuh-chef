@@ -9,7 +9,7 @@ on:
       - feature-cookbooks
 
 jobs:
-  elastic-stack:
+  kitchen-tests:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -20,8 +20,9 @@ jobs:
           # centos-7,
           # centos-8,
           ubuntu-2004,
-          # ubuntu-18.04,
+          # ubuntu-1804,
           # opensuse-leap-15,
+          # fedora-latest
         ]
     steps:
     - name: Check out code
@@ -34,139 +35,20 @@ jobs:
     #  uses: actionshub/chef-install@main
     #  with:
     #    version: latest
-    - name: Test elastic-stack cookbook
+    - name: Test filebeat cookbook
       uses: ./.github/actions
       env:
-        COOKBOOK_NAME: elastic-stack
+        COOKBOOK_NAME: filebeat
         OS: ${{ matrix.os }}
-    - name: Print out logs if fail
-      if: ${{ failure() }}
-      working-directory: ./.github/actions
-      run: |
-        chmod 755 failure.sh
-        ./failure.sh
-      env:
-        COOKBOOK_NAME: elastic-stack
-        OS: ${{ matrix.os }}
+    #- name: Print out logs if fail
+    #  if: ${{ failure() }}
+    #  working-directory: ./.github/actions
+    #  run: |
+    #    chmod 755 failure.sh
+    #    ./failure.sh
+    #  env:
+    #    COOKBOOK_NAME: elastic-stack
+    #    OS: ${{ matrix.os }}
   
-  #opendistro:
-  #  needs: [ruby, chef]
-  #  runs-on: ubuntu-latest
-  #  strategy:
-  #    matrix:
-  #      os: [
-  #        # debian-9,
-  #        # debian-10,
-  #        # centos-7,
-  #        # centos-8,
-  #        ubuntu-20.04,
-  #        # ubuntu-18.04,
-  #        # opensuse-leap-15,
-  #        # fedora-latest
-  #      ]
-  #  steps:
-  #    - name: Check out code
-  #      uses: actions/checkout@master
-  #    - name: Opendistro
-  #      uses: ./.github/actions
-  #      env:
-  #        COOKBOOK_NAME: opendistro
-  #        OS: ${{ matrix.os }}
-  #
-  #filebeat:
-  #  needs: [ruby, chef]
-  #  runs-on: ubuntu-latest
-  #  strategy:
-  #    matrix:
-  #      os: [
-  #        # debian-9,
-  #        # debian-10,
-  #        # centos-7,
-  #        # centos-8,
-  #        ubuntu-20.04,
-  #        # ubuntu-18.04,
-  #        # opensuse-leap-15,
-  #        # fedora-latest
-  #      ]
-  #  steps:
-  #    - name: Check out code
-  #      uses: actions/checkout@master
-  #    - name: Filebeat
-  #      uses: ./.github/actions
-  #      env:
-  #        COOKBOOK_NAME: filebeat
-  #        OS: ${{ matrix.os }}
-  #
-  #
-  #filebeat-oss:
-  #  needs: [ruby, chef]
-  #  runs-on: ubuntu-latest
-  #  strategy:
-  #    matrix:
-  #      os: [
-  #        # debian-9,
-  #        # debian-10,
-  #        # centos-7,
-  #        # centos-8,
-  #        ubuntu-20.04,
-  #        # ubuntu-18.04,
-  #        # opensuse-leap-15,
-  #        # fedora-latest
-  #      ]
-  #  steps:
-  #    - name: Check out code
-  #      uses: actions/checkout@master
-  #    - name: Filebeat-OSS
-  #      uses: ./.github/actions
-  #      env:
-  #        COOKBOOK_NAME: filebeat-oss
-  #        OS: ${{ matrix.os }}
-  #
-  #wazuh-manager:
-  #  needs: [ruby, chef]
-  #  runs-on: ubuntu-latest
-  #  strategy:
-  #    matrix:
-  #      os: [
-  #        # debian-9,
-  #        # debian-10,
-  #        # centos-7,
-  #        # centos-8,
-  #        ubuntu-20.04,
-  #        # ubuntu-18.04,
-  #        # opensuse-leap-15,
-  #        # fedora-latest
-  #      ]
-  #  steps:
-  #    - name: Check out code
-  #      uses: actions/checkout@master
-  #    - name: Wazuh Manager
-  #      uses: ./.github/actions
-  #      env:
-  #        COOKBOOK_NAME: wazuh_manager
-  #        OS: ${{ matrix.os }}
-  #
-  #wazuh-agent:
-  #  needs: [ruby, chef]
-  #  runs-on: ubuntu-latest
-  #  strategy:
-  #    matrix:
-  #      os: [
-  #        # debian-9,
-  #        # debian-10,
-  #        # centos-7,
-  #        # centos-8,
-  #        ubuntu-20.04,
-  #        # ubuntu-18.04,
-  #        # opensuse-leap-15,
-  #        # fedora-latest
-  #      ]
-  #  steps:
-  #    - name: Check out code
-  #      uses: actions/checkout@master
-  #    - name: Wazuh Agent 
-  #      uses: ./.github/actions
-  #      env:
-  #        COOKBOOK_NAME: wazuh_agent
-  #        OS: ${{ matrix.os }}
+ 
  
