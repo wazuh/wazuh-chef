@@ -20,8 +20,8 @@ jobs:
         cookbook: [
           filebeat,
           filebeat-oss,
-          wazuh_agent,
-          wazuh_manager,
+          wazuh-agent,
+          wazuh-manager,
           #elastic-stack,
           #opendistro
         ]
