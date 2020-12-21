@@ -26,16 +26,16 @@ when 'debian', 'ubuntu'
 when 'redhat', 'centos', 'amazon', 'fedora', 'oracle'
   if node['platform_version'] >= '8'
     dnf_package 'wazuh-agent' do
-      version "#{node['wazuh']['patch-version']}-1"
+      version "#{node['wazuh']['patch-version']}"
     end
   else
     yum_package 'wazuh-agent' do
-      version "#{node['wazuh']['patch-version']}-1"
+      version "#{node['wazuh']['patch-version']}"
     end
   end
 when 'opensuseleap', 'suse' 
   zypper_package 'wazuh-agent' do
-    version "#{node['wazuh']['patch-version']}-1"
+    version "#{node['wazuh']['patch-version']}"
   end
 else
   raise "Currently platforn not supported yet. Feel free to open an issue on https://www.github.com/wazuh/wazuh-chef if you consider that support for a specific OS should be added"
