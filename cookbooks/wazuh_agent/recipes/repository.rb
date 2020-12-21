@@ -22,12 +22,11 @@ if platform_family?('ubuntu', 'debian')
 
   ohai 'reload lsb' do
     plugin 'lsb'
-    # action :nothing
     subscribes :reload, 'package[lsb-release]', :immediately
   end
 
   apt_repository 'wazuh' do
-    uri 'https://packages.wazuh.com/4.x/apt/'
+    uri "https://packages.wazuh.com/#{node['wazuh']['major_version']}/apt/"
     key 'https://packages.wazuh.com/key/GPG-KEY-WAZUH'
     components ['main']
     distribution 'stable'
@@ -40,7 +39,7 @@ elsif platform_family?('rhel', 'redhat', 'centos', 'amazon')
     gpgcheck true
     gpgkey 'https://packages.wazuh.com/key/GPG-KEY-WAZUH'
     enabled true 
-    baseurl 'https://packages.wazuh.com/4.x/yum'
+    baseurl "https://packages.wazuh.com/#{node['wazuh']['major_version']}/yum/"
     action :create
   end
 elsif
@@ -49,7 +48,7 @@ elsif
     gpgcheck true
     gpgkey 'https://packages.wazuh.com/key/GPG-KEY-WAZUH'
     enabled true 
-    baseurl 'https://packages.wazuh.com/4.x/yum'
+    baseurl "https://packages.wazuh.com/#{node['wazuh']['major_version']}/yum/"
     action :create
   end
 else

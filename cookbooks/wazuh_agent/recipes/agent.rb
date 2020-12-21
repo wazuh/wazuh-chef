@@ -21,21 +21,21 @@ include_recipe 'wazuh_agent::repository'
 case node['platform']
 when 'debian', 'ubuntu'
   apt_package 'wazuh-agent' do
-    version "#{node['wazuh-agent']['version']}-1"
+    version "#{node['wazuh']['patch-version']}"
   end
 when 'redhat', 'centos', 'amazon', 'fedora', 'oracle'
   if node['platform_version'] >= '8'
     dnf_package 'wazuh-agent' do
-      version "#{node['wazuh-agent']['version']}-1"
+      version "#{node['wazuh']['patch-version']}-1"
     end
   else
     yum_package 'wazuh-agent' do
-      version "#{node['wazuh-agent']['version']}-1"
+      version "#{node['wazuh']['patch-version']}-1"
     end
   end
 when 'opensuseleap', 'suse' 
   zypper_package 'wazuh-agent' do
-    version "#{node['wazuh-agent']['version']}-1"
+    version "#{node['wazuh']['patch-version']}-1"
   end
 else
   raise "Currently platforn not supported yet. Feel free to open an issue on https://www.github.com/wazuh/wazuh-chef if you consider that support for a specific OS should be added"
