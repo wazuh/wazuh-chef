@@ -3,10 +3,5 @@ set -e
 
 echo "Cookbook to test: ${COOKBOOK_NAME}"
 
-cd cookbooks/$COOKBOOK_NAME
-
-echo "Installing dependencies..."
-bundle install
-
 echo "Test cookbook with kitchen... (create, converge, verify and destroy)"
-bundle exec kitchen test $COOKBOOK_NAME-$OS
+kitchen test $COOKBOOK_NAME-$OS
