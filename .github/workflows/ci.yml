@@ -32,5 +32,28 @@ jobs:
         suite: filebeat
         os: ${{ matrix.os }}
         action: test
-  
+
+  filebeat-oss:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [
+          amazonlinux-2,
+          centos-8,
+          ubuntu-2004,
+        ]
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+    - name: Install Chef
+      uses: actionshub/chef-install@main
+    - name: Kitchen Test
+      uses: actionshub/test-kitchen@main
+      env:
+        CHEF_LICENSE: accept-no-persist
+        KITCHEN_LOCAL_YAML: kitchen.yml
+      with:
+        suite: filebeat-oss
+        os: ${{ matrix.os }}
+        action: test
  
