@@ -40,15 +40,15 @@ jobs:
       env:
         COOKBOOK_NAME: filebeat
         OS: ${{ matrix.os }}
-    #- name: Print out logs if fail
-    #  if: ${{ failure() }}
-    #  working-directory: ./.github/actions
-    #  run: |
-    #    chmod 755 failure.sh
-    #    ./failure.sh
-    #  env:
-    #    COOKBOOK_NAME: elastic-stack
-    #    OS: ${{ matrix.os }}
+    - name: Print out logs if fail
+      if: ${{ failure() }}
+      working-directory: ./.github/actions
+      run: |
+        chmod 755 failure.sh
+        ./failure.sh
+      env:
+        COOKBOOK_NAME: filebeat
+        OS: ${{ matrix.os }}
   
  
  
