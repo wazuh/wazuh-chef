@@ -2,12 +2,10 @@
 
 describe package('elasticsearch-oss') do
   it { should be_installed }
-  it { should be_enabled }
 end
 
 describe package('opendistroforelasticsearch') do
   it { should be_installed }
-  it { should be_enabled }
 end
 
 describe elasticsearch do
