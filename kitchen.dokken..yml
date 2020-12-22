@@ -1,12 +1,15 @@
 ---
 driver:
-  name: vagrant
+  name: dokken
+  # because Docker and SystemD
+  privileged: true
+  chef_version: <%= ENV['CHEF_VERSION'] || 'current' %>
 
 transport:
-  name: ssh
+  name: dokken
 
 provisioner:
-  name: chez-zero
+  name: dokken
   chef_license: accept
 
 verifier:
