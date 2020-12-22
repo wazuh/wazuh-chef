@@ -9,7 +9,7 @@ on:
       - feature-cookbooks
 
 jobs:
-  kitchen-test:
+  wazuh-server:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -23,13 +23,26 @@ jobs:
     - name: Install Chef
       uses: actionshub/chef-install@main
     - name: Wazuh server (manager, filebeat)
-      uses: actionshub/kithcen-dokken@main
+      uses: actionshub/kitchen-dokken@main
       env:
         suite: wazuh-server
         os: ${{ matrix.os }}
         CHEF_LICENSE: accept-no-persist
         KITCHEN_LOCAL_YAML: kitchen.dokken.yml
 
+  wazuh-server-oss:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [
+          centos-8,
+          ubuntu-2004,
+        ]
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+    - name: Install Chef
+      uses: actionshub/chef-install@main
     - name: Wazuh server OSS (manager, filebeat-oss)
       uses: actionshub/kitchen-dokken@main
       env:
@@ -38,6 +51,19 @@ jobs:
         CHEF_LICENSE: accept-no-persist
         KITCHEN_LOCAL_YAML: kitchen.dokken.yml
 
+  opendistro:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [
+          centos-8,
+          ubuntu-2004,
+        ]
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+    - name: Install Chef
+      uses: actionshub/chef-install@main
     - name: Opendistro
       uses: actionshub/kitchen-dokken@main
       env:
@@ -45,7 +71,20 @@ jobs:
         os: ${{ matrix.os }}
         CHEF_LICENSE: accept-no-persist
         KITCHEN_LOCAL_YAML: kitchen.dokken.yml
-      
+  
+  elastic-stack:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [
+          centos-8,
+          ubuntu-2004,
+        ]
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+    - name: Install Chef
+      uses: actionshub/chef-install@main
     - name: Elastic Stack 
       uses: actionshub/kitchen-dokken@main
       env:
@@ -54,8 +93,21 @@ jobs:
         CHEF_LICENSE: accept-no-persist
         KITCHEN_LOCAL_YAML: kitchen.dokken.yml
 
+  wazuh-agent:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [
+          centos-8,
+          ubuntu-2004,
+        ]
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+    - name: Install Chef
+      uses: actionshub/chef-install@main
     - name: Wazuh agent
-      uses: actionshub/kithcen-dokken@main
+      uses: actionshub/kitchen-dokken@main
       env:
         suite: wazuh-agent
         os: ${{ matrix.os }}
