@@ -11,7 +11,7 @@ describe directory '/usr/share/kibana/plugins' do
 end
 
 describe file('/etc/kibana/kibana.yml') do
-  its('owner') { should cmp 'kibana' }
+  its('owner') { should cmp 'root' }
   its('group') { should cmp 'kibana' }
   its('mode') { should cmp '0755' }
 end
@@ -19,7 +19,7 @@ end
 describe file('/usr/share/kibana/optimize/wazuh/config/wazuh.yml') do
   its('owner') { should cmp 'kibana' }
   its('group') { should cmp 'kibana' }
-  its('mode') { should cmp '0755' }
+  its('mode') { should cmp '0600' }
 end
 
 describe service('kibana') do
