@@ -2,7 +2,7 @@
 
 case os.family
 when 'debian'
-    describe apt('http://packages.wazuh.com/4.x/apt/') do
+    describe apt('https://packages.wazuh.com/4.x/apt/') do
         it { should exist }
         it { should be_enabled }
     end
