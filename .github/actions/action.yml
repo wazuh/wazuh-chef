@@ -1,5 +1,0 @@
-name: test-wazuh-chef-cookbooks
-description: Test Wazuh Chef cookbooks
-runs:
-  using: docker
-  image: 'Dockerfile'
