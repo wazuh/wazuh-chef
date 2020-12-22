@@ -17,25 +17,47 @@ jobs:
           centos-8,
           ubuntu-2004,
         ]
-        cookbook: [
-          filebeat,
-          filebeat-oss,
-          wazuh-agent,
-          wazuh-manager,
-          elastic-stack,
-          opendistro
-        ]
     steps:
     - name: Check out code
       uses: actions/checkout@v2
     - name: Install Chef
       uses: actionshub/chef-install@main
-    - name: Test ${{ matrix.cookbook }} cookbook
-      uses: actionshub/test-kitchen@main
+    - name: Wazuh server (manager, filebeat)
+      uses: actionshub/kithcen-dokken@main
       env:
+        suite: wazuh-server
+        os: ${{ matrix.os }}
         CHEF_LICENSE: accept-no-persist
         KITCHEN_LOCAL_YAML: kitchen.dokken.yml
-      with:
-        suite: ${{ matrix.cookbook }}
+
+    - name: Wazuh server OSS (manager, filebeat-oss)
+      uses: actionshub/kitchen-dokken@main
+      env:
+        suite: wazuh-server-oss
         os: ${{ matrix.os }}
-        action: test
+        CHEF_LICENSE: accept-no-persist
+        KITCHEN_LOCAL_YAML: kitchen.dokken.yml
+
+    - name: Opendistro
+      uses: actionshub/kitchen-dokken@main
+      env:
+        suite: opendistro
+        os: ${{ matrix.os }}
+        CHEF_LICENSE: accept-no-persist
+        KITCHEN_LOCAL_YAML: kitchen.dokken.yml
+      
+    - name: Elastic Stack 
+      uses: actionshub/kitchen-dokken@main
+      env:
+        suite: elastic-stack
+        os: ${{ matrix.os }}
+        CHEF_LICENSE: accept-no-persist
+        KITCHEN_LOCAL_YAML: kitchen.dokken.yml
+
+    - name: Wazuh agent
+      uses: actionshub/kithcen-dokken@main
+      env:
+        suite: wazuh-agent
+        os: ${{ matrix.os }}
+        CHEF_LICENSE: accept-no-persist
+        KITCHEN_LOCAL_YAML: kitchen.dokken.yml
