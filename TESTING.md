@@ -17,7 +17,9 @@ Kitchen-vagrant
 - Virtualbox
 
 ## Hot to use?
-First install dependancies: ``bundle config set without 'dokken'``
+First install dependancies: 
+``bundle config set without dokken``
+``bundle install``
 
 Then go to ``wazuh-chef/kitchen-vagrant`` folder and execute kitchen commands.
 
@@ -28,7 +30,9 @@ Kitchen dokken
 - Docker
 
 ## How to use?
-First install dependancies: ``bundle config set without 'vagrant'``
+First install dependancies: 
+``bundle config set without vagrant``
+``bundle install`` 
 
 Then execute kithcen commands.
 
