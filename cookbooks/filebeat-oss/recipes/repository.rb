@@ -13,10 +13,13 @@ when 'ubuntu', 'debian'
 
   apt_repository 'wazuh' do
     key 'https://packages.wazuh.com/key/GPG-KEY-WAZUH'
-    uri "http://packages.wazuh.com/#{node['wazuh']['major_version']}/apt/"
+    uri "https://packages.wazuh.com/#{node['wazuh']['major_version']}/apt/"
     components ['main']
     distribution 'stable'
     action :add
+    not_if {
+      File.exist?('/etc/apt/sources.list.d/wazuh.list')
+    }
   end
 
   apt_update
