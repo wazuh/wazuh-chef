@@ -2,15 +2,11 @@ Test Wazuh Chef cookbooks
 =========================
 
 # Prerequisites
-- Docker
+- Vagrant
+- Virtualbox
 
 # How to use
-To create an environment with Wazuh Chef cookbooks just run the following command:
-
-docker build -t . wazuh-chef:0.1
-docker run -v /var/run/docker.sock:/var/run/docker.sock -it \<DOCKER_IMAGE_HASH\>
-
-Inside, you have the wazuh-chef repository in features-cookbook branch. Important commands:
+Kitchen commands To create an environment with Wazuh Chef cookbooks:
 
 1. ``kitchen list``: list all kitchen instances 
 2. ``kitchen create <suite_name>-<platform_name>``: create an instance just with OS
