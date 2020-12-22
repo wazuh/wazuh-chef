@@ -1,7 +1,18 @@
 source 'https://rubygems.org'
 
-gem 'rubocop'
-gem 'test-kitchen'
-gem 'kitchen-inspec'
-gem 'kitchen-dokken'
-gem 'kitchen-vagrant'
+group :lint do
+    gem 'rubocop'
+end
+
+group :kitchen do 
+    gem 'test-kitchen'
+    gem 'kitchen-inspec'
+end
+
+group :dokken do 
+    gem 'kitchen-dokken'
+end
+
+group :vagrant do
+    gem 'kitchen-vagrant'
+end
