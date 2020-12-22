@@ -55,7 +55,7 @@ describe file('/etc/searchguard/search-guard.yml') do
   its('mode') { should cmp '0660' }
 end
 
-describe file('/etc/elasticsearch/root-ca.pem') do
+describe file('/etc/elasticsearch/certs/root-ca.pem') do
   it { should exist }
 end
 
