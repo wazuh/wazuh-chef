@@ -29,7 +29,7 @@ suites:
       - recipe[wazuh_agent::default]
     verifier:
       inspec_tests:
-        - path: cookbooks/wazuh_agent/test/integration/wazuh_agent
+        - path: ../cookbooks/wazuh_agent/test/integration/wazuh_agent
 
   - name: wazuh_server
     run_list:
@@ -38,9 +38,9 @@ suites:
     verifier:
       inspec_tests:
         - name: wazuh-manager tests 
-          path: cookbooks/wazuh_manager/test/integration/wazuh_manager
+          path: ../cookbooks/wazuh_manager/test/integration/wazuh_manager
         - name: filebeat tests
-          path: cookbooks/filebeat/test/integration/filebeat
+          path: ../cookbooks/filebeat/test/integration/filebeat
 
   - name: wazuh_server_oss
     run_list:
@@ -49,20 +49,20 @@ suites:
     verifier:
       inspec_tests:
         - name: wazuh-manager tests 
-          path: cookbooks/wazuh_manager/test/integration/wazuh_manager
+          path: ../cookbooks/wazuh_manager/test/integration/wazuh_manager
         - name: filebeat-oss tests
-          path: cookbooks/filebeat-oss/test/integration/filebeat-oss
+          path: ../cookbooks/filebeat-oss/test/integration/filebeat-oss
 
   - name: opendistro
     run_list:
       - recipe[opendistro::default]
     verifier:
       inspec_tests:
-        - path: cookbooks/opendistro/test/integration/opendistro
+        - path: ../cookbooks/opendistro/test/integration/opendistro
   
   - name: elastic-stack
     run_list:
       - recipe[elastic-stack::default]
     verifier:
       inspec_tests:
-        - path: cookbooks/elastic-stack/test/integration/elastic-stack
+        - path: ../cookbooks/elastic-stack/test/integration/elastic-stack
