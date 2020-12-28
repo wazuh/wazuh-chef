@@ -28,6 +28,6 @@ describe service('kibana') do
   it { should be_running }
 end
 
-describe port(5601) do
+describe port(443) do
   it { should be_listening }
 end
