@@ -1,6 +1,6 @@
 {
-    "name": "wazuh_elastic",
-    "description": "Wazuh Elastic Role",
+    "name": "wazuh_server_oss",
+    "description": "Wazuh Server OSS Role",
     "json_class": "Chef::Role",
     "default_attributes": {
 
@@ -10,9 +10,10 @@
     },
     "chef_type": "role",
     "run_list": [
-        "recipe[wazuh_elastic::default]"
+      "recipe[wazuh_manager::default]",
+      "recipe[filebeat-oss::default]"
     ],
     "env_run_lists": {
 
     }
-}
+  }

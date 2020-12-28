@@ -1,18 +1,19 @@
 {
-    "name": "wazuh_server",
-    "description": "Wazuh Server host",
-    "json_class": "Chef::Role",
-    "default_attributes": {
+  "name": "wazuh_server",
+  "description": "Wazuh Server Role",
+  "json_class": "Chef::Role",
+  "default_attributes": {
 
-    },
-    "override_attributes": {
+  },
+  "override_attributes": {
 
-    },
-    "chef_type": "role",
-    "run_list": [
-      "recipe[wazuh_server::default]"
-    ],
-    "env_run_lists": {
+  },
+  "chef_type": "role",
+  "run_list": [
+    "recipe[wazuh_manager::default]",
+    "recipe[filebeat::default]"
+  ],
+  "env_run_lists": {
 
-    }
   }
+}

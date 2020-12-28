@@ -1,16 +1,16 @@
 {
-    "name": "wazuh_filebeat",
-    "description": "Wazuh Filebeat Role",
+    "name": "wazuh_elastic",
+    "description": "Elastic Stack Role",
     "json_class": "Chef::Role",
     "default_attributes": {
 
     },
     "override_attributes": {
-        
+
     },
     "chef_type": "role",
     "run_list": [
-        "recipe[wazuh_filebeat::default]"
+        "recipe[elastic-stack::default]"
     ],
     "env_run_lists": {
 
