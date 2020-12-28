@@ -11,7 +11,7 @@ Deploy the Wazuh platform using Chef cookbooks. Chef recipes are prepared for in
 
 | Wazuh version | Elastic | ODFE   |
 |---------------|---------|--------|
-| v4.0.1        | -       | v1.11.0|
+| v4.0.3        | v7.9.3  | v1.11.0|
 
 ## Dependencies
 
@@ -27,21 +27,24 @@ all the software products they have.
 
 ## Cookbooks
 
-* [Wazuh Agent ](https://github.com/wazuh/wazuh-chef/tree/master/wazuh_agent)
-* [Wazuh Server (Manager, API and Filebeat)](https://github.com/wazuh/wazuh-chef/tree/master/wazuh_server)
-* [Elasticsearch](https://github.com/wazuh/wazuh-chef/tree/master/wazuh_elastic)
-* Kibana (*future version*)
+* Wazuh Agent
+* Wazuh Manager
+* Filebeat
+* Filebeat OSS
+* Elastic Stack (Elasticsearch and Kibana)
+* Opendistro (Elasticsearch OSS and Kibana OSS)
 
 Each cookbook has its README.md
 
 ## Roles
 
-You can find predefined roles for a default installation of Wazuh Agent and Manager in the roles folder.
+You can find predefined roles for a default installation of:
 
-- [Wazuh Agent Role](https://github.com/wazuh/wazuh-chef/tree/master/roles/wazuh_agent.json)
-- [Wazuh Server Role](https://github.com/wazuh/wazuh-chef/tree/master/roles/wazuh_server.json)
-- [Wazuh Elastic Role](https://github.com/wazuh/wazuh-chef/tree/master/roles/wazuh_elastic.json)
-- [Wazuh Kibana Role](https://github.com/wazuh/wazuh-chef/tree/master/roles/wazuh_kibana.json)
+1. **wazuh_server**: Wazuh Manager and Filebeat
+2. **wazhu_server_oss**: Wazuh Manager and Filebeat OSS
+3. **wazuh_agent**: Wazuh Agent
+4. **elastic_stack**: Elasticsearch and Kibana
+5. **opendistro**: Elasticsearch OSS and Kiban OSS
 
 Check roles README for more information about default attributes and how to customize your installation.
 
@@ -58,8 +61,10 @@ The easiest way to making use of these cookbooks  is by including in your `Berks
 ```ruby
 cookbook "wazuh_agent", git: "https://github.com/wazuh/wazuh-chef.git", rel: 'cookbooks/wazuh_agent'
 cookbook "wazuh_server", git: "https://github.com/wazuh/wazuh-chef.git", rel: 'cookbooks/wazuh_manager'
-cookbook 'wazuh_kibana', github: 'https://github.com/wazuh/wazuh-chef.git', rel: 'cookbooks/wazuh_kibana'
-cookbook 'wazuh_elastic', github: 'https://github.com/wazuh/wazuh-chef.git', rel: 'cookbooks/wazuh_elastic'
+cookbook 'opendistro', github: 'https://github.com/wazuh/wazuh-chef.git', rel: 'cookbooks/opendistro'
+cookbook 'elastic-stack', github: 'https://github.com/wazuh/wazuh-chef.git', rel: 'cookbooks/elastic-stack'
+cookbook 'filebeat', github: 'https://github.com/wazuh/wazuh-chef.git', rel: 'cookbooks/filebeat'
+cookbook 'filebeat-oss', github: 'https://github.com/wazuh/wazuh-chef.git', rel: 'cookbooks/filebeat-oss'
 ```
 
 You can specify tags, branches, and revisions. More info on https://docs.chef.io/berkshelf.html
@@ -82,7 +87,6 @@ Example of a configuration file `api_configuration.json` before encryption:
  "htpasswd_user": "<YOUR USER>",
  "htpasswd_passcode": "<YOUR PASSWORD>"
 }
-
 ```
 
 #### Using Data Bags
@@ -122,7 +126,6 @@ After encryption, the previous JSON files will have new fields that describe the
 }
 ```
 
-
 #### Using Chef Vault
 
 Chef Vault provides an easier way to manage Data bags and configure them. To configure it you can follow these steps:
@@ -134,6 +137,7 @@ Chef Vault provides an easier way to manage Data bags and configure them. To con
 ```
 knife vault create wazuh_secrets api '{"id": "api", "htpasswd_user": "user", "htpasswd_passcode": "password"}' -A "username" -C "manager-1"
 ```
+
 Where `-A` defines the workstation users authorized to modify/edit the vault and `-C` defines the nodes that have access to the defined vault.
 
 After that, the vault will be created and synced with the server. The defined nodes will store the required keys to decrypt the vault content and consume it.
