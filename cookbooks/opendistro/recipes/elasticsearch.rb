@@ -257,7 +257,13 @@ ruby_block 'Wait for elasticsearch' do
 end
 
 execute 'Run the Elasticsearch’s securityadmin script' do
-  command "#{node['elastic']['plugins_path']}/opendistro_security/tools/securityadmin.sh -cd #{node['elastic']['plugins_path']}/opendistro_security/securityconfig/ -nhnv -cacert #{node['elastic']['certs_path']}/root-ca.pem -cert #{node['elastic']['certs_path']}/admin.pem -key #{node['elastic']['certs_path']}/admin.key -h #{node['elastic']['yml']['network']['host']}"
+  command "#{node['elastic']['plugins_path']}/opendistro_security/tools/securityadmin.sh \
+          -cd #{node['elastic']['plugins_path']}/opendistro_security/securityconfig/ \
+          -nhnv \
+          -cacert #{node['elastic']['certs_path']}/root-ca.pem \
+          -cert #{node['elastic']['certs_path']}/admin.pem \
+          -key #{node['elastic']['certs_path']}/admin.key \
+          -h #{node['elastic']['yml']['network']['host']}"
 end
 
 bash 'Waiting for elasticsearch curl response...' do
