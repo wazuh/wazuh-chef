@@ -57,6 +57,9 @@ end
 
 execute 'Install Wazuh Kibana plugin' do
   command "sudo -u kibana #{node['kibana']['package_path']}/bin/kibana-plugin install https://packages.wazuh.com/#{node['wazuh']['major_version']}/ui/kibana/wazuh_kibana-#{node['wazuh']['kibana_plugin_version']}-1.zip"
+  not_if {
+    Dir.exist?("#{node['kibana']['plugins_path']}/wazuh")
+  }
 end
 
 # Create Wazuh-Kibana plugin configuration file
