@@ -1,4 +1,4 @@
-# Cookbook Name:: filebeat
+# Cookbook Name:: filebeat-oss
 # Attribute:: yml
 # Author:: Wazuh <info@wazuh.com>
 

@@ -1,4 +1,4 @@
-# Cookbook Name:: filebeat
+# Cookbook Name:: filebeat-oss
 # Attribute:: paths
 # Author:: Wazuh <info@wazuh.com>
 

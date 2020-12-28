@@ -1,4 +1,4 @@
-# Cookbook Name:: filebeat
+# Cookbook Name:: filebeat-oss
 # Recipe:: repository
 # Author:: Wazuh <info@wazuh.com>
 
