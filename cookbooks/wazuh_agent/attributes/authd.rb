@@ -19,9 +19,8 @@
 
 default['ossec']['agent_auth']['register'] = 'yes'
 default['ossec']['agent_auth']['name'] = node['hostname']
-default['ossec']['agent_auth']['host'] = node['ossec']['registration_address']
+default['ossec']['agent_auth']['host'] = node['ossec']['address']
 default['ossec']['agent_auth']['port'] = 1515
-
 default['ossec']['agent_auth']['ca'] = nil
 default['ossec']['agent_auth']['certificate'] = nil
 default['ossec']['agent_auth']['key'] = nil
