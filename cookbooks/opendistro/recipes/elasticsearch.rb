@@ -143,6 +143,9 @@ end
 
 execute 'Run the Search Guard’s script to create the certificates' do
   command "#{node['searchguard']['config_path']}/tools/sgtlstool.sh -c #{node['searchguard']['config_path']}/search-guard.yml -ca -crt -t #{node['elastic']['certs_path']}/"
+  not_if {
+    File.exist?("#{node['elastic']['certs_path']}/root-ca.key")
+  }
 end
 
 bash 'Compress all the necessary files to be sent to the all the instances' do
