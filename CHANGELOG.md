@@ -1,6 +1,15 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Wazuh Chef v4.0.3_1.11.0
+
+### Added
+- Update to Wazuh version 4.0.3
+- Add Opendistro with version 1.11.0
+- Update Elastic Stack to version 7.9.3
+- Install Wazuh Kibana plugin 4.0.3_7.9.3 version
+- Add support for SUSE repository
+
 ## Wazuh Chef v4.0.1
 
 ### Added

@@ -2,44 +2,15 @@
 
 This cookbook installs and configures Elastic Stack. Please note that it's not obligatory to install the whole stack, recipes can work independently.
 
-#### Chef
-- Chef 12+
-
-#### Cookbooks
-
 ### Attributes
 
-You can customize the installation of Elasticsearch and Kibana modifying the following parameters 
-on attributes files:
+* ``api.rb``: declare API credentials for all manager installed
+* ``jvm.rb``: declare the amount of memory RAM JVM will use
+* ``paths.rb``: initialize different paths used during installation
+* ``versions.rb``: versions for Wazuh and ELK
+* ``yml.rb``: customize YAML configuration file for Elasticsearch and Kibana services
 
-yml.rb 
-======
-Has the important parameter to configure the YAML file of elastic and kibana.
-
-**Elasticsearch:**
-
-* ```['elastic']['yml']['network']['host']```: IP address bound to elasticsearch node
-* ```['elastic']['yml']['http']['port']```: port bound to elasticsearch node
-
-**Kibana:**
-
-* ```['kibana']['yml']['server']['host']```: IP address bound to kibana node
-* ```['kibana']['yml']['server']['port']```: port bound to kibana node
-* ```['kibana']['yml']['elasticsearch']['hosts]```: URL of elasticsearch nodes
-
-versions.rb
-===========
-All the versions for wazuh, elk and kibana plugin
-
-jvm.rb
-======
-Java memory limits.
-
-paths.rb
-========
-Default paths for elasticsearch and kibana. Please do not modify.
-
-### Installation
+### Usage
 
 Create a role, `elastic-stack`. Modify attributes to customize the installation.
 
@@ -89,16 +60,14 @@ Elastic adds new parameters that customize the cluster formation: `discovery.see
 
 You can find more information about such attributes here: [Discovery and cluster formation settings](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-discovery-settings.html)
 
-In order to make Chef compatible Elasticsearch 7.x, two new attributes have been added.
+In order to make Chef compatible Elasticsearch 7.x, two new attributes could be added.
 
-1. `['elastic']['discovery_option']` : This option let you set the full line in the *elasticsearch.yml* file so you can declare it to:
-    * `['elastic']['discovery_option']: "discovery.seed.hosts: <IP>"` 
-    * `['elastic']['discovery_option']: "discovery.host_providers: <DNS>"` 
-    * `['elastic']['discovery_option']: "discovery.type: single-node"`
+1. `['elastic']['yml']['discovery']` : This option let you set the full line in the *elasticsearch.yml* file so you can declare it to:
+  - `['elastic']['yml']['discovery']['seed_hosts']: <IP>"` 
+  - `['elastic']['yml']['discovery']['seed_providers']: <DNS>"` 
+  - `['elastic']['yml']['discovery']['type']: single-node"`
 2. `['elastic']['yml']['cluster']['initial_master_nodes']`: Allows to insert the whole line for the initial master nodes. You can declare it like:
-    * `['elastic']['yml']['cluster']['initial_master_nodes']: "['<IP>']"`
-
-**Important note:** In some situations you will need only one of such parameters, that's why it's implemented as the whole line, to allow the declaration of character **#**  to disable it.
+  - `['elastic']['yml']['cluster']['initial_master_nodes']: "['<IP>']"`
 
 #### Example:
 
@@ -134,8 +103,7 @@ If only the declaration of `cluster.initial_master_nodes` to *192.168.0.1* would
 
 ```
 
-
-
 ### References
 
-Check https://documentation.wazuh.com/3.13/installation-guide/installing-elastic-stack/index.html for more information about Wazuh Elastic.
+Check https://documentation.wazuh.com/4.0/learning-wazuh/build-lab/install-elastic-stack.html for more information about 
+how to install Elastic Stack.

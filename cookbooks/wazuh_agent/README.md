@@ -2,7 +2,14 @@
 
 These cookbooks install and configure a Wazuh Agent on specified nodes.
 
-Agent is automatically registered in the specified address by using ['agent authd'](https://documentation.wazuh.com/current/user-manual/agents/registering-agents/register-agent-authd.html#simple-method) (```['ossec']['registration_address']``` and connects with the manager address ```['ossec']['address']```). You can set this attributes by default on attributes folder or specify it in the ['wazuh_agent role'](https://github.com/wazuh/wazuh-chef/blob/3.9-repository-refactor/roles/wazuh_agent.json). 
+Agent is automatically registered in the specified address by using ['agent authd'](https://documentation.wazuh.com/current/user-manual/agents/registering-agents/register-agent-authd.html#simple-method) ( ```['ossec']['address']``` specify mnager IP address). You can set this attributes by default on attributes folder or specify it in the ['wazuh_agent role'](https://github.com/wazuh/wazuh-chef/blob/3.9-repository-refactor/roles/wazuh_agent.json). 
+
+### Attributes
+
+* ``versions.rb`` contains version attributes to make it easier when it comes to bump version
+* The rest of files contains all the default configuration files in order to generate ossec.conf 
+
+Check ['ossec.conf']( https://documentation.wazuh.com/3.x/user-manual/reference/ossec-conf/index.html) documentation to see all configuration sections.
 
 ### Usage
 
@@ -23,7 +30,6 @@ For example:
     },
     "override_attributes": {
       "ossec": {
-        "registration_address": "172.19.0.211",
         "address": "172.19.0.211",
         "agent_auth": {
           "name" : "Agent_01", 
@@ -65,11 +71,6 @@ The agent_auth parameters are the following:
 
 You can use any of the quoted attributes, as stated in the previous example. Flags options must be set to "true" or "false".
 
-### Attributes
-
-The ``attributes`` folder contains all the default configuration files in order to generate ossec.conf file.
-
-Check ['ossec.conf']( https://documentation.wazuh.com/3.x/user-manual/reference/ossec-conf/index.html) documentation to see all configuration sections.
 
 ### Recipes
 

@@ -1,21 +1,24 @@
-# Wazuh Elasticsearch cookbook
+# Opendistro cookbook
 
-This cookbook installs and configures Elastic Stack. Please note that it's not obligatory to install the whole stack, recipes can work independently.
+This cookbook installs and configures Opendistroforleasticsearch. Please note that it's not obligatory to install the whole stack, recipes can work independently.
 
 ### Attributes
 
-The ``attributes`` folder contains all the default configuration files in order to generate ossec.conf file.
+* ``api.rb``: declare API credentials for all manager installed
+* ``jvm.rb``: declare the amount of memory RAM JVM will use
+* ``paths.rb``: initialize different paths used during installation
+* ``search_guard.rb``: declare search guard ZIP filename 
+* ``versions.rb``: versions for Wazuh, ODFE, ELK and Search Guard
+* ``yml.rb``: customize YAML configuration file for Elasticsearch, Kibana and Search Guard services
 
-Check ['ossec.conf']( https://documentation.wazuh.com/3.x/user-manual/reference/ossec-conf/index.html) documentation to see all configuration sections.
+### Usage
 
-### Installation
+Create a role, `opendistro`. Modify attributes to customize the installation.
 
-Create a role, `wazuh_elastic`. Modify attributes to customize the installation.
-
-```
+```json
 {
-    "name": "wazuh_elastic",
-    "description": "Wazuh Elastic Role",
+    "name": "opendistro",
+    "description": "Opendistro Role",
     "json_class": "Chef::Role",
     "default_attributes": {
 
@@ -25,33 +28,13 @@ Create a role, `wazuh_elastic`. Modify attributes to customize the installation.
     },
     "chef_type": "role",
     "run_list": [
-        "recipe[wazuh_elastic::default]"
+        "recipe[opendistro::default]"
     ],
     "env_run_lists": {
 
     }
 }
 ```
-
-#### Customize ELK installation
-
-You can customize the installation of Elasticsearch and Kibana modifying the following parameters.
-
-
-**Elasticsearch:**
-
-* ```['wazuh-elastic']['elasticsearch_memmory'] = "1g"```
-* ```['wazuh-elastic']['elasticsearch_cluster_name'] = 'wazuh'```
-* ```['wazuh-elastic']['elasticsearch_node_name'] = 'elk.wazuh-test.com'```
-* ```['wazuh-elastic']['elasticsearch_port'] = 9200```
-* ```['wazuh-elastic']['elasticsearch_ip'] = 'localhost'```
-
-**Kibana:**
-
-* ```['wazuh-elastic']['kibana_host'] = '0.0.0.0'```
-* ```['wazuh-elastic']['kibana_port'] = '5601'```
-* ```['wazuh-elastic']['kibana_elasticsearch_server'] = "http://#{node['wazuh-elastic']['elasticsearch_ip']}:#{node['wazuh-elastic']['elasticsearch_port']}"```
-
 
 ### Recipes
 
@@ -61,15 +44,15 @@ Declares all recipes in the cookbook and installs the whole Elastic Stack.
 
 #### elasticsearch.rb
 
-Installs Elasticsearch, the Wazuh template will be configured. 
+Installs and configures Elasticsearch. Also install mandatory certificates. 
 
 #### repository.rb 
 
-Declares elastic repository and GPG key URLs.
+Declares elastic repository and GPG key URI.
 
 ### kibana.rb
 
-Installs Kibana packages and configures *kibana.yml*. You can customize the installation by editing the following attributes.
+Installs and configures Kibana. You can customize the installation by editing the following attributes.
 
 ### Elasticsearch 7.x Cluster Changes
 
@@ -79,16 +62,14 @@ Elastic adds new parameters that customize the cluster formation: `discovery.see
 
 You can find more information about such attributes here: [Discovery and cluster formation settings](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-discovery-settings.html)
 
-In order to make Chef compatible Elasticsearch 7.x, two new attributes have been added.
+In order to make Chef compatible Elasticsearch 7.x, two new attributes could be added.
 
-- `['wazuh-elastic']['discovery_option']` : This option let you set the full line in the *elasticsearch.yml* file so you can declare it to:
-  - `['wazuh-elastic']['discovery_option']: "discovery.seed.hosts: <IP>"` 
-  - `['wazuh-elastic']['discovery_option']: "discovery.host_providers: <DNS>"` 
-  - `['wazuh-elastic']['discovery_option']: "discovery.type: single-node"`
-- `['wazuh-elastic']['elasticsearch_cluster_initial_master_nodes']`: Allows to insert the whole line for the initial master nodes. You can declare it like:
-  - `['wazuh-elastic']['elasticsearch_cluster_initial_master_nodes']: "['<IP>']"`
-
-**Important note:** In some situations you will need only one of such parameters, that's why it's implemented as the whole line, to allow the declaration of character **#**  to disable it.
+1. `['elastic']['yml']['discovery']` : This option let you set the full line in the *elasticsearch.yml* file so you can declare it to:
+  - `['elastic']['yml']['discovery']['seed_hosts']: <IP>"` 
+  - `['elastic']['yml']['discovery']['seed_providers']: <DNS>"` 
+  - `['elastic']['yml']['discovery']['type']: single-node"`
+2. `['elastic']['yml']['cluster']['initial_master_nodes']`: Allows to insert the whole line for the initial master nodes. You can declare it like:
+  - `['elastic']['yml']['cluster']['initial_master_nodes']: "['<IP>']"`
 
 #### Example:
 
@@ -98,22 +79,24 @@ If only the declaration of `cluster.initial_master_nodes` to *192.168.0.1* would
 
 ```json
 {
-    "name": "wazuh_elastic",
-    "description": "Wazuh Elastic Role",
+    "name": "opendistro",
+    "description": "Opendistro Role",
     "json_class": "Chef::Role",
     "default_attributes": {
 
     },
     "override_attributes": {
-        "wazuh-elastic":{
-            "discovery_option": "#",
-            "elasticsearch_cluster_initial_master_nodes": "192.168.0.1"
+        "elastic": {
+            "yml": {
+                "cluster": {
+                    "initial_master_nodes": "192.168.0.1"
+                }
+            }
         }
-
     },
     "chef_type": "role",
     "run_list": [
-        "recipe[wazuh_elastic::default]"
+        "recipe[opendistro::default]"
     ],
     "env_run_lists": {
 
@@ -122,8 +105,7 @@ If only the declaration of `cluster.initial_master_nodes` to *192.168.0.1* would
 
 ```
 
-
-
 ### References
 
-Check https://documentation.wazuh.com/current/installation-guide/installing-elastic-stack/index.html for more information about Wazuh Elastic.
+Check https://documentation.wazuh.com/4.0/installation-guide/open-distro/distributed-deployment/step-by-step-installation/elasticsearch-cluster/elasticsearch-single-node-cluster.html for more information about 
+how to install step-by-step a Elasticsearch single-node cluster.

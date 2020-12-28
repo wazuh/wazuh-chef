@@ -1,20 +1,24 @@
-# Wazuh Server cookbook
+# Wazuh Manager cookbook
 
-This cookbook installs and configure Wazuh Manager, API and Filebeat on specified nodes.
+This cookbook installs and configure Wazuh Manager on specified nodes.
+
+There are two types of manager installations:
+
+1. Without filebeat-oss
+2. With filebeat-oss
+
+Dependending on your choice, install elastic-stack or opendistro cookbooks respectively.
 
 ### Attributes 
 
-* ``filebeat.rb`` contains configuration variables and filebeat.yml content
+* ``api.rb`` contains API IP and port
 * ``versions.rb`` contains version attributes to make it easier when it comes to bump version
 * The rest of files contains all the default configuration files in order to generate ossec.conf 
-
-
-Check ['Filebeat section'](https://raw.githubusercontent.com/wazuh/wazuh-documentation/4.0/resources/open-distro/filebeat/7.x/filebeat.yml) to see an example of Filebeat configuration.
 
 Check ['ossec.conf'](https://documentation.wazuh.com/4.0/user-manual/reference/ossec-conf/) documentation
 to see all configuration sections.
 
-### Installation
+### Usage
 
 Create a role, `wazuh_server`. Add attributes per above as needed to customize the installation.
 
@@ -31,7 +35,8 @@ Create a role, `wazuh_server`. Add attributes per above as needed to customize t
     },
     "chef_type": "role",
     "run_list": [
-      "recipe[wazuh_server::default]"
+      "recipe[wazuh_manager::default]",
+      "recipe['filebeat::default]"
     ],
     "env_run_lists": {
 
@@ -39,12 +44,12 @@ Create a role, `wazuh_server`. Add attributes per above as needed to customize t
   }
 ```
 
-If you want to build a Wazuh cluster, you need to create two roles, one role for the **Master** and another one for **Client**:
+If you want to build a Wazuh cluster, you need to create two roles, one role for the **Master** and another one for **Worker**:
 
 ```
   {
-    "name": "wazuh_server_master",
-    "description": "Wazuh Server master node",
+    "name": "wazuh_manager_master",
+    "description": "Wazuh Manager master node",
     "json_class": "Chef::Role",
     "default_attributes": {
 
@@ -55,7 +60,7 @@ If you want to build a Wazuh cluster, you need to create two roles, one role for
         "conf": {
           "server": {
             "cluster": {
-              "node_name": "node01",
+              "node_name": "master01",
               "node_type": "master",
               "disabled": "no",
               "nodes": {
@@ -67,15 +72,17 @@ If you want to build a Wazuh cluster, you need to create two roles, one role for
     },
     "chef_type": "role",
     "run_list": [
-      "recipe[wazuh_server::default]"
+      "recipe[wazuh_manager::default]",
+      "recipe[filebeat::default]"
     ],
     "env_run_lists": {
 
     }
   }
+
   {
-    "name": "wazuh_server_client",
-    "description": "Wazuh Server client node",
+    "name": "wazuh_manager_worker",
+    "description": "Wazuh Manager worker node",
     "json_class": "Chef::Role",
     "default_attributes": {
 
@@ -86,8 +93,8 @@ If you want to build a Wazuh cluster, you need to create two roles, one role for
         "conf": {
           "server": {
             "cluster": {
-              "node_name": "node02",
-              "node_type": "client",
+              "node_name": "worker01",
+              "node_type": "worker",
               "disabled": "no",
               "nodes": {
                 "node": ["172.16.10.10", "172.16.10.11"]
@@ -98,7 +105,8 @@ If you want to build a Wazuh cluster, you need to create two roles, one role for
     },
     "chef_type": "role",
     "run_list": [
-      "recipe[wazuh_server::default]"
+      "recipe[wazuh_manager::default]",
+      "recipe[filebeat::default]"
     ],
     "env_run_lists": {
 
@@ -114,16 +122,16 @@ Check [cluster documentation](https://documentation.wazuh.com/4.0/user-manual/co
 
 Installs the wazuh-manager and required dependencies. Also creates the *local_rules.xml* and *local_decoder.xml* files.
 
-#### filebeat.yml
-
-Install the package Filebeats, create the configuration of */etc/filebeat/filebeat.yml* with defined attributes in the ```attributes``` folder.
 #### common.rb
 
 Generates the ossec.conf file using Gyoku.
 
 #### repository.rb 
 
-Declares wazuh repository and gpg key urls.
+Declares wazuh repository and GPG key URIs.
+
+#### prerequisites.rb
+Install prerequisites to install Wazuh manager
 
 ### References
 
