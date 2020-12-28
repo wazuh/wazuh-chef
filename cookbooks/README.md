@@ -7,7 +7,7 @@ Requirements
 #### Platforms
 Tested on Ubuntu and CentOS, but should work on any Unix/Linux platform supported by Wazuh. Installation by default is done from packages.
 
-These cookbooks don't configure Windows systems yet. For manual agent installation on Windows, check the [documentation](https://documentation.wazuh.com/4.0/installation-guide/wazuh-agent/wazuh_agent_package_windows.html)
+These cookbooks don't configure Windows systems yet. For manual agent installation on Windows, check the [documentation](https://documentation.wazuh.com/current/installation-guide/wazuh-agent/wazuh_agent_package_windows.html)
 
 Attributes
 ----------
@@ -44,7 +44,7 @@ This produces:
 
 If you want to add new fields to customize your installation, you can declare it as a default attribute in its respective .rb file in the attributes folder or add it manually to the role.
 
-For example: To enable cluster configuration, the following line would be changed in ```/cookbooks/wazuh_manager/attributes/cluster.rb ``` file:
+For example: To enable cluster configuration, the following line would be replaced in ```/cookbooks/wazuh_manager/attributes/cluster.rb ``` file:
 
 `````` ruby
 default['ossec']['conf']['cluster'] = {
