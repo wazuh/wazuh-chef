@@ -27,14 +27,12 @@ all the software products they have.
 
 ## Cookbooks
 
-* Wazuh Agent
-* Wazuh Manager
-* Filebeat
-* Filebeat OSS
-* Elastic Stack (Elasticsearch and Kibana)
-* Opendistro (Elasticsearch OSS and Kibana OSS)
-
-Each cookbook has its README.md
+* [Wazuh Agent](cookbooks/wazuh_agent)
+* [Wazuh Manager](cookbooks/wazuh_manager)
+* [Filebeat](cookbooks/filebeat)
+* [Filebeat OSS](cookbooks/filebeat-oss)
+* [Elastic Stack (Elasticsearch and Kibana)](cookbooks/elastic-stack)
+* [Opendistro (Elasticsearch OSS and Kibana OSS)](cookbooks/opendistro)
 
 ## Roles
 
@@ -61,10 +59,10 @@ The easiest way to making use of these cookbooks  is by including in your `Berks
 ```ruby
 cookbook "wazuh_agent", git: "https://github.com/wazuh/wazuh-chef.git", rel: 'cookbooks/wazuh_agent'
 cookbook "wazuh_server", git: "https://github.com/wazuh/wazuh-chef.git", rel: 'cookbooks/wazuh_manager'
-cookbook 'opendistro', github: 'https://github.com/wazuh/wazuh-chef.git', rel: 'cookbooks/opendistro'
-cookbook 'elastic-stack', github: 'https://github.com/wazuh/wazuh-chef.git', rel: 'cookbooks/elastic-stack'
-cookbook 'filebeat', github: 'https://github.com/wazuh/wazuh-chef.git', rel: 'cookbooks/filebeat'
-cookbook 'filebeat-oss', github: 'https://github.com/wazuh/wazuh-chef.git', rel: 'cookbooks/filebeat-oss'
+cookbook 'opendistro', git: 'https://github.com/wazuh/wazuh-chef.git', rel: 'cookbooks/opendistro'
+cookbook 'elastic-stack', git: 'https://github.com/wazuh/wazuh-chef.git', rel: 'cookbooks/elastic-stack'
+cookbook 'filebeat', git: 'https://github.com/wazuh/wazuh-chef.git', rel: 'cookbooks/filebeat'
+cookbook 'filebeat-oss', git: 'https://github.com/wazuh/wazuh-chef.git', rel: 'cookbooks/filebeat-oss'
 ```
 
 You can specify tags, branches, and revisions. More info on https://docs.chef.io/berkshelf.html
