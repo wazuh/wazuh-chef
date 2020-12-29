@@ -63,7 +63,7 @@ end
 
 ruby_block 'Copy certificate files' do
   block do
-    if File.exist?("#{node['elastic']['certs_path']}")
+    if Dir.exist?("#{node['elastic']['certs_path']}")
       IO.copy_stream("#{node['elastic']['certs_path']}/filebeat.pem", "#{node['filebeat']['certs_path']}/filebeat.pem")
       IO.copy_stream("#{node['elastic']['certs_path']}/filebeat.key", "#{node['filebeat']['certs_path']}/filebeat.key")
       IO.copy_stream("#{node['elastic']['certs_path']}/root-ca.pem", "#{node['filebeat']['certs_path']}/root-ca.pem")
@@ -75,8 +75,8 @@ ruby_block 'Copy certificate files' do
           - #{node['elastic']['certs_path']}/root-ca.pem
         Then run as sudo:
           - systemctl daemon-reload
-          - systemctl enable kibana
-          - systemctl start kibana")
+          - systemctl enable filebeat
+          - systemctl start filebeat")
     end
   end
   action :run
