@@ -123,7 +123,7 @@ You can get more info about attributes and how the work on the chef documentatio
 
 ### Centralized Configuration
 
-You can configure your Wazuh [Centralized Configuration](https://documentation.wazuh.com/4.0/user-manual/reference/centralized-configuration.html#centralized-configuration-process) with Chef.
+You can set up your Wazuh [Centralized Configuration](https://documentation.wazuh.com/4.0/user-manual/reference/centralized-configuration.html#centralized-configuration-process) with Chef.
 
 In order to achieve this, the following steps are required:
 
