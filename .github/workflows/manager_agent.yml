@@ -19,4 +19,6 @@ jobs:
         env:
           PLATFORM: centos
           RELEASE: 8
+          IMAGE: centos:8
+          RUN_COMMAND: /sbin/init
       

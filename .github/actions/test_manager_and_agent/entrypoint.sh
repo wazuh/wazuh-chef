@@ -6,10 +6,10 @@ echo $PLATFORM
 echo "Env var value: RELEASE"
 echo $RELEASE
 
+cd kitchen
+
 echo "Installing dependencies"
-chef gem install test-kitchen
-chef gem install kitchen-dokken
-chef gem install kitchen-inspec
+bundle install 
 
 echo "Kitchen create manager..."
 kitchen create wazuh-manager-$PLATFORM-$RELEASE
