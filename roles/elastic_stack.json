@@ -1,5 +1,5 @@
 {
-    "name": "wazuh_elastic",
+    "name": "elastic_stack",
     "description": "Elastic Stack Role",
     "json_class": "Chef::Role",
     "default_attributes": {
