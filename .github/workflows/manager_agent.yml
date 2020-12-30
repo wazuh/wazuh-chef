@@ -1,4 +1,4 @@
-name: Wazuh Chef - Manager and Agnet test
+name: Wazuh Chef - Manager and Agent test
 
 on:
   push:
