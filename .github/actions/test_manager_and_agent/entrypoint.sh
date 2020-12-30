@@ -9,7 +9,8 @@ echo $RELEASE
 cd kitchen
 
 echo "Installing dependencies"
-chef gem install kitchen-docker
+chef env --chef-license accept
+chef gem install kitchen-docker 
 chef gem install test-kitchen
 chef gem install kitchen-inspec
 chef gem install inspec
