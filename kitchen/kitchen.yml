@@ -4,9 +4,6 @@ driver:
   use_internal_docker_network: true
   remove_images: true
 
-transport:
-  name: docker
-
 provisioner:
   chef_license: accept
 
