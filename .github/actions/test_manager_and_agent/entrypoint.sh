@@ -1,6 +1,8 @@
 #! /usr/bin/env bash
 set -e
 
+echo "Env var value: IMAGE "
+echo $IMAGE
 echo "Env var value: PLATFORM "
 echo $PLATFORM
 echo "Env var value: RELEASE"
@@ -10,10 +12,9 @@ cd kitchen
 
 echo "Installing dependencies"
 chef env --chef-license accept
-chef gem install kitchen-docker 
-chef gem install test-kitchen
+chef gem install kitchen-docker -v 2.3 
+chef gem install test-kitchen 
 chef gem install kitchen-inspec
-chef gem install inspec
 
 echo "Install docker..."
 curl -fsSL https://get.docker.com -o get-docker.sh
@@ -22,15 +23,9 @@ sh get-docker.sh
 echo "Kitchen create manager..."
 kitchen create wazuh-server-$PLATFORM-$RELEASE
 
-container_id="$(docker ps -aqf "name=wazuh-server-$PLATFORM-$RELEASE$")"
-echo "Getting wazuh-server-$PLATFORM-$RELEASE container ID: $container_id"
-
 manager_ip="$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' `docker ps | awk '{print $NF}' | grep wazuh-server`)"
-echo "Getting Wazuh managers IP: $manager_ip"
-
-echo "wazuh-manager IP"
-echo $manager_ip
-MANAGER_IP=$manager_ip
+export MANAGER_IP=$manager_ip
+echo "Getting Wazuh manager IP: $manager_ip"
 
 echo "Kitchen converge manager ..."
 kitchen converge wazuh-manager-$PLATFORM-$RELEASE
