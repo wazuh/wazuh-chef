@@ -1,0 +1,22 @@
+name: Wazuh Chef - Manager and Agnet test
+
+on:
+  push:
+    branches: 
+      - feature-cookbooks
+  pull_request:
+    branches:
+      - feature-cookbooks
+
+jobs:
+   manager-and-agent:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+      - name: CentOS 8 - (Manager + Agent)
+        uses: './.github/actions/test_manager_and_agent'
+        env:
+          PLATFORM: centos
+          RELEASE: 8
+      
