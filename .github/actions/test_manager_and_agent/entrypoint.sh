@@ -9,7 +9,10 @@ echo $RELEASE
 cd kitchen
 
 echo "Installing dependencies"
-bundle install 
+chef gem install kitchen-docker
+chef gem install test-kitchen
+chef gem install kitchen-inspec
+chef gem install inspec
 
 echo "Kitchen create manager..."
 kitchen create wazuh-manager-$PLATFORM-$RELEASE
