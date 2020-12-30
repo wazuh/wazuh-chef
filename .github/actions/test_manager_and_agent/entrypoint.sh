@@ -22,11 +22,11 @@ sh get-docker.sh
 echo "Kitchen create manager..."
 kitchen create wazuh-server-$PLATFORM-$RELEASE
 
-echo "Getting wazuh-server-$PLATFORM-$RELEASE container ID"
 container_id="$(docker ps -aqf "name=wazuh-server-$PLATFORM-$RELEASE$")"
+echo "Getting wazuh-server-$PLATFORM-$RELEASE container ID: $container_id"
 
-echo "Getting Wazuh managers IP"
 manager_ip="$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $container_id)"
+echo "Getting Wazuh managers IP: $manager_ip"
 
 echo "wazuh-manager IP"
 echo $manager_ip
