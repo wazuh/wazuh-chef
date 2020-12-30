@@ -15,6 +15,10 @@ chef gem install test-kitchen
 chef gem install kitchen-inspec
 chef gem install inspec
 
+echo "Install docker..."
+curl -fsSL https://get.docker.com -o get-docker.sh
+sh get-docker.sh
+
 echo "Kitchen create manager..."
 kitchen create wazuh-manager-$PLATFORM-$RELEASE
 
