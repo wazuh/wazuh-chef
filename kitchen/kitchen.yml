@@ -33,3 +33,6 @@ suites:
   - name: wazuh_agent
     run_list:
       - recipe[wazuh_agent::default]
+    atttributes:
+      ossec:
+        address: <%= ENV['MANAGER_IP'] %>
