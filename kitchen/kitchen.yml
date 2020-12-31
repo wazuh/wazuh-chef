@@ -10,7 +10,7 @@ provisioner:
   chef_license: accept-no-persist
 
 platforms:
-  - name: <%= ENV['PLATFORM'] %>_<%= ENV['RELEASE'] %>_kitchen_chef
+  - name: <%= ENV['PLATFORM'] %>_<%= ENV['RELEASE'] %>
     driver_config:
       image: <%= ENV['IMAGE'] %>
       platform: <%= ENV['PLATFORM'] %>
@@ -19,17 +19,14 @@ platforms:
       privileged: true
       volume:
         - /sys/fs/cgroup:/sys/fs/cgroup:ro
-      provision_command:
-        - sed -i 's/UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
-        - awk -F= '/^NAME/{print $2}' /etc/os-release | grep -qi 'debian\|ubuntu' && apt-get install -y apt-transport-https gnupg2 ca-certificates|| yum install -y openssl
-
+     
 suites:
-  - name: manager
+  - name: wazuh-manager
     run_list:
       - recipe[wazuh_manager::default]
       - recipe[filebeat::default]
 
-  - name: agent
+  - name: wazuh-agent
     run_list:
       - recipe[wazuh_agent::default]
     attributes:
