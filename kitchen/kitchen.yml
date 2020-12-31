@@ -21,7 +21,7 @@ platforms:
         - /sys/fs/cgroup:/sys/fs/cgroup:ro
      
 suites:
-  - name: wazuh-manager
+  - name: wazuh-server
     run_list:
       - recipe[wazuh_manager::default]
       - recipe[filebeat::default]
