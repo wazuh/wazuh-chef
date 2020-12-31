@@ -15,9 +15,6 @@ git fetch --all && \
 git checkout feature-cookbooks && \
 git pull origin feature-cookbooks
 
-echo "Accept chef license"
-chef env --chef-license accept
-
 echo "Installing dependencies"
 bundle install --without vagrant
 
