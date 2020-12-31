@@ -8,17 +8,20 @@ echo $PLATFORM
 echo "Env var value: RELEASE"
 echo $RELEASE
 
-cd kitchen
+echo "Clone wazuh-chef repository"
+git clone https://github.com/wazuh/wazuh-chef.git && \
+cd wazuh-chef && \
+git fetch --all && \
+git checkout feature-cookbooks && \
+git pull origin feature-cookbooks
+
+echo "Accept chef license"
+chef env --chef-license accept
 
 echo "Installing dependencies"
-chef env --chef-license accept
-chef gem install kitchen-docker -v 2.3 
-chef gem install test-kitchen 
-chef gem install kitchen-inspec
+bundle install --without vagrant
 
-echo "Install docker..."
-curl -fsSL https://get.docker.com -o get-docker.sh
-sh get-docker.sh
+cd kitchen
 
 echo "Kitchen create manager..."
 kitchen create wazuh-server-$PLATFORM-$RELEASE
