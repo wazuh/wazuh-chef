@@ -9,10 +9,8 @@ group :kitchen do
     gem 'kitchen-inspec'
 end
 
-group :dokken do 
-    gem 'kitchen-dokken'
-end
-
-group :vagrant do
+group :drivers do
+    gem 'kitchen-docker'
     gem 'kitchen-vagrant'
+    gem 'kitchen-dokken'
 end
