@@ -15,7 +15,7 @@ Dependending on your choice, install elastic-stack or opendistro cookbooks respe
 * ``versions.rb`` contains version attributes to make it easier when it comes to bump version
 * The rest of files contains all the default configuration files in order to generate ossec.conf 
 
-Check ['ossec.conf'](https://documentation.wazuh.com/4.0/user-manual/reference/ossec-conf/) documentation
+Check ['ossec.conf'](https://documentation.wazuh.com/current/user-manual/reference/ossec-conf/) documentation
 to see all configuration sections.
 
 ### Usage
@@ -114,7 +114,7 @@ If you want to build a Wazuh cluster, you need to create two roles, one role for
   }
 ```
 
-Check [cluster documentation](https://documentation.wazuh.com/4.0/user-manual/configuring-cluster/index.html) for more details
+Check [cluster documentation](https://documentation.wazuh.com/current/user-manual/configuring-cluster/index.html) for more details
 
 ### Recipes
 
@@ -135,4 +135,4 @@ Install prerequisites to install Wazuh manager
 
 ### References
 
-Check [Wazuh server administration](https://documentation.wazuh.com/4.0/user-manual/manager/index.html) for more information about Wazuh Server.
+Check [Wazuh server administration](https://documentation.wazuh.com/current/user-manual/manager/index.html) for more information about Wazuh Server.

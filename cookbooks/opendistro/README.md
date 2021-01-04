@@ -107,5 +107,5 @@ If only the declaration of `cluster.initial_master_nodes` to *192.168.0.1* would
 
 ### References
 
-Check https://documentation.wazuh.com/4.0/installation-guide/open-distro/distributed-deployment/step-by-step-installation/elasticsearch-cluster/elasticsearch-single-node-cluster.html for more information about 
+Check https://documentation.wazuh.com/current/installation-guide/open-distro/distributed-deployment/step-by-step-installation/elasticsearch-cluster/elasticsearch-single-node-cluster.html for more information about 
 how to install step-by-step a Elasticsearch single-node cluster.

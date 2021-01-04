@@ -15,15 +15,18 @@ Deploy the Wazuh platform using Chef cookbooks. Chef recipes are prepared for in
 
 ## Dependencies
 
-Every cookbook will install its own required dependencies, *Berksfile* and *metadata.rb* contains all the information about which dependencies will be installed.
+All the dependencies necessary to install cookbooks are listed inside the following files: 
+- *Berksfile*: has defined the cookbooks path for Kitchen tests
+- *metadata.rb*: minimum distributions verions 
+- *Gemfile.rb*: Ruby gems for testing
 
 There is software that must be installed to ensure the correct installation.
 
 ## Chef 
 
 Chef gives plenty of software packages solution depending on how you want to distribute the software. Please
-refer to the [platform overview documentation](https://docs.chef.io/platform_overview/) to know
-all the software products they have.
+refer to the [platform overview documentation](https://docs.chef.io/platform_overview/) for further information.
+We recommend using Chef Workstation for testing.
 
 ## Cookbooks
 
@@ -152,7 +155,7 @@ manager IP address:
 "address": "<YOUR MANAGER IP ADDRESS>"
 ```
 
-Since Wazuh 4.0, by default, the agent registers automatically with the manager through enrollment. Configuration details can be found on [Enrollment section](https://documentation.wazuh.com/4.0/user-manual/reference/ossec-conf/client.html#reference-ossec-client).
+Since Wazuh 4.0, by default, the agent registers automatically with the manager through enrollment. Configuration details can be found on [Enrollment section](https://documentation.wazuh.com/current/user-manual/reference/ossec-conf/client.html#reference-ossec-client).
 
 ## Contribute
 

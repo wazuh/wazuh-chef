@@ -32,4 +32,4 @@ Append to repository path the URL and GPG key of Filebeat
 
 ## References
 
-Check [Filebeat installation documentation](https://documentation.wazuh.com/4.0/learning-wazuh/build-lab/install-wazuh-manager.html#install-filebeat) for more detail
+Check [Filebeat installation documentation](https://documentation.wazuh.com/current/learning-wazuh/build-lab/install-wazuh-manager.html#install-filebeat) for more detail

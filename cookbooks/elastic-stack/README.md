@@ -66,14 +66,14 @@ In order to make Chef compatible Elasticsearch 7.x, two new attributes could be 
   - `['elastic']['yml']['discovery']['seed_hosts']: <IP>"` 
   - `['elastic']['yml']['discovery']['seed_providers']: <DNS>"` 
   - `['elastic']['yml']['discovery']['type']: single-node"`
-2. `['elastic']['yml']['cluster']['initial_master_nodes']`: Allows to insert the whole line for the initial master nodes. You can declare it like:
+2. `['elastic']['yml']['cluster']['initial_master_nodes']`: Allows to insert the whole line for the initial master nodes. Usage example:
   - `['elastic']['yml']['cluster']['initial_master_nodes']: "['<IP>']"`
 
 #### Example:
 
-One example of the previously stated configuration would be the following.
+One example of the previously stated configuration would be the following:
 
-If only the declaration of `cluster.initial_master_nodes` to *192.168.0.1* would be wanted, the Elastic role needs to be adapted like this:
+The hereunder example shows a simple configuration override for `initial_master_nodes` variable:
 
 ```json
 {
@@ -105,5 +105,5 @@ If only the declaration of `cluster.initial_master_nodes` to *192.168.0.1* would
 
 ### References
 
-Check https://documentation.wazuh.com/4.0/learning-wazuh/build-lab/install-elastic-stack.html for more information about 
+Check https://documentation.wazuh.com/current/learning-wazuh/build-lab/install-elastic-stack.html for more information about 
 how to install Elastic Stack.
