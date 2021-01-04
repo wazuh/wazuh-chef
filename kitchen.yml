@@ -75,8 +75,6 @@ suites:
       - recipe[opendistro::default]
       - recipe[wazuh_manager::default]
       - recipe[filebeat-oss::default]
-    attributes:
-      ipaddress: 172.18.12.11
   
   - name: wazuh_agent
     run_list:
@@ -84,8 +82,6 @@ suites:
     verifier:
       inspec_tests:
         - path: cookbooks/wazuh_agent/test/integration/wazuh_agent
-    attributes:
-      ipaddress: 172.18.12.11
 
   - name: wazuh_server
     run_list:
