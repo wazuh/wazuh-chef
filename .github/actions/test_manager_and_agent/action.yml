@@ -1,5 +1,0 @@
-name: kitchen-test
-description: Test Wazuh manager and agent
-runs:
-  using: docker
-  image: 'Dockerfile'
