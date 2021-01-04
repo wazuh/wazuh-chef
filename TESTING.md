@@ -2,8 +2,8 @@ Test Wazuh Chef cookbooks
 =========================
 
 # Global prerequisistes
-- Ruby
-- ChefDK
+- [Ruby](https://www.ruby-lang.org/es/documentation/installation/)
+- [Chef Workstation](https://downloads.chef.io/products/workstation)
 
 There are two ways of creating a chef environment and tests cookbooks depending on what driver to use:
 - [kitchen-vagrant](https://github.com/test-kitchen/kitchen-vagrant)
@@ -18,7 +18,6 @@ Kitchen-vagrant
 
 ## Hot to use?
 First install dependancies: 
-``bundle config set without dokken``
 ``bundle install``
 
 Then go to ``wazuh-chef/kitchen-vagrant`` folder and execute kitchen commands.
@@ -31,7 +30,6 @@ Kitchen dokken
 
 ## How to use?
 First install dependancies: 
-``bundle config set without vagrant``
 ``bundle install`` 
 
 Then execute kithcen commands.
