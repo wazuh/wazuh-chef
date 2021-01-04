@@ -1,5 +1,5 @@
-# Cookbook Name:: filebeat
-# Attribute:: elastic
+# Cookbook Name:: filebeat-oss
+# Attribute:: filebeat.yml
 # Author:: Wazuh <info@wazuh.com>
 
 default['filebeat']['yml'] = {
@@ -14,4 +14,5 @@ default['filebeat']['yml'] = {
         }
     }
 }
+
 

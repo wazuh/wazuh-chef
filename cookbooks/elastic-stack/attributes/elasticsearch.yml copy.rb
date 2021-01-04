@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Cookbook Name:: elastic-stack
-# Attributes:: yml
+# Attributes:: elasticsearch.yml
 # Author:: Wazuh <info@wazuh.com>
 
 # Elasticsearch configuration file
@@ -24,18 +24,5 @@ default['elastic']['yml'] = {
   },
   'http' => {
     'port' => 9200
-  }
-}
-
-# Kibana configuration file
-default['kibana']['yml'] = {
-  'server' => {
-    'host' => '0.0.0.0',
-    'port' => 5601
-  },
-  'elasticsearch' => {
-    'hosts' => [
-      "http://#{node['elastic']['yml']['network']['host']}:#{node['elastic']['yml']['http']['port']}"
-    ]
   }
 }

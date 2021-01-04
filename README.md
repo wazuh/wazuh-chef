@@ -41,11 +41,11 @@ We recommend using Chef Workstation for testing.
 
 You can find predefined roles for a default installation of:
 
-1. **wazuh_server**: Wazuh Manager and Filebeat
-2. **wazhu_server_oss**: Wazuh Manager and Filebeat OSS
-3. **wazuh_agent**: Wazuh Agent
-4. **elastic_stack**: Elasticsearch and Kibana
-5. **opendistro**: Elasticsearch OSS and Kiban OSS
+1. [wazuh_server](roles/wazuh_server.json): Wazuh Manager and Filebeat
+2. [wazhu_server_oss](roles/wazuh_server_oss.json): Wazuh Manager and Filebeat OSS
+3. [wazuh_agent](roles/wazuh_agent.json): Wazuh Agent
+4. [elastic_stack](roles/elastic_stack.json): Elasticsearch and Kibana
+5. [opendistro](roles/opendistro.json): Elasticsearch OSS and Kiban OSS
 
 Check roles README for more information about default attributes and how to customize your installation.
 
@@ -155,7 +155,7 @@ manager IP address:
 "address": "<YOUR MANAGER IP ADDRESS>"
 ```
 
-Since Wazuh 4.0, by default, the agent registers automatically with the manager through enrollment. Configuration details can be found on [Enrollment section](https://documentation.wazuh.com/current/user-manual/reference/ossec-conf/client.html#reference-ossec-client).
+Since Wazuh 4.0, by default, the agent registers automatically registers against the manager through enrollment. Configuration details can be found on [Enrollment section](https://documentation.wazuh.com/current/user-manual/reference/ossec-conf/client.html#reference-ossec-client).
 
 ## Contribute
 

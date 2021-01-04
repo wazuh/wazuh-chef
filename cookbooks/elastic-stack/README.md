@@ -8,7 +8,8 @@ This cookbook installs and configures Elastic Stack. Please note that it's not o
 * ``jvm.rb``: declare the amount of memory RAM JVM will use
 * ``paths.rb``: initialize different paths used during installation
 * ``versions.rb``: versions for Wazuh and ELK
-* ``yml.rb``: customize YAML configuration file for Elasticsearch and Kibana services
+* ``elasticsearch.yml.rb``: customize YAML configuration file for Elasticsearch
+* ``filebeat.yml.rb``: customize YAML configuration file for Filebeat
 
 ### Usage
 

@@ -9,7 +9,9 @@ This cookbook installs and configures Opendistroforleasticsearch. Please note th
 * ``paths.rb``: initialize different paths used during installation
 * ``search_guard.rb``: declare search guard ZIP filename 
 * ``versions.rb``: versions for Wazuh, ODFE, ELK and Search Guard
-* ``yml.rb``: customize YAML configuration file for Elasticsearch, Kibana and Search Guard services
+* ``elasticsearch.yml.rb``: customize YAML configuration file for Elasticsearch
+* ``filebeat.yml.rb``: customize YAML configuration file for Filebeat
+* ``searchguard.yml.rb``: customize YAML configuration file for Search Guard
 
 ### Usage
 

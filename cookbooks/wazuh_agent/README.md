@@ -2,18 +2,21 @@
 
 These cookbooks install and configure a Wazuh Agent on specified nodes.
 
-Agent is automatically registered in the specified address by using ['agent authd'](https://documentation.wazuh.com/current/user-manual/agents/registering-agents/register-agent-authd.html#simple-method) ( ```['ossec']['address']``` specify mnager IP address). You can set this attributes by default on attributes folder or specify it in the ['wazuh_agent role'](https://github.com/wazuh/wazuh-chef/blob/3.9-repository-refactor/roles/wazuh_agent.json). 
+Currently, the agent is automatically registered using enrollment. check the [documentation](https://documentation.wazuh.com/4.0/user-manual/registering/) for further information. 
+
+Agent is automatically registered against manager using ['agent authd'](https://documentation.wazuh.com/4.0/user-manual/agents/agent-connection.html) tool. The manager IP address has to be declared in the `node['ossec']['address']` attribute. This can be overwriten in two ways: modifyng that attribute in [agent role](../../roles/wazuh_agent.json) or directly in the `node['ossec']['agent_auth']['host']` specific attribute.
+ 
 
 ### Attributes
 
 * ``versions.rb`` contains version attributes to make it easier when it comes to bump version
-* The rest of files contains all the default configuration files in order to generate ossec.conf 
+* The rest of files contains all the default configuration files in order to generate *ossec.conf* 
 
 Check ['ossec.conf']( https://documentation.wazuh.com/3.x/user-manual/reference/ossec-conf/index.html) documentation to see all configuration sections.
 
 ### Usage
 
-Create a role following the ['wazuh_agent'](https://github.com/wazuh/wazuh-chef/roles/wazuh_agent.json) role structure and specify your desired configuration attributes. Note that **address** and **registration_address** are mandatory.
+Create a role following the ['wazuh_agent'](https://github.com/wazuh/wazuh-chef/roles/wazuh_agent.json) role structure and specify your desired configuration attributes. Note that **address** is mandatory.
 
 Assign the current role to desired nodes and run ```chef-client``` on them.
 

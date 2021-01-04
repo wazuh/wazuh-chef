@@ -7,7 +7,7 @@ This cookbook installs and configures Filebeat on the specified node.
 * `files.rb`: initialize needed file names to install Filebeat
 * `paths.rb`: initialize some main paths
 * `versions.rb`: initialize versions for Wazuh and ELK
-* `yml.rb`: customize *filebeat.yml* configuration file 
+* `filebeat.yml.rb`: customize YAML configuration file for Filebeat
 
 ## Usage
 
