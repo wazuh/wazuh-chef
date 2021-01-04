@@ -1,4 +1,4 @@
-name: Wazuh Chef - Manager and Agent test
+name: Kitchen tests for Wazuh Chef
 
 on:
   push:
@@ -9,16 +9,22 @@ on:
       - feature-cookbooks
 
 jobs:
-   manager-and-agent:
+  wazuh-manager:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out code
-        uses: actions/checkout@v2
-      - name: CentOS 8 - (Manager + Agent)
-        uses: './.github/actions/test_manager_and_agent'
-        env:
-          PLATFORM: centos
-          RELEASE: 8
-          IMAGE: centos:8
-          RUN_COMMAND: /sbin/init
-      
+    - name: Check out code
+      uses: actions/checkout@v2
+    - name: Install Chef
+      uses: actionshub/chef-install@main
+    - name: Test ${{ matrix.suite }} cookbook
+      uses: actionshub/test-kitchen@main
+      env:
+        CHEF_LICENSE: accept-no-persist
+        KITCHEN_LOCAL_YAML: kitchen.yml
+      with:
+        suite: wazuh-manager
+        os: centos-8
+        action: converge
+  wazuh-agent:
+    runs-on: ubuntu-latest
+    needs: wazuh-manager    
