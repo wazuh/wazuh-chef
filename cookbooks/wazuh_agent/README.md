@@ -2,23 +2,20 @@
 
 These cookbooks install and configure a Wazuh Agent on specified nodes.
 
-Currently, the agent is automatically registered using enrollment. check the [documentation](https://documentation.wazuh.com/current/user-manual/registering/) for further information. The manager IP address has to be declared in the `node['ossec']['address']` attribute. This can be overwriten in two ways: modifyng that attribute in [agent role](../../roles/wazuh_agent.json) or directly in the `node['ossec']['agent_auth']['host']` specific attribute.
- 
+Currently, the agent is automatically registered using enrollment. check the [documentation](https://documentation.wazuh.com/current/user-manual/registering/) for further information. The manager IP address has to be declared in the `node['ossec']['address']` attribute. 
 
 ### Attributes
 
 * ``versions.rb`` contains version attributes to make it easier when it comes to bump version
 * The rest of files contains all the default configuration files in order to generate *ossec.conf* 
 
-Check ['ossec.conf']( https://documentation.wazuh.com/3.x/user-manual/reference/ossec-conf/index.html) documentation to see all configuration sections.
+Check ['ossec.conf']( https://documentation.wazuh.com/current/user-manual/reference/ossec-conf/index.html) documentation to see all configuration sections.
 
 ### Usage
 
 Create a role following the ['wazuh_agent'](https://github.com/wazuh/wazuh-chef/roles/wazuh_agent.json) role structure and specify your desired configuration attributes. Note that **address** is mandatory.
 
 Assign the current role to desired nodes and run ```chef-client``` on them.
-
-You can declare desired *agent_auth* parameters to customize the registration process.
 
 For example:
 
@@ -31,12 +28,7 @@ For example:
     },
     "override_attributes": {
       "ossec": {
-        "address": "172.19.0.211",
-        "agent_auth": {
-          "name" : "Agent_01", 
-          "set_group" : "group_01",
-          "agent_ip_by_manager": "true"
-        }
+        "address": "172.19.0.211"
       }
     },
     "chef_type": "role",
@@ -48,36 +40,11 @@ For example:
 }
 ```
 
-**Will generate**: ```agent_auth -m 172.19.0.211 -p 1515 -A Agent_01 -G group_01 -i   ```  
-
-The agent_auth parameters are the following:
-
-```
--a  : "auto_negotiate"
--A  : "name"
--m  : "host"
--p  : "port"
--c  : "cipher_list"
--D  : "wazuh_directory"
--d  : "debug_mode" : "true"
--g  : "run_as_group"
--G  : "set_group"
--i  : "agent_ip_by_manager" : "true"
--I  : "agent_ip"
--P  : "password"
--v  : "ca"
--x  : "certificate"
--k  : "key"
-```
-
-You can use any of the quoted attributes, as stated in the previous example. Flags options must be set to "true" or "false".
-
-
 ### Recipes
 
 #### agent.rb
 
-Register agent by using agent authd method. You can declare the desired fields to customize the registration process. 
+Register agent by using agent enrollment. Also authd method is available but not enabled by default. You can declare the desired fields to customize the registration process. 
 
 #### common.rb
 
@@ -89,5 +56,5 @@ Declares repository of Wazuh and GPG keys based on different installations.
 
 ### References
 
-Check https://documentation.wazuh.com/3.x/user-manual/agents/index.html for more information about Wazuh-Agent.
+Check https://documentation.wazuh.com/current/user-manual/agents/index.html for more information about Wazuh-Agent.
 
