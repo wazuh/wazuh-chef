@@ -16,16 +16,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-include_recipe 'apt::default'
 include_recipe 'wazuh_agent::repository'
 
-if platform_family?('ubuntu', 'debian')
+case node['platform']
+when 'debian', 'ubuntu'
   apt_package 'wazuh-agent' do
-    version "#{node['wazuh-agent']['version']}-1"
+    version "#{node['wazuh']['patch_version']}-1"
   end
-elsif platform_family?('rhel','centos', 'amazon')
-  yum_package 'wazuh-agent' do
-    version "#{node['wazuh-agent']['version']}-1"
+when 'redhat', 'centos', 'amazon', 'fedora', 'oracle'
+  if node['platform_version'] >= '8'
+    dnf_package 'wazuh-agent' do
+      version "#{node['wazuh']['patch_version']}"
+    end
+  else
+    yum_package 'wazuh-agent' do
+      version "#{node['wazuh']['patch_version']}"
+    end
+  end
+when 'opensuseleap', 'suse' 
+  zypper_package 'wazuh-agent' do
+    version "#{node['wazuh']['patch_version']}"
   end
 else
   raise "Currently platforn not supported yet. Feel free to open an issue on https://www.github.com/wazuh/wazuh-chef if you consider that support for a specific OS should be added"
@@ -72,7 +82,6 @@ if agent_auth['password']
   args << ' -P ' + agent_auth['password']
 end
 
-
 if agent_auth['ca'] && File.exist?(agent_auth['ca'])
   args << ' -v ' + agent_auth['ca']
 end
@@ -85,11 +94,8 @@ if agent_auth['key'] && File.exist?(agent_auth['key'])
   args << ' -k ' + agent_auth['key']
 end
 
-if agent_auth['password']
-  args << ' -P ' + agent_auth['password']
-end
-
-execute "#{dir}/bin/agent-auth #{args}" do
+execute 'wazuh agent auth' do
+  command "#{dir}/bin/agent-auth #{args}"
   timeout 30
   ignore_failure node['ossec']['ignore_failure']
   only_if { agent_auth['register'] == 'yes' && agent_auth['host'] && !File.size?("#{dir}/etc/client.keys") }
@@ -108,6 +114,4 @@ service 'wazuh' do
   service_name 'wazuh-agent'
   supports status: true, restart: true
   action [:enable, :restart]
-  only_if "test -s #{dir}/etc/client.keys"
-  not_if ("ps axu | grep ossec-agentd | grep -v grep && ps axu | grep ossec-logcollector | grep -v grep && ps axu | grep ossec-syscheckd | grep -v grep ")
 end

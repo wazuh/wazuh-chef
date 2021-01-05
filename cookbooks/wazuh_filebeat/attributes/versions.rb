@@ -1,5 +1,0 @@
-default['filebeat']['version'] = "7.9.1"
-default['filebeat']['elastic_stack_version'] = "7.9.1"
-default['filebeat']['wazuh_app_version'] = "4.0.1_7.9.1"
-default['filebeat']['extensions_version'] = "v4.0.1"
-default['filebeat']['wazuh_filebeat_module'] = "wazuh-filebeat-0.1.tar.gz"

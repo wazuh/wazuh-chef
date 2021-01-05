@@ -1,21 +1,31 @@
 # Wazuh Manager cookbook
 
-This cookbook installs and configure Wazuh Manager and API on specified nodes.
+This cookbook installs and configure Wazuh Manager on specified nodes.
 
-### Attributes
+There are two types of manager installations:
 
-The ``attributes`` folder contains all the default configuration files in order to generate ossec.conf file.
+1. Without filebeat-oss
+2. With filebeat-oss
 
-Check ['ossec.conf']( https://documentation.wazuh.com/3.x/user-manual/reference/ossec-conf/index.html) documentation to see all configuration sections.
+Dependending on your choice, install elastic-stack or opendistro cookbooks respectively.
 
-### Installation
+### Attributes 
 
-Create a role, `wazuh_manager`. Add attributes per above as needed to customize the installation.
+* ``api.rb`` contains API IP and port
+* ``versions.rb`` contains version attributes to make it easier when it comes to bump version
+* The rest of files contains all the default configuration files in order to generate ossec.conf 
+
+Check ['ossec.conf'](https://documentation.wazuh.com/current/user-manual/reference/ossec-conf/) documentation
+to see all configuration sections.
+
+### Usage
+
+Create a role, `wazuh_server`. Add attributes per above as needed to customize the installation.
 
 ```
   {
-    "name": "wazuh_manager",
-    "description": "Wazuh Manager host",
+    "name": "wazuh_server",
+    "description": "Wazuh Server host",
     "json_class": "Chef::Role",
     "default_attributes": {
 
@@ -25,7 +35,8 @@ Create a role, `wazuh_manager`. Add attributes per above as needed to customize 
     },
     "chef_type": "role",
     "run_list": [
-      "recipe[wazuh::manager]"
+      "recipe[wazuh_manager::default]",
+      "recipe['filebeat::default]"
     ],
     "env_run_lists": {
 
@@ -33,9 +44,7 @@ Create a role, `wazuh_manager`. Add attributes per above as needed to customize 
   }
 ```
 
-If you want to build a Wazuh cluster, you need to create two roles, one role for the **Master** and another one for **Client**:
-
-**Note**: This Chef cookbook only brings compatibility with **CentOS 7**, we are working on add more distributions soon.
+If you want to build a Wazuh cluster, you need to create two roles, one role for the **Master** and another one for **Worker**:
 
 ```
   {
@@ -51,7 +60,7 @@ If you want to build a Wazuh cluster, you need to create two roles, one role for
         "conf": {
           "server": {
             "cluster": {
-              "node_name": "node01",
+              "node_name": "master01",
               "node_type": "master",
               "disabled": "no",
               "nodes": {
@@ -63,15 +72,17 @@ If you want to build a Wazuh cluster, you need to create two roles, one role for
     },
     "chef_type": "role",
     "run_list": [
-      "recipe[wazuh::manager]"
+      "recipe[wazuh_manager::default]",
+      "recipe[filebeat::default]"
     ],
     "env_run_lists": {
 
     }
   }
+
   {
-    "name": "wazuh_manager_client",
-    "description": "Wazuh Manager client node",
+    "name": "wazuh_manager_worker",
+    "description": "Wazuh Manager worker node",
     "json_class": "Chef::Role",
     "default_attributes": {
 
@@ -82,8 +93,8 @@ If you want to build a Wazuh cluster, you need to create two roles, one role for
         "conf": {
           "server": {
             "cluster": {
-              "node_name": "node02",
-              "node_type": "client",
+              "node_name": "worker01",
+              "node_type": "worker",
               "disabled": "no",
               "nodes": {
                 "node": ["172.16.10.10", "172.16.10.11"]
@@ -94,7 +105,8 @@ If you want to build a Wazuh cluster, you need to create two roles, one role for
     },
     "chef_type": "role",
     "run_list": [
-      "recipe[wazuh::manager]"
+      "recipe[wazuh_manager::default]",
+      "recipe[filebeat::default]"
     ],
     "env_run_lists": {
 
@@ -102,7 +114,7 @@ If you want to build a Wazuh cluster, you need to create two roles, one role for
   }
 ```
 
-Check cluster documentation for more details: <https://documentation.wazuh.com/current/user-manual/manager/wazuh-cluster.html>
+Check [cluster documentation](https://documentation.wazuh.com/current/user-manual/configuring-cluster/index.html) for more details
 
 ### Recipes
 
@@ -116,9 +128,11 @@ Generates the ossec.conf file using Gyoku.
 
 #### repository.rb 
 
-Declares wazuh repository and gpg key urls.
+Declares wazuh repository and GPG key URIs.
+
+#### prerequisites.rb
+Install prerequisites to install Wazuh manager
 
 ### References
 
-Check https://documentation.wazuh.com/current/user-manual/manager/index.html for more information about Wazuh Manager.
-
+Check [Wazuh server administration](https://documentation.wazuh.com/current/user-manual/manager/index.html) for more information about Wazuh Server.

@@ -1,23 +1,8 @@
-default['api']['bind_addr'] = "0.0.0.0"
-default['api']['port'] = 55000
-default['api']['behind_proxy_server'] = "no"
-default['api']['https'] = "yes"
-default['api']['https_key'] = "api/configuration/ssl/server.key"
-default['api']['https_cert'] = "api/configuration/ssl/server.crt"
-default['api']['https_use_ca'] = "False"
-default['api']['https_ca'] = "api/configuration/ssl/ca.crt"
-default['api']['logging_level'] = "info"
-default['api']['logging_path'] = "logs/api.log"
-default['api']['cors'] = "no"
-default['api']['cors_source_route'] = "*"
-default['api']['cors_expose_headers'] = "*"
-default['api']['cors_allow_headers'] = "*"
-default['api']['cors_allow_credentials'] = "no"
-default['api']['cache'] = "yes"
-default['api']['cache_time'] = 0.750
-default['api']['access_max_login_attempts'] = 5 #Should be updated
-default['api']['access_block_time'] = 300
-default['api']['access_max_request_per_minute'] = 300
-default['api']['use_only_authd'] = 300
-default['api']['drop_privileges'] = "yes"
-default['api']['experimental_features'] = "no"
+# Cookbook Name:: wazuh-manager
+# Attributes:: api
+# Author:: Wazuh <info@wazuh.com
+
+default['api'] = {
+    'ip' => '0.0.0.0',
+    'port' => 55000
+}

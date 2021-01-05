@@ -1,13 +1,20 @@
+# Cookbook Name:: wazuh-manager
+# Attributes:: auth
+# Author:: Wazuh <info@wazuh.com
+
 # Registration service - Authd settings (Manager)
-default['ossec']['conf']['auth']['disabled'] = false
-default['ossec']['conf']['auth']['port'] = 1515
-default['ossec']['conf']['auth']['use_source_ip'] = true
-default['ossec']['conf']['auth']['force_insert'] = true
-default['ossec']['conf']['auth']['force_time'] = 0
-default['ossec']['conf']['auth']['purge'] = true
-default['ossec']['conf']['auth']['use_password'] = false
-default['ossec']['conf']['auth']['ciphers'] = 'HIGH:!ADH:!EXP:!MD5:!RC4:!3DES:!CAMELLIA:@STRENGTH'
-default['ossec']['conf']['auth']['ssl_verify_host'] = false
-default['ossec']['conf']['auth']['ssl_manager_cert'] = "#{node['ossec']['dir']}/etc/sslmanager.cert"
-default['ossec']['conf']['auth']['ssl_manager_key'] = "#{node['ossec']['dir']}/etc/sslmanager.key"
-default['ossec']['conf']['auth']['ssl_auto_negotiate'] = false
+default['ossec']['conf']['auth'] = {
+    'disabled' => false,
+    'port' => 1515,
+    'use_source_ip' => false,
+    'force_insert' => true,
+    'force_time' => 0,
+    'purge' => true,
+    'use_password' => false,
+    'limit_maxagents' => true,
+    'ciphers' => 'HIGH:!ADH:!EXP:!MD5:!RC4:!3DES:!CAMELLIA:@STRENGTH',
+    'ssl_verify_host' => false,
+    'ssl_manager_cert' => "#{node['ossec']['dir']}/etc/sslmanager.cert",
+    'ssl_manager_key' => "#{node['ossec']['dir']}/etc/sslmanager.key",
+    'ssl_auto_negotiate' => false
+}

@@ -1,5 +1,11 @@
+# Cookbook Name:: wazuh-manager
+# Attributes:: remote
+# Author:: Wazuh <info@wazuh.com
+
 # Remoted settings
-default['ossec']['conf']['remote']['connection'] = ['secure']
-default['ossec']['conf']['remote']['port'] = "1514"
-default['ossec']['conf']['remote']['protocol'] = "tcp"
-default['ossec']['conf']['remote']['queue_size'] = "131072"
+default['ossec']['conf']['remote'] = {
+    'connection' => 'secure',
+    'port' => "1514",
+    'protocol' => "tcp",
+    'queue_size' => "131072"
+}

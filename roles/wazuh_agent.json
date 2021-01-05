@@ -7,8 +7,7 @@
     },
     "override_attributes": {
       "ossec": {
-        "registration_address": "<YOUR REGISTRATION IP ADDRESS>",
-	"address": "<YOUR MANAGER IP ADDRESS>"
+        "address": "<YOUR MANAGER IP ADDRESS>"
       }
     },
     "chef_type": "role",

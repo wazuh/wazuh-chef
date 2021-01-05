@@ -1,71 +1,59 @@
+# Cookbook Name:: wazuh-manager
+# Attributes:: command
+# Author:: Wazuh <info@wazuh.com
+
 default['ossec']['conf']['command'] = [
     {
         'name' => 'disable-account',
         'executable' => 'disable-account.sh',
         'expect' => 'user',
-        'timeout_allowed' => 'yes'
+        'timeout_allowed' => true
     },
     {
-        'content!' => {
-            'name' => 'restart-ossec',
-            'executable' => 'restart-ossec.sh',
-            'expect' => ''
-            }
+        'name' => 'restart-ossec',
+        'executable' => 'restart-ossec.sh',
+        'expect' => ''
     },
     {
-      'content!' => {
         'name' => 'firewall-drop',
         'executable' => 'firewall-drop.sh',
         'expect' => 'srcip',
-        'timeout_allowed' => 'yes'
-     }
+        'timeout_allowed' => true
     },
     {
-      'content!' => {
         'name' => 'host-deny',
         'executable' => 'host-deny.sh',
         'expect' => 'srcip',
-        'timeout_allowed' => 'yes'
-     }
+        'timeout_allowed' => true
     },
     {
-      'content!' => {
         'name' => 'route-null',
         'executable' => 'route-null.sh',
         'expect' => 'srcip',
-        'timeout_allowed' => 'yes'
-     }
+        'timeout_allowed' => true
     },
     {
-        'content!' => {
-          'name' => 'win_route-null',
-          'executable' => 'win_route-null.cmd',
-          'expect' => 'srcip',
-          'timeout_allowed' => 'yes'
-       }
+        'name' => 'win_route-null',
+        'executable' => 'route-null.cmd',
+        'expect' => 'srcip',
+        'timeout_allowed' => true
     },
     {
-        'content!' => {
-            'name' => 'win_route-null-2012',
-            'executable' => 'route-null_2012.cmd',
-            'expect' => 'srcip',
-            'timeout_allowed' => 'yes'
-        }
+        'name' => 'win_route-null-2012',
+        'executable' => 'route-null_2012.cmd',
+        'expect' => 'srcip',
+        'timeout_allowed' => true
     },
     {
-        'content!' => {
-            'name' => 'netsh',
-            'executable' => 'netsh.cmd',
-            'expect' => 'srcip',
-            'timeout_allowed' => 'yes'
-        }
+        'name' => 'netsh',
+        'executable' => 'netsh.cmd',
+        'expect' => 'srcip',
+        'timeout_allowed' => true
     },
     {
-        'content!' => {
-            'name' => 'netsh-win-2016',
-            'executable' => 'netsh-win-2016.cmd',
-            'expect' => 'srcip',
-            'timeout_allowed' => 'yes'
-        }
+        'name' => 'netsh-win-2016',
+        'executable' => 'netsh-win-2016.cmd',
+        'expect' => 'srcip',
+        'timeout_allowed' => true
     }
 ]

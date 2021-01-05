@@ -11,33 +11,41 @@ Deploy the Wazuh platform using Chef cookbooks. Chef recipes are prepared for in
 
 | Wazuh version | Elastic | ODFE   |
 |---------------|---------|--------|
-| v4.0.1        | -       | v1.11.0|
+| v4.0.3        | v7.9.3  | v1.11.0|
 
 ## Dependencies
 
-Every cookbook will install its own required dependencies, *Berksfile* and *metadata.rb* contains all the information about which dependencies will be installed.
+All the dependencies necessary to install cookbooks are listed inside the following files: 
+- *Berksfile*: has defined the cookbooks path for Kitchen tests
+- *metadata.rb*: minimum distributions verions 
+- *Gemfile.rb*: Ruby gems for testing
 
 There is software that must be installed to ensure the correct installation.
 
-- Curl
-- Wget
-- Chef Server Core v12.19.31
+## Chef 
+
+Chef gives plenty of software packages solution depending on how you want to distribute the software. Please
+refer to the [platform overview documentation](https://docs.chef.io/platform_overview/) for further information.
+We recommend using Chef Workstation for testing.
 
 ## Cookbooks
 
-* [Wazuh Agent ](https://github.com/wazuh/wazuh-chef/tree/master/wazuh_agent)
-* [Wazuh Manager and API](https://github.com/wazuh/wazuh-chef/tree/master/wazuh_manager)
-* [Elastic Stack (Elasticsearch, Kibana)](https://github.com/wazuh/wazuh-chef/tree/master/wazuh_elastic)
-* [Filebeat](https://github.com/wazuh/wazuh-chef/tree/master/wazuh_filebeat)
-
-Each cookbook has its README.md
+* [Wazuh Agent](cookbooks/wazuh_agent)
+* [Wazuh Manager](cookbooks/wazuh_manager)
+* [Filebeat](cookbooks/filebeat)
+* [Filebeat OSS](cookbooks/filebeat-oss)
+* [Elastic Stack (Elasticsearch and Kibana)](cookbooks/elastic-stack)
+* [Opendistro (Elasticsearch OSS and Kibana OSS)](cookbooks/opendistro)
 
 ## Roles
 
-You can find predefined roles for a default installation of Wazuh Agent and Manager in the roles folder.
+You can find predefined roles for a default installation of:
 
-- [Wazuh Agent Role](https://github.com/wazuh/wazuh-chef/tree/master/roles/wazuh_agent.json)
-- [Wazuh Manager Role](https://github.com/wazuh/wazuh-chef/tree/master/roles/wazuh_agent.json)
+1. [wazuh_server](roles/wazuh_server.json): Wazuh Manager and Filebeat
+2. [wazhu_server_oss](roles/wazuh_server_oss.json): Wazuh Manager and Filebeat OSS
+3. [wazuh_agent](roles/wazuh_agent.json): Wazuh Agent
+4. [elastic_stack](roles/elastic_stack.json): Elasticsearch and Kibana
+5. [opendistro](roles/opendistro.json): Elasticsearch OSS and Kiban OSS
 
 Check roles README for more information about default attributes and how to customize your installation.
 
@@ -49,13 +57,15 @@ You can clone the repository by running: ```git clone https://github.com/wazuh/w
 
 #### Use through Berkshelf
 
-The easiest way to making use of these cookbooks (especially `wazuh_filebeat` & `wazuh_elastic` until they are published to Supermarket) is by including in your `Berksfile` the desired cookbooks as stated below:
+The easiest way to making use of these cookbooks  is by including in your `Berksfile` the desired cookbooks as stated below:
 
 ```ruby
-cookbook "wazuh_agent", git: "https://github.com/wazuh/wazuh-chef.git",rel: 'cookbooks/wazuh_agent'
-cookbook "wazuh_manager", git: "https://github.com/wazuh/wazuh-chef.git",rel: 'cookbooks/wazuh_manager'
-cookbook 'wazuh_filebeat', github: 'https://github.com/wazuh/wazuh-chef.git', rel: 'cookbooks/wazuh_filebeat'
-cookbook 'wazuh_elastic', github: 'https://github.com/wazuh/wazuh-chef.git', rel: 'cookbooks/wazuh_elastic'
+cookbook "wazuh_agent", git: "https://github.com/wazuh/wazuh-chef.git", rel: 'cookbooks/wazuh_agent'
+cookbook "wazuh_server", git: "https://github.com/wazuh/wazuh-chef.git", rel: 'cookbooks/wazuh_manager'
+cookbook 'opendistro', git: 'https://github.com/wazuh/wazuh-chef.git', rel: 'cookbooks/opendistro'
+cookbook 'elastic-stack', git: 'https://github.com/wazuh/wazuh-chef.git', rel: 'cookbooks/elastic-stack'
+cookbook 'filebeat', git: 'https://github.com/wazuh/wazuh-chef.git', rel: 'cookbooks/filebeat'
+cookbook 'filebeat-oss', git: 'https://github.com/wazuh/wazuh-chef.git', rel: 'cookbooks/filebeat-oss'
 ```
 
 You can specify tags, branches, and revisions. More info on https://docs.chef.io/berkshelf.html
@@ -78,7 +88,6 @@ Example of a configuration file `api_configuration.json` before encryption:
  "htpasswd_user": "<YOUR USER>",
  "htpasswd_passcode": "<YOUR PASSWORD>"
 }
-
 ```
 
 #### Using Data Bags
@@ -118,7 +127,6 @@ After encryption, the previous JSON files will have new fields that describe the
 }
 ```
 
-
 #### Using Chef Vault
 
 Chef Vault provides an easier way to manage Data bags and configure them. To configure it you can follow these steps:
@@ -130,41 +138,24 @@ Chef Vault provides an easier way to manage Data bags and configure them. To con
 ```
 knife vault create wazuh_secrets api '{"id": "api", "htpasswd_user": "user", "htpasswd_passcode": "password"}' -A "username" -C "manager-1"
 ```
+
 Where `-A` defines the workstation users authorized to modify/edit the vault and `-C` defines the nodes that have access to the defined vault.
 
 After that, the vault will be created and synced with the server. The defined nodes will store the required keys to decrypt the vault content and consume it.
 
 You can check Chef Official Documentation about [Chef Vault](https://docs.chef.io/chef_vault.html) for detailed info.
 
-## Use through Berkshelf
-
-The easiest way to making use of these cookbooks (especially `wazuh_filebeat` & `wazuh_elastic` until they are published to Supermarket) is by including in your `Berksfile` something like the below:
-
-```ruby
-cookbook 'wazuh', gitHub: 'wazuh/wazuh-chef', rel: 'wazuh'
-cookbook 'wazuh_filebeat', gitHub: 'wazuh/wazuh-chef', rel: 'wazuh_filebeat'
-cookbook 'wazuh_elastic', gitHub: 'wazuh/wazuh-chef', rel: 'wazuh_elastic'
-```
-
-This will source all three cookbooks housed in this repo from GitHub.
-
 ## Choose to register an agent into a manager or not
 Now we give the possibility to choose to register an agent after being configured and installed in a manager. 
 
-In order to do so, it's only needed to assign the value `yes` to the variable ` default['ossec']['agent_auth']['register'] ` in the attributes file_ ` wazuh-chef/cookbooks/wazuh_agent/attributes/authd.rb `:
+To connect an agent with the manager simply modify the `wazuh-chef/roles/wazuh_agent.json` with the 
+manager IP address:
 
 ```
-default['ossec']['agent_auth']['register'] = 'yes'
-```
-
-To connect an agent with the manager simply modify the `wazuh-chef/roles/wazuh_agent.json` with the desired IP address:
-
-```
-"registration_address": "<YOUR REGISTRATION IP ADDRESS>",
 "address": "<YOUR MANAGER IP ADDRESS>"
 ```
 
-In other case, we just assign a different value which is not `yes`.
+Since Wazuh 4.0, by default, the agent registers automatically against the manager through enrollment. Configuration details can be found on [Enrollment section](https://documentation.wazuh.com/current/user-manual/reference/ossec-conf/client.html#reference-ossec-client).
 
 ## Contribute
 

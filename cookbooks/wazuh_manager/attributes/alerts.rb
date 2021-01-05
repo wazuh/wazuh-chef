@@ -1,2 +1,8 @@
-default['ossec']['conf']['alerts']['log_alert_level'] = 3
-default['ossec']['conf']['alerts']['email_alert_level'] = 12
+# Cookbook Name:: wazuh-manager
+# Attributes:: alerts
+# Author:: Wazuh <info@wazuh.com
+
+default['ossec']['conf']['alerts'] = {
+    'log_alert_level' => 3,
+    'email_alert_level' => 12
+}
