@@ -2,9 +2,7 @@
 
 These cookbooks install and configure a Wazuh Agent on specified nodes.
 
-Currently, the agent is automatically registered using enrollment. check the [documentation](https://documentation.wazuh.com/4.0/user-manual/registering/) for further information. 
-
-Agent is automatically registered against manager using ['agent authd'](https://documentation.wazuh.com/4.0/user-manual/agents/agent-connection.html) tool. The manager IP address has to be declared in the `node['ossec']['address']` attribute. This can be overwriten in two ways: modifyng that attribute in [agent role](../../roles/wazuh_agent.json) or directly in the `node['ossec']['agent_auth']['host']` specific attribute.
+Currently, the agent is automatically registered using enrollment. check the [documentation](https://documentation.wazuh.com/current/user-manual/registering/) for further information. The manager IP address has to be declared in the `node['ossec']['address']` attribute. This can be overwriten in two ways: modifyng that attribute in [agent role](../../roles/wazuh_agent.json) or directly in the `node['ossec']['agent_auth']['host']` specific attribute.
  
 
 ### Attributes

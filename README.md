@@ -155,7 +155,7 @@ manager IP address:
 "address": "<YOUR MANAGER IP ADDRESS>"
 ```
 
-Since Wazuh 4.0, by default, the agent registers automatically registers against the manager through enrollment. Configuration details can be found on [Enrollment section](https://documentation.wazuh.com/current/user-manual/reference/ossec-conf/client.html#reference-ossec-client).
+Since Wazuh 4.0, by default, the agent registers automatically against the manager through enrollment. Configuration details can be found on [Enrollment section](https://documentation.wazuh.com/current/user-manual/reference/ossec-conf/client.html#reference-ossec-client).
 
 ## Contribute
 
