@@ -48,3 +48,8 @@ Policyfile.lock.json
 # vagrant stuff
 .vagrant/
 .vagrant.d/
+
+syntaxcache/
+
+# PEM file
+*.pem
