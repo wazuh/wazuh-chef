@@ -1,11 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## Waxu Chef v4.0.4_1.11.0
+## Wazuh Chef v4.0.4_1.11.0
 
 ### Added
-- Bump version 4.0.4
-- Add release protocol v4.0.4
+- Update to Wazuh ([v4.0.4](https://github.com/wazuh/wazuh/blob/v4.0.4/CHANGELOG.md#v404))
+- Support for new Wazuh API config options.
 
 ## Wazuh Chef v4.0.3_1.11.0
 
