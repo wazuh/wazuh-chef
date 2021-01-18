@@ -1,0 +1,56 @@
+name: Wazuh Chef - Kitchen test
+
+on: [
+  pull_request, 
+  workflow_dispatch, 
+  release
+]
+
+jobs:
+  odfe-single-node:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [
+          centos-7,
+          ubuntu-2004
+        ]
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+    - name: Install Chef
+      uses: actionshub/chef-install@main
+    - name: Test ODFE single node installation
+      uses: actionshub/test-kitchen@main
+      env:
+        CHEF_LICENSE: accept-no-persist
+        KITCHEN_LOCAL_YAML: kitchen.yml
+        WAZUH_VERSION: '4.0.4'
+      with:
+        suite: odfe-single-node
+        os: ${{ matrix.os }}
+        action: test
+
+  elk-single-node:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [
+          centos-7,
+          ubuntu-2004
+        ]
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+    - name: Install Chef
+      uses: actionshub/chef-install@main
+    - name: Test ELK single node installation
+      uses: actionshub/test-kitchen@main
+      env:
+        CHEF_LICENSE: accept-no-persist
+        KITCHEN_LOCAL_YAML: kitchen.yml
+        WAZUH_VERSION: '4.0.4'
+      with:
+        suite: elk-single-node
+        os: ${{ matrix.os }}
+        action: test
