@@ -1,37 +1,12 @@
 name: Kitchen tests for Wazuh Chef
 
-on: [pull_request, workflow_dispatch, release, push]
+on: [
+  pull_request, 
+  workflow_dispatch, 
+  release
+]
 
 jobs:
-  #kitchen-test:
-  #  runs-on: ubuntu-latest
-  #  strategy:
-  #    matrix:
-  #      os: [
-  #        centos-7,
-  #        #ubuntu-2004,
-  #      ]
-  #      suite: [
-  #        wazuh-server,
-  #        #wazuh-server-oss,
-  #        #wazuh-agent,
-  #        #opendistro,
-  #        #elastic-stack
-  #      ]
-  #  steps:
-  #  - name: Check out code
-  #    uses: actions/checkout@v2
-  #  - name: Install Chef
-  #    uses: actionshub/chef-install@main
-  #  - name: Test ${{ matrix.suite }} cookbook
-  #    uses: actionshub/test-kitchen@main
-  #    env:
-  #      CHEF_LICENSE: accept-no-persist
-  #      KITCHEN_LOCAL_YAML: kitchen.yml
-  #    with:
-  #      suite: ${{ matrix.suite }}
-  #      os: ${{ matrix.os }}
-  #      action: test
   wazuh-server:
     runs-on: ubuntu-latest
     strategy:
@@ -39,7 +14,6 @@ jobs:
         os: [
           centos-7
         ]
-        suite: [wazuh-server]
     steps:
     - name: Check out code
       uses: actions/checkout@v2
@@ -49,8 +23,8 @@ jobs:
       uses: actionshub/test-kitchen@main
       env:
         CHEF_LICENSE: accept-no-persist
-        KITCHEN_LOCAL_YAML: kitchen.yml
+        KITCHEN_LOCAL_YAML: kitchen.dokken.yml
       with:
-        suite: ${{ matrix.suite }}
+        suite: wazuh-server
         os: ${{ matrix.os }}
         action: test
