@@ -14,4 +14,4 @@ default['wazuh']['minor_version'] = '4.0'
 default['wazuh']['patch_version'] = '4.0.4'
 
 # Kibana
-default['wazuh']['kibana_plugin_version'] = '4.0.3_7.9.3'
+default['wazuh']['kibana_plugin_version'] = '4.0.4_7.9.3'
