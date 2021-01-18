@@ -4,47 +4,27 @@ Test Wazuh Chef cookbooks
 # Global prerequisistes
 - [Ruby](https://www.ruby-lang.org/es/documentation/installation/)
 - [Chef Workstation](https://downloads.chef.io/products/workstation)
+- Install dependancies: ``bundle install``
 
-There are two ways of creating a chef environment and tests cookbooks depending on what driver to use:
-- [kitchen-vagrant](https://github.com/test-kitchen/kitchen-vagrant)
-- [kitchen-dokken](https://github.com/test-kitchen/kitchen-dokken)
-
-Kitchen-vagrant
+[Kitchen-vagrant](https://github.com/test-kitchen/kitchen-vagrant)
 ===============
 
 ## Prerequisites
 - Vagrant
 - Virtualbox
 
-## Hot to use?
-First install dependancies: 
-``bundle install``
+## Kitchen commands
 
-Then go to ``wazuh-chef/kitchen-vagrant`` folder and execute kitchen commands.
+Commands to create an environment with Wazuh Chef cookbooks:
 
-Kitchen dokken
-==============
+1. ``kitchen list``: list all kitchen instances  
+2. ``kitchen create <instance>``: create an instance.
+3. ``kitchen converge <instance>``: deploy an instance
+4. ``kitchen verify <instance>``: run tests in specified instance
+5. ``kitchen destroy <instance>``: destroy specified instance
+6. ``kitchen login <instance>``: login specified instance
 
-## Prerequisites
-- Docker
+There are 2 types of environments:
 
-## How to use?
-First install dependancies: 
-``bundle install`` 
-
-Then execute kithcen commands.
-
-Kitchen command
-===============
-
-Kitchen commands To create an environment with Wazuh Chef cookbooks:
-
-1. ``kitchen list``: list all kitchen instances 
-2. ``kitchen create <suite_name>-<platform_name>``: create an instance just with a \<platform_name\> node initialized.
-3. ``kitchen create <suite_name>-<platform_name>``: create an instance with all cookbooks declared
-in \<suite_name\> inside a \<platform_name\> node
-4. ``kitchen verify <suite_name>-<platform_name>``: run tests in the instance specified
-5. ``kitchen destroy <suite_name>-<platform_name>``: destroy in the instance specified
-6. ``kitchen login <suite_name>-<platform_name>``: login in the instance specified
-
-
+1. **ODFE single node**: create full single node with ODFE
+2. **ELK single node**: create full single node with ELK
