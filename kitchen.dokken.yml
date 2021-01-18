@@ -75,7 +75,10 @@ suites:
       - recipe[opendistro::default]
       - recipe[wazuh_manager::default]
       - recipe[filebeat-oss::default]
-  
+    attributes:
+      wazuh:
+        patch_version: <%= ENV['WAZUH_VERSION'] %>
+
   - name: wazuh_agent
     run_list:
       - recipe[wazuh_agent::default]

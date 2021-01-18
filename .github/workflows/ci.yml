@@ -7,7 +7,7 @@ on: [
 ]
 
 jobs:
-  wazuh-server:
+  opendistro-single-node:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -24,7 +24,8 @@ jobs:
       env:
         CHEF_LICENSE: accept-no-persist
         KITCHEN_LOCAL_YAML: kitchen.dokken.yml
+        WAZUH_VERSION: '4.0.4'
       with:
-        suite: wazuh-server
+        suite: opendistro-single-node
         os: ${{ matrix.os }}
         action: test
