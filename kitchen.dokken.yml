@@ -1,0 +1,120 @@
+---
+driver:
+  name: dokken
+  # because Docker and SystemD
+  privileged: true
+  chef_version: <%= ENV['CHEF_VERSION'] || 'current' %>
+
+transport:
+  name: dokken
+
+provisioner:
+  name: dokken
+  chef_license: accept
+
+verifier:
+  name: inspec
+
+platforms:
+  - name: amazonlinux-2
+    driver:
+      image: dokken/amazonlinux-2
+      pid_one_command: /usr/lib/systemd/systemd
+
+  - name: debian-9
+    driver:
+      image: dokken/debian-9
+      pid_one_command: /bin/systemd
+      intermediate_instructions:
+        - RUN /usr/bin/apt-get update
+
+  - name: debian-10
+    driver:
+      image: dokken/debian-10
+      pid_one_command: /bin/systemd
+      intermediate_instructions:
+        - RUN /usr/bin/apt-get update
+
+  - name: centos-7
+    driver:
+      image: dokken/centos-7
+      pid_one_command: /usr/lib/systemd/systemd
+
+  - name: centos-8
+    driver:
+      image: dokken/centos-8
+      pid_one_command: /usr/lib/systemd/systemd
+
+  - name: ubuntu-18.04
+    driver:
+      image: dokken/ubuntu-18.04
+      pid_one_command: /bin/systemd
+      intermediate_instructions:
+        - RUN /usr/bin/apt-get update
+
+  - name: ubuntu-20.04
+    driver:
+      image: dokken/ubuntu-20.04
+      pid_one_command: /bin/systemd
+      intermediate_instructions:
+        - RUN /usr/bin/apt-get update
+
+  - name: opensuse-leap-15
+    driver:
+      image: dokken/opensuse-leap-15
+      pid_one_command: /bin/systemd
+  
+  - name: fedora-latest
+    driver:
+      image: dokken/fedora-latest
+      pid_one_command: /usr/lib/systemd/systemd
+
+suites:
+  - name: opendistro-single-node
+    run_list:
+      - recipe[opendistro::default]
+      - recipe[wazuh_manager::default]
+      - recipe[filebeat-oss::default]
+  
+  - name: wazuh_agent
+    run_list:
+      - recipe[wazuh_agent::default]
+    verifier:
+      inspec_tests:
+        - path: cookbooks/wazuh_agent/test/integration/wazuh_agent
+
+  - name: wazuh_server
+    run_list:
+      - recipe[wazuh_manager::default]
+      - recipe[filebeat::default]
+    verifier:
+      inspec_tests:
+        - name: wazuh-manager tests 
+          path: cookbooks/wazuh_manager/test/integration/wazuh_manager
+        - name: filebeat tests
+          path: cookbooks/filebeat/test/integration/filebeat
+    
+  - name: wazuh_server_oss
+    run_list:
+      - recipe[wazuh_manager::default]
+      - recipe[filebeat-oss::default]
+    verifier:
+      inspec_tests:
+        - name: wazuh-manager tests 
+          path: cookbooks/wazuh_manager/test/integration/wazuh_manager
+        - name: filebeat-oss tests
+          path: cookbooks/filebeat-oss/test/integration/filebeat-oss
+
+  - name: opendistro
+    run_list:
+      - recipe[opendistro::default]
+    verifier:
+      inspec_tests:
+        - path: cookbooks/opendistro/test/integration/opendistro
+  
+  - name: elastic-stack
+    run_list:
+      - recipe[elastic-stack::default]
+    verifier:
+      inspec_tests:
+        - path: cookbooks/elastic-stack/test/integration/elastic-stack
