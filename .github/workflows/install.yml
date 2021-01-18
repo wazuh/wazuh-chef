@@ -18,10 +18,12 @@ jobs:
     steps:
     - name: Check out code
       uses: actions/checkout@v2
-    - name: Install Chef
-      uses: actionshub/chef-install@main
+    - uses: actions/setup-ruby@v1
+      name: Setup Ruby
     - name: Install dependancies
       run: bundle install
+    - name: Install Chef
+      uses: actionshub/chef-install@main
     - name: Test ODFE single node installation
       uses: actionshub/test-kitchen@main
       env:
@@ -44,10 +46,12 @@ jobs:
     steps:
     - name: Check out code
       uses: actions/checkout@v2
-    - name: Install Chef
-      uses: actionshub/chef-install@main
+    - uses: actions/setup-ruby@v1
+      name: Setup Ruby
     - name: Install dependancies
       run: bundle install
+    - name: Install Chef
+      uses: actionshub/chef-install@main
     - name: Test ELK single node installation
       uses: actionshub/test-kitchen@main
       env:
