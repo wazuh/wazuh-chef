@@ -7,7 +7,7 @@ on: [
 ]
 
 jobs:
-  opendistro-single-node:
+  odfe-single-node:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -27,5 +27,27 @@ jobs:
         WAZUH_VERSION: '4.0.4'
       with:
         suite: opendistro-single-node
+        os: ${{ matrix.os }}
+        action: test
+  elk-single-node:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [
+          centos-7
+        ]
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+    - name: Install Chef
+      uses: actionshub/chef-install@main
+    - name: Test wazuh-server cookbook
+      uses: actionshub/test-kitchen@main
+      env:
+        CHEF_LICENSE: accept-no-persist
+        KITCHEN_LOCAL_YAML: kitchen.dokken.yml
+        WAZUH_VERSION: '4.0.4'
+      with:
+        suite: elk-single-node
         os: ${{ matrix.os }}
         action: test
