@@ -8,7 +8,7 @@ jobs:
     strategy:
       matrix:
         os: [
-          centos-8,
+          centos-7,
           #ubuntu-2004,
         ]
         suite: [
