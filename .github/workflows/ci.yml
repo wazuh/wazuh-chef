@@ -1,6 +1,6 @@
 name: Kitchen tests for Wazuh Chef
 
-on: [pull_request, workflow_dispatch, release]
+on: [pull_request, workflow_dispatch, release, push]
 
 jobs:
   #kitchen-test:
@@ -39,7 +39,7 @@ jobs:
         os: [
           centos-7
         ]
-        suite: wazuh-server
+        suite: [wazuh-server]
     steps:
     - name: Check out code
       uses: actions/checkout@v2
