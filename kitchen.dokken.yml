@@ -87,6 +87,10 @@ suites:
           path: cookbooks/wazuh_manager/test/integration/wazuh_manager
         - name: filebeat tests
           path: cookbooks/filebeat/test/integration/filebeat
+    driver:
+      customize:
+        memory: 4096
+        cpus: 2
 
   - name: elk-single-node
     run_list: 
@@ -104,4 +108,8 @@ suites:
           path: cookbooks/wazuh_manager/test/integration/wazuh_manager
         - name: filebeat tests
           path: cookbooks/filebeat/test/integration/filebeat
+    driver:
+      customize:
+        memory: 4096
+        cpus: 2
   
