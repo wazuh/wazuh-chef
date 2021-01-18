@@ -93,10 +93,7 @@ suites:
           path: cookbooks/wazuh_manager/test/integration/wazuh_manager
         - name: filebeat tests
           path: cookbooks/filebeat/test/integration/filebeat
-    attributes:
-      wazuh:
-        patch_version: "4.0.4"
-
+    
   - name: wazuh_server_oss
     run_list:
       - recipe[wazuh_manager::default]
