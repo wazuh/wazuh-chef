@@ -70,7 +70,8 @@ platforms:
       pid_one_command: /usr/lib/systemd/systemd
 
 suites:
-  - name: opendistro-single-node
+  suites:
+  - name: odfe-single-node
     run_list:
       - recipe[opendistro::default]
       - recipe[wazuh_manager::default]
@@ -78,46 +79,29 @@ suites:
     attributes:
       wazuh:
         patch_version: <%= ENV['WAZUH_VERSION'] %>
-
-  - name: wazuh_agent
-    run_list:
-      - recipe[wazuh_agent::default]
     verifier:
       inspec_tests:
-        - path: cookbooks/wazuh_agent/test/integration/wazuh_agent
-
-  - name: wazuh_server
-    run_list:
-      - recipe[wazuh_manager::default]
-      - recipe[filebeat::default]
-    verifier:
-      inspec_tests:
+        - name: odfe test
+          path: cookbooks/opendistro/test/integration/opendistro
         - name: wazuh-manager tests 
           path: cookbooks/wazuh_manager/test/integration/wazuh_manager
         - name: filebeat tests
           path: cookbooks/filebeat/test/integration/filebeat
-    
-  - name: wazuh_server_oss
-    run_list:
+
+  - name: elk-single-node
+    run_list: 
+      - recipe[elastic-stack::default]
       - recipe[wazuh_manager::default]
-      - recipe[filebeat-oss::default]
+      - recipe[filebeat::default]
+    attributes:
+      wazuh:
+        patch_version: <%= ENV['WAZUH_VERSION'] %>
     verifier:
       inspec_tests:
+        - name: elastic-stack tests
+          path: cookbooks/elastic-stack/test/integration/elastic-stack 
         - name: wazuh-manager tests 
           path: cookbooks/wazuh_manager/test/integration/wazuh_manager
-        - name: filebeat-oss tests
-          path: cookbooks/filebeat-oss/test/integration/filebeat-oss
-
-  - name: opendistro
-    run_list:
-      - recipe[opendistro::default]
-    verifier:
-      inspec_tests:
-        - path: cookbooks/opendistro/test/integration/opendistro
+        - name: filebeat tests
+          path: cookbooks/filebeat/test/integration/filebeat
   
-  - name: elastic-stack
-    run_list:
-      - recipe[elastic-stack::default]
-    verifier:
-      inspec_tests:
-        - path: cookbooks/elastic-stack/test/integration/elastic-stack
