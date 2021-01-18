@@ -9,14 +9,14 @@ jobs:
       matrix:
         os: [
           centos-8,
-          ubuntu-2004,
+          #ubuntu-2004,
         ]
         suite: [
           wazuh-server,
-          wazuh-server-oss,
-          wazuh-agent,
-          opendistro,
-          elastic-stack
+          #wazuh-server-oss,
+          #wazuh-agent,
+          #opendistro,
+          #elastic-stack
         ]
     steps:
     - name: Check out code
