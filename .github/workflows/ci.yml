@@ -20,16 +20,17 @@ jobs:
       uses: actions/checkout@v2
     - name: Install Chef
       uses: actionshub/chef-install@main
-    - name: Test wazuh-server cookbook
+    - name: Test ODFE single node installation
       uses: actionshub/test-kitchen@main
       env:
         CHEF_LICENSE: accept-no-persist
         KITCHEN_LOCAL_YAML: kitchen.dokken.yml
         WAZUH_VERSION: '4.0.4'
       with:
-        suite: opendistro-single-node
+        suite: odfe-single-node
         os: ${{ matrix.os }}
         action: test
+
   elk-single-node:
     runs-on: ubuntu-latest
     strategy:
@@ -43,7 +44,7 @@ jobs:
       uses: actions/checkout@v2
     - name: Install Chef
       uses: actionshub/chef-install@main
-    - name: Test wazuh-server cookbook
+    - name: Test ELK single node installation
       uses: actionshub/test-kitchen@main
       env:
         CHEF_LICENSE: accept-no-persist
