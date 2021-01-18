@@ -10,7 +10,6 @@ group :kitchen do
 end
 
 group :drivers do
-    #gem 'kitchen-docker'
     gem 'kitchen-vagrant'
     gem 'kitchen-dokken'
 end
