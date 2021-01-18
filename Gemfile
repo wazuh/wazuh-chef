@@ -4,6 +4,8 @@ source 'https://rubygems.org'
 #    gem 'rubocop'
 #end
 
+gem 'vagrant'
+
 group :kitchen do 
     gem 'test-kitchen'
     gem 'kitchen-inspec'
