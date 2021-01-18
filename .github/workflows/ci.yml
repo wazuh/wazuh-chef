@@ -12,7 +12,8 @@ jobs:
     strategy:
       matrix:
         os: [
-          centos-7
+          centos-7,
+          ubuntu-2004
         ]
     steps:
     - name: Check out code
