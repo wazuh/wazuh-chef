@@ -3,10 +3,10 @@ name: Kitchen tests for Wazuh Chef
 on:
   push:
     branches: 
-      - feature-cookbooks
+      - release_4.0.4
   pull_request:
     branches:
-      - feature-cookbooks
+      - release_4.0.4
 
 jobs:
   kitchen-test:
