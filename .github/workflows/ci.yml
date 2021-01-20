@@ -1,12 +1,6 @@
 name: Kitchen tests for Wazuh Chef
 
-on:
-  push:
-    branches: 
-      - feature-cookbooks
-  pull_request:
-    branches:
-      - feature-cookbooks
+on: [push, workflow_dispatch]
 
 jobs:
   kitchen-test:

@@ -9,4 +9,4 @@ default['elk']['patch_version'] = "7.9.3"
 # Wazuh
 default['wazuh']['major_version'] = "4.x"
 default['wazuh']['minor_version'] = "4.0"
-default['wazuh']['patch_version'] = "4.0.3"
+default['wazuh']['patch_version'] = "4.0.4"
