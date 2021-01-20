@@ -1,15 +1,12 @@
 ---
 driver:
-  name: dokken
-  # because Docker and SystemD
-  privileged: true
-  chef_version: <%= ENV['CHEF_VERSION'] || 'current' %>
+  name: vagrant
 
 transport:
-  name: dokken
+  name: ssh
 
 provisioner:
-  name: dokken
+  name: chef_zero
   chef_license: accept
 
 verifier:
@@ -17,104 +14,75 @@ verifier:
 
 platforms:
   - name: amazonlinux-2
-    driver:
-      image: dokken/amazonlinux-2
-      pid_one_command: /usr/lib/systemd/systemd
-
   - name: debian-9
-    driver:
-      image: dokken/debian-9
-      pid_one_command: /bin/systemd
-      intermediate_instructions:
-        - RUN /usr/bin/apt-get update
-
   - name: debian-10
-    driver:
-      image: dokken/debian-10
-      pid_one_command: /bin/systemd
-      intermediate_instructions:
-        - RUN /usr/bin/apt-get update
-
   - name: centos-7
-    driver:
-      image: dokken/centos-7
-      pid_one_command: /usr/lib/systemd/systemd
-
   - name: centos-8
-    driver:
-      image: dokken/centos-8
-      pid_one_command: /usr/lib/systemd/systemd
-
   - name: ubuntu-18.04
-    driver:
-      image: dokken/ubuntu-18.04
-      pid_one_command: /bin/systemd
-      intermediate_instructions:
-        - RUN /usr/bin/apt-get update
-
   - name: ubuntu-20.04
-    driver:
-      image: dokken/ubuntu-20.04
-      pid_one_command: /bin/systemd
-      intermediate_instructions:
-        - RUN /usr/bin/apt-get update
-
   - name: opensuse-leap-15
-    driver:
-      image: dokken/opensuse-leap-15
-      pid_one_command: /bin/systemd
-  
   - name: fedora-latest
-    driver:
-      image: dokken/fedora-latest
-      pid_one_command: /usr/lib/systemd/systemd
 
 suites:
-  - name: opendistro-single-node
+  - name: odfe-single-node
     run_list:
       - recipe[opendistro::default]
       - recipe[wazuh_manager::default]
       - recipe[filebeat-oss::default]
-  
-  - name: wazuh_agent
-    run_list:
-      - recipe[wazuh_agent::default]
     verifier:
       inspec_tests:
-        - path: cookbooks/wazuh_agent/test/integration/wazuh_agent
+        - name: odfe test
+          path: ./cookbooks/opendistro/test/integration/opendistro
+        - name: wazuh-manager tests
+          path: ./cookbooks/wazuh_manager/test/integration/wazuh_manager
+        - name: filebeat tests
+          path: ./cookbooks/filebeat-oss/test/integration/filebeat
+    driver:
+      customize:
+        memory: 4096
+        cpus: 2
 
-  - name: wazuh_server
+  - name: elk-single-node
     run_list:
+      - recipe[elastic-stack::default]
       - recipe[wazuh_manager::default]
       - recipe[filebeat::default]
     verifier:
       inspec_tests:
-        - name: wazuh-manager tests 
-          path: cookbooks/wazuh_manager/test/integration/wazuh_manager
+        - name: elastic-stack tests
+          path: ./cookbooks/elastic-stack/test/integration/elastic-stack
+        - name: wazuh-manager tests
+          path: ./cookbooks/wazuh_manager/test/integration/wazuh_manager
         - name: filebeat tests
-          path: cookbooks/filebeat/test/integration/filebeat
+          path: ./cookbooks/filebeat/test/integration/filebeat
+    driver:
+      customize:
+        memory: 4096
+        cpus: 2
 
-  - name: wazuh_server_oss
+  - name: wazuh-manager
     run_list:
       - recipe[wazuh_manager::default]
-      - recipe[filebeat-oss::default]
-    verifier:
-      inspec_tests:
-        - name: wazuh-manager tests 
-          path: cookbooks/wazuh_manager/test/integration/wazuh_manager
-        - name: filebeat-oss tests
-          path: cookbooks/filebeat-oss/test/integration/filebeat-oss
+    driver:
+      network:
+        - ["private_network", {ip: "172.16.100.10"}]
+      customize:
+        memory: 1024
+        cpus: 1
 
-  - name: opendistro
+  - name: wazuh-agent
     run_list:
-      - recipe[opendistro::default]
+      - recipe[wazuh_agent::default]
+    driver:
+      network:
+        - ["private_network", {ip: "172.16.100.11"}]
+    attributes:
+      ossec:
+        address: "172.16.100.10"
     verifier:
       inspec_tests:
-        - path: cookbooks/opendistro/test/integration/opendistro
-  
-  - name: elastic-stack
-    run_list:
-      - recipe[elastic-stack::default]
-    verifier:
-      inspec_tests:
-        - path: cookbooks/elastic-stack/test/integration/elastic-stack
+        - name: manager and agent connection test
+          path: ./test/manager_agent
+    customize:
+      memory: 512
+      cpus: 1
