@@ -17,7 +17,7 @@ jobs:
       name: Setup Ruby
     - name: Install dependancies
       run: |
-        bundle config set --local without 'local'
+        bundle config set --local without 'vagrant'
         bundle install
     - name: Install Chef
       uses: actionshub/chef-install@main
@@ -41,7 +41,7 @@ jobs:
       name: Setup Ruby
     - name: Install dependancies
       run: |
-        bundle config set --local without 'local'
+        bundle config set --local without 'vagrant'
         bundle install
     - name: Install Chef
       uses: actionshub/chef-install@main
