@@ -7,10 +7,13 @@ source 'https://rubygems.org'
 group :kitchen do 
     gem 'test-kitchen'
     gem 'kitchen-inspec'
-end
+end	
 
 group :drivers do
-    #gem 'kitchen-docker'
-    gem 'kitchen-vagrant'
     gem 'kitchen-dokken'
+    gem 'berkshelf'
+end
+
+group :local do
+    gem 'kitchen-vagrant'
 end
