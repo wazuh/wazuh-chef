@@ -2,18 +2,8 @@ name: ODFE and ELK single node installation test
 
 on: [push, workflow_dispatch]
 
-jobs:
-  yamllint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@master
-      - name: Run yaml Lint
-        uses: actionshub/yamllint@master
-
-  
+jobs: 
   odfe-single-node:
-    needs: [yamllint]
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -43,7 +33,6 @@ jobs:
         action: test	        
 
   elk-single-node:
-    needs: [yamllint]
     runs-on: ubuntu-latest
     strategy:
       matrix:
