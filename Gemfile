@@ -2,6 +2,8 @@ source 'https://rubygems.org'
 
 #group :lint do
 #    gem 'rubocop'
+#    gem 'yaml-lint'
+#    gem 'mdl'
 #end
 
 group :kitchen do 
@@ -9,11 +11,12 @@ group :kitchen do
     gem 'kitchen-inspec'
 end	
 
-group :drivers do
+gem 'berkshelf'
+
+group :dokken do
     gem 'kitchen-dokken'
-    gem 'berkshelf'
 end
 
-group :local do
+group :vagrant do
     gem 'kitchen-vagrant'
 end
