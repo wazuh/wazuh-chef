@@ -85,8 +85,6 @@ suites:
         - name: filebeat tests
           path: ./cookbooks/filebeat-oss/test/integration/filebeat-oss
     driver:
-      network:
-        - ["private_network", {ip: "172.16.100.12"}]
       customize:
         memory: 4096
         cpus: 2
@@ -105,8 +103,6 @@ suites:
         - name: filebeat tests
           path: ./cookbooks/filebeat/test/integration/filebeat
     driver:
-      network:
-        - ["private_network", {ip: "172.16.100.13"}]
       customize:
         memory: 4096
         cpus: 2
@@ -115,25 +111,28 @@ suites:
     run_list:
       - recipe[wazuh_manager::default]
     driver:
-      network:
-        - ["private_network", {ip: "172.16.100.10"}]
       customize:
         memory: 1024
         cpus: 1
+    attributes:
+      node:
+        hostname: wazuh-manager-<%= ENV['PLATFORM'] %>-<%= ENV['RELEASE'] %>
 
   - name: wazuh-agent
     run_list:
       - recipe[wazuh_agent::default]
     driver:
-      network:
-        - ["private_network", {ip: "172.16.100.11"}]
+      customize:
+        memory: 512
+        cpus: 1
     attributes:
+      node:
+        hostname: wazuh-agent-<%= ENV['PLATFORM'] %>-<%= ENV['RELEASE'] %>
       ossec:
-        address: "172.16.100.10"
+        address: <%= ENV['MANAGER_IP'] %>
     verifier:
       inspec_tests:
         - name: manager and agent connection test
-          path: ./test/manager_agent
-    customize:
-      memory: 512
-      cpus: 1
+          path: cookbooks/wazuh_agent/test/integration/wazuh_agent/manager_agent_test.rb
+      inputs:
+        manager_ip: <%= ENV['MANAGER_IP'] %>
