@@ -16,6 +16,17 @@ jobs:
         bundle install
     - name: Install Chef
       uses: actionshub/chef-install@main
+    - name: Destroy manager
+      uses: actionshub/test-kitchen@main
+      env:
+        CHEF_LICENSE: accept-no-persist
+        KITCHEN_LOCAL_YAML: kitchen.dokken.yml
+        PLATFORM: centos
+        RELEASE: '7'
+      with:
+        suite: wazuh-manager
+        os: centos-7
+        action: destroy
     - name: Install manager
       uses: actionshub/test-kitchen@main
       env:
