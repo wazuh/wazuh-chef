@@ -11,6 +11,8 @@ transport:
 provisioner:
   name: dokken
   chef_license: accept
+  client_rb:
+    file_atomic_update: false
 
 verifier:
   name: inspec
@@ -109,9 +111,6 @@ suites:
   - name: wazuh-manager
     run_list:
       - recipe[wazuh_manager::default]
-    provisioner:
-      client_rb:
-        file_atomic_update: false
     driver:
       customize:
         memory: 1024
@@ -123,17 +122,11 @@ suites:
   - name: wazuh-agent
     run_list:
       - recipe[wazuh_agent::default]
-    provisioner:
-      client_rb:
-        file_atomic_update: false
     driver:
       customize:
         memory: 512
         cpus: 1
     attributes:
-      chef_client:
-        config:
-          file_atomic_update: false
       node:
         hostname: wazuh-agent-<%= ENV['PLATFORM'] %>-<%= ENV['RELEASE'] %>
       ossec:
