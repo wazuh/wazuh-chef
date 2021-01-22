@@ -1,11 +1,6 @@
 name: Manager and Agent connection test
 
-on: [
-  pull_request, 
-  workflow_dispatch, 
-  release,
-  push
-]
+on: [push, workflow_dispatch]
 
 jobs:
   manager:
@@ -26,6 +21,8 @@ jobs:
       env:
         CHEF_LICENSE: accept-no-persist
         KITCHEN_LOCAL_YAML: kitchen.dokken.yml
+        PLATFORM: centos
+        RELEASE: '7'
       with:
         suite: wazuh-manager
         os: centos-7
@@ -50,15 +47,21 @@ jobs:
       env:
         CHEF_LICENSE: accept-no-persist
         KITCHEN_LOCAL_YAML: kitchen.dokken.yml
+        PLATFORM: centos
+        RELEASE: '7'
       with:
         suite: wazuh-agent
         os: centos-7
         action: converge
+    - name: Get IP address of manager
+      run: export MANAGER_IP=`./.github/workflows/get_ip.sh wazuh-manager-centos-7`
     - name: Test manager and agent connection
       uses: actionshub/test-kitchen@main
       env:
         CHEF_LICENSE: accept-no-persist
         KITCHEN_LOCAL_YAML: kitchen.dokken.yml
+        PLATFORM: centos
+        RELEASE: '7' 
       with:
         suite: wazuh-agent
         os: centos-7
