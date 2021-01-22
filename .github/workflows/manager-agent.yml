@@ -16,7 +16,7 @@ jobs:
         bundle install
     - name: Install Chef
       uses: actionshub/chef-install@main
-    - name: Destroy manager
+    - name: Install manager
       uses: actionshub/test-kitchen@main
       env:
         CHEF_LICENSE: accept-no-persist
