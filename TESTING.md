@@ -46,4 +46,11 @@ in \<suite_name\> inside a \<platform_name\> node
 5. ``kitchen destroy <suite_name>-<platform_name>``: destroy in the instance specified
 6. ``kitchen login <suite_name>-<platform_name>``: login in the instance specified
 
+By defaul, kitchen will look for a ``[.]kitchen.y[a]ml`` file.
 
+In case you want to use **dokken** as your driver, you need to specify *kitchen.dokken.yml* file as the default kitchen conf file by overriding **KITCHEN_YAML** env variable, 
+e.g.:
+
+```bash
+KITCHEN_YAML="kitchen.dokken.yml" kitchen list
+```
