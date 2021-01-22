@@ -42,6 +42,8 @@ jobs:
         bundle install
     - name: Install Chef
       uses: actionshub/chef-install@main
+    - name: Get IP address of manager
+      run: export MANAGER_IP=`sh ./.github/workflows/get_ip.sh wazuh-manager-centos-7`
     - name: Install agent
       uses: actionshub/test-kitchen@main
       env:
@@ -49,20 +51,17 @@ jobs:
         KITCHEN_LOCAL_YAML: kitchen.dokken.yml
         PLATFORM: centos
         RELEASE: '7'
-        MANAGER_IP: `$(pwd)/get_ip.sh wazuh-manager-centos-7`
       with:
         suite: wazuh-agent
         os: centos-7
         action: converge
-    
     - name: Test manager and agent connection
       uses: actionshub/test-kitchen@main
       env:
         CHEF_LICENSE: accept-no-persist
         KITCHEN_LOCAL_YAML: kitchen.dokken.yml
         PLATFORM: centos
-        RELEASE: '7'
-        MANAGER_IP: `$(pwd)/get_ip.sh wazuh-manager-centos-7` 
+        RELEASE: '7' 
       with:
         suite: wazuh-agent
         os: centos-7
