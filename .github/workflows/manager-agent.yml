@@ -41,7 +41,7 @@ jobs:
         KITCHEN_LOCAL_YAML: kitchen.dokken.yml
         PLATFORM: centos
         RELEASE: '7'
-        MANAGER_IP: $MANAGER_IP
+        MANAGER_IP: ${{ env.MANAGER_IP }}
       with:
         suite: wazuh-agent
         os: centos-7
