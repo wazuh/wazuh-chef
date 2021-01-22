@@ -2,6 +2,10 @@
 # Recipe:: manager
 # Author:: Wazuh <info@wazuh.com>
 
+hostname 'Change hostname' do
+  hostname "#{node['node']['hostname']}"
+end
+
 case node['platform']
 when 'ubuntu', 'debian'
   apt_package 'wazuh-manager' do

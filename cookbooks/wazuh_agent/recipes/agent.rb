@@ -16,6 +16,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
+hostname 'Change hostname' do
+  hostname "#{node['node']['hostname']}"
+end
+
 include_recipe 'wazuh_agent::repository'
 
 case node['platform']
