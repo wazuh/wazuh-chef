@@ -3,7 +3,7 @@ name: Manager and Agent connection test
 on: [push, workflow_dispatch]
 
 jobs:
-  manager:
+  manager-agent:
     runs-on: ubuntu-latest
     steps:
     - name: Check out code
@@ -27,21 +27,6 @@ jobs:
         suite: wazuh-manager
         os: centos-7
         action: converge
-
-  agent:
-    needs: [ manager ]
-    runs-on: ubuntu-latest
-    steps:
-    - name: Check out code
-      uses: actions/checkout@v2
-    - uses: actions/setup-ruby@v1
-      name: Setup Ruby
-    - name: Install dependancies
-      run: |
-        bundle config set --local without 'vagrant'
-        bundle install
-    - name: Install Chef
-      uses: actionshub/chef-install@main
     - name: Get IP address of manager
       run: |
         docker ps -a;
@@ -71,3 +56,4 @@ jobs:
         suite: wazuh-agent
         os: centos-7
         action: verify
+    
