@@ -109,20 +109,23 @@ suites:
   - name: wazuh-manager
     run_list:
       - recipe[wazuh_manager::default]
+    provisioner:
+      client_rb:
+        file_atomic_update: false
     driver:
       customize:
         memory: 1024
         cpus: 1
     attributes:
-      chef_client:
-        config:
-          file_atomic_update: false
       node:
         hostname: wazuh-manager-<%= ENV['PLATFORM'] %>-<%= ENV['RELEASE'] %>
 
   - name: wazuh-agent
     run_list:
       - recipe[wazuh_agent::default]
+    provisioner:
+      client_rb:
+        file_atomic_update: false
     driver:
       customize:
         memory: 512
