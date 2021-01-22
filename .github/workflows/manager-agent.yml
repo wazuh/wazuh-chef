@@ -33,7 +33,7 @@ jobs:
         export MANAGER_IP=`$(pwd)/.github/workflows/get_ip.sh wazuh-manager-centos-7 |\
         grep "Container IP" |\
         awk -F'[:]' '{print $2}' |\
-        sed -e 's/^[[:space:]]*//'`;
+        sed -e 's/^[[:space:]]*//'`
     - name: Install agent
       uses: actionshub/test-kitchen@main
       env:
@@ -41,6 +41,7 @@ jobs:
         KITCHEN_LOCAL_YAML: kitchen.dokken.yml
         PLATFORM: centos
         RELEASE: '7'
+        MANAGER_IP: $MANAGER_IP
       with:
         suite: wazuh-agent
         os: centos-7
@@ -51,7 +52,8 @@ jobs:
         CHEF_LICENSE: accept-no-persist
         KITCHEN_LOCAL_YAML: kitchen.dokken.yml
         PLATFORM: centos
-        RELEASE: '7' 
+        RELEASE: '7'
+        MANAGER_IP: $MANAGER_IP
       with:
         suite: wazuh-agent
         os: centos-7
