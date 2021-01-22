@@ -114,6 +114,9 @@ suites:
         memory: 1024
         cpus: 1
     attributes:
+      chef_client:
+        config:
+          file_atomic_update: false
       node:
         hostname: wazuh-manager-<%= ENV['PLATFORM'] %>-<%= ENV['RELEASE'] %>
 
@@ -125,6 +128,9 @@ suites:
         memory: 512
         cpus: 1
     attributes:
+      chef_client:
+        config:
+          file_atomic_update: false
       node:
         hostname: wazuh-agent-<%= ENV['PLATFORM'] %>-<%= ENV['RELEASE'] %>
       ossec:
