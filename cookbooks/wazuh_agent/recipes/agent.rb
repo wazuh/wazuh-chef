@@ -17,8 +17,14 @@
 # limitations under the License.
 #
 
-hostname 'Change hostname' do
-  hostname "#{node['node']['hostname']}"
+template "/etc/hostname" do
+  source 'hostname.erb'
+  owner 'root'
+  group 'root'
+  mode '0644'
+  variables(
+    hostname: "#{node['node']['hostname']}"
+  )
 end
 
 include_recipe 'wazuh_agent::repository'

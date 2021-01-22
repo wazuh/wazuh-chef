@@ -2,8 +2,14 @@
 # Recipe:: manager
 # Author:: Wazuh <info@wazuh.com>
 
-hostname 'Change hostname' do
-  hostname "#{node['node']['hostname']}"
+template "/etc/hostname" do
+  source 'hostname.erb'
+  owner 'root'
+  group 'root'
+  mode '0644'
+  variables(
+    hostname: "#{node['node']['hostname']}"
+  )
 end
 
 case node['platform']
