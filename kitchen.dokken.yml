@@ -69,7 +69,6 @@ platforms:
       image: dokken/fedora-latest
       pid_one_command: /usr/lib/systemd/systemd
 
-
 suites:
   - name: odfe-single-node
     run_list:
@@ -108,9 +107,6 @@ suites:
         cpus: 2
 
   - name: wazuh-manager
-    chef_client:
-      config:
-        file_atomic_update: false
     run_list:
       - recipe[wazuh_manager::default]
     driver:
@@ -122,9 +118,6 @@ suites:
         hostname: wazuh-manager-<%= ENV['PLATFORM'] %>-<%= ENV['RELEASE'] %>
 
   - name: wazuh-agent
-    chef_client:
-      config:
-        file_atomic_update: false
     run_list:
       - recipe[wazuh_agent::default]
     driver:
