@@ -44,6 +44,7 @@ jobs:
       uses: actionshub/chef-install@main
     - name: Get IP address of manager
       run: |
+        docker ps -a;
         export MANAGER_IP=`$(pwd)/.github/workflows/get_ip.sh wazuh-manager-centos-7 |\
         grep "Container IP" |\
         awk -F'[:]' '{print $2}' |\
