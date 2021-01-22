@@ -108,6 +108,9 @@ suites:
         cpus: 2
 
   - name: wazuh-manager
+    chef_client:
+      config:
+        file_atomic_update: false
     run_list:
       - recipe[wazuh_manager::default]
     driver:
@@ -119,6 +122,9 @@ suites:
         hostname: wazuh-manager-<%= ENV['PLATFORM'] %>-<%= ENV['RELEASE'] %>
 
   - name: wazuh-agent
+    chef_client:
+      config:
+        file_atomic_update: false
     run_list:
       - recipe[wazuh_agent::default]
     driver:
