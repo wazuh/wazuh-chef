@@ -8,5 +8,6 @@ if [ "$#" -ne 1 ]; then
 fi
 
 CONTAINER_ID=`docker ps | grep $1 | awk '{print $2}' | awk -F'[:]' '{print $1}'`
+echo "Container ID: $CONTAINER_ID"
 CONTAINER_IP=`docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $CONTAINER_ID`
-echo $CONTAINER_IP
+echo "Container IP: $CONTAINER_IP"
