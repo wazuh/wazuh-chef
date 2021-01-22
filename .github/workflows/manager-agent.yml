@@ -61,7 +61,8 @@ jobs:
         CHEF_LICENSE: accept-no-persist
         KITCHEN_LOCAL_YAML: kitchen.dokken.yml
         PLATFORM: centos
-        RELEASE: '7' 
+        RELEASE: '7'
+        MANAGER_IP: `$(pwd)/get_ip.sh wazuh-manager-centos-7` 
       with:
         suite: wazuh-agent
         os: centos-7
