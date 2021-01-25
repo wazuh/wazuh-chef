@@ -77,6 +77,8 @@ suites:
       - recipe[opendistro::default]
       - recipe[wazuh_manager::default]
       - recipe[filebeat-oss::default]
+    driver:
+      hostname: odfe-single-node
     verifier:
       inspec_tests:
         - name: odfe test
@@ -95,6 +97,8 @@ suites:
       - recipe[elastic-stack::default]
       - recipe[wazuh_manager::default]
       - recipe[filebeat::default]
+    driver:
+      hostname: elk-single-node
     verifier:
       inspec_tests:
         - name: ELK test
@@ -112,23 +116,20 @@ suites:
     run_list:
       - recipe[wazuh_manager::default]
     driver:
+      hostname: wazuh-manager
       customize:
         memory: 1024
         cpus: 1
-    attributes:
-      node:
-        hostname: wazuh-manager-<%= ENV['PLATFORM'] %>-<%= ENV['RELEASE'] %>
 
   - name: wazuh-agent
     run_list:
       - recipe[wazuh_agent::default]
     driver:
+      hostname: wazuh-agent
       customize:
         memory: 512
         cpus: 1
     attributes:
-      node:
-        hostname: wazuh-agent-<%= ENV['PLATFORM'] %>-<%= ENV['RELEASE'] %>
       ossec:
         address: <%= ENV['MANAGER_IP'] %>
     verifier:
