@@ -2,20 +2,6 @@
 # Recipe:: manager
 # Author:: Wazuh <info@wazuh.com>
 
-template "/etc/hostname" do
-  source 'hostname.erb'
-  owner 'root'
-  group 'root'
-  mode '0644'
-  variables(
-    hostname: "#{node['node']['hostname']}"
-  )
-end
-
-execute 'Change transient hostname' do
-  command "sysctl kernel.hostname=#{node['node']['hostname']}"
-end
-
 case node['platform']
 when 'ubuntu', 'debian'
   apt_package 'wazuh-manager' do

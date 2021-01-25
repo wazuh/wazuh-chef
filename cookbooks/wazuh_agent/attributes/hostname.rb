@@ -1,1 +1,0 @@
-default['node']['hostname'] = "wazuh-agent"
