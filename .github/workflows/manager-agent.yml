@@ -27,7 +27,7 @@ jobs:
         suite: wazuh-manager
         os: centos-7
         action: converge
-    - name: Set IP address of manager
+    - name: Get IP address of manager
       run: |
         $(pwd)/.github/workflows/get_ip.sh wazuh-manager-centos-7;
         echo "MANAGER_IP=`$(pwd)/.github/workflows/get_ip.sh wazuh-manager-centos-7 |\
