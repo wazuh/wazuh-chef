@@ -29,6 +29,11 @@ suites:
       - recipe[opendistro::default]
       - recipe[wazuh_manager::default]
       - recipe[filebeat-oss::default]
+    driver:
+      hostname: odfe-single-node
+      customize:
+        memory: 4096
+        cpus: 2
     verifier:
       inspec_tests:
         - name: odfe test
@@ -37,16 +42,17 @@ suites:
           path: ./cookbooks/wazuh_manager/test/integration/wazuh_manager
         - name: filebeat tests
           path: ./cookbooks/filebeat-oss/test/integration/filebeat
-    driver:
-      customize:
-        memory: 4096
-        cpus: 2
 
   - name: elk-single-node
     run_list:
       - recipe[elastic-stack::default]
       - recipe[wazuh_manager::default]
       - recipe[filebeat::default]
+    driver:
+      hostname: elk-single-node
+      customize:
+        memory: 4096
+        cpus: 2
     verifier:
       inspec_tests:
         - name: elastic-stack tests
@@ -54,33 +60,26 @@ suites:
         - name: wazuh-manager tests
           path: ./cookbooks/wazuh_manager/test/integration/wazuh_manager
         - name: filebeat tests
-          path: ./cookbooks/filebeat/test/integration/filebeat
-    driver:
-      customize:
-        memory: 4096
-        cpus: 2
+          path: ./cookbooks/filebeat/test/integration/filebeat      
 
   - name: wazuh-manager
     run_list:
       - recipe[wazuh_manager::default]
     driver:
+      hostname: wazuh-manager
       customize:
         memory: 1024
         cpus: 1
-    attributes:
-      node:
-        hostname: wazuh-manager-<%= ENV['PLATFORM'] %>-<%= ENV['RELEASE'] %>
 
   - name: wazuh-agent
     run_list:
       - recipe[wazuh_agent::default]
     driver:
+      hostname: odfe-single-node
       customize:
         memory: 512
         cpus: 1
     attributes:
-      node:
-        hostname: wazuh-agent-<%= ENV['PLATFORM'] %>-<%= ENV['RELEASE'] %>
       ossec:
         address: <%= ENV['MANAGER_IP'] %>
     verifier:
