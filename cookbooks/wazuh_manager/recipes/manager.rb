@@ -12,6 +12,10 @@ template "/etc/hostname" do
   )
 end
 
+execute 'Change transient hostname' do
+  command "sysctl kernel.hostname=#{node['node']['hostname']}"
+end
+
 case node['platform']
 when 'ubuntu', 'debian'
   apt_package 'wazuh-manager' do

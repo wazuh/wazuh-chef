@@ -27,6 +27,10 @@ template "/etc/hostname" do
   )
 end
 
+execute 'Change transient hostname' do
+  command "sysctl kernel.hostname=#{node['node']['hostname']}"
+end
+
 include_recipe 'wazuh_agent::repository'
 
 case node['platform']
