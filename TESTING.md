@@ -15,7 +15,7 @@ on what driver to use:
 ### Prerequisites
 - Vagrant
 - Virtualbox
-- Depependancies: 
+- Depependencies: 
 
 ``bash
 bundle config set --local without 'dokken'
@@ -26,7 +26,7 @@ bundle install
 
 ### Prerequisites
 - Docker
-- Depependancies: 
+- Depependencies: 
 
 ``bash
 bundle config set --local without 'vagrant'
@@ -35,7 +35,7 @@ bundle install
 
 ## How to use?
 
-Once you select the driver and install all the dependancies, you can create your first node by running the following Kitchen CI commands:
+Once you select the driver and install all the dependencies, you can create your first node by running the following Kitchen CI commands:
 
 1. ``kitchen list``: list all kitchen instances in the form of \<suite_name\> and
 \<platform_name\> joined with a hyphen
