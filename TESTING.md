@@ -1,7 +1,7 @@
 # Test Wazuh Chef cookbooks
 
 ## Global prerequisistes
-- [Ruby](https://www.ruby-lang.org/es/documentation/installation/)
+- [Ruby](https://www.ruby-lang.org/en/documentation/installation/)
 - [Chef Workstation](https://downloads.chef.io/products/workstation)
 
 There are two ways of creating a chef environment and tests cookbooks depending 
@@ -13,25 +13,25 @@ on what driver to use:
 ## Kitchen-vagrant
 
 ### Prerequisites
-- Vagrant
-- Virtualbox
+- [Vagrant](https://www.vagrantup.com/docs/installation)
+- [Virtualbox](https://www.virtualbox.org/wiki/Downloads)
 - Depependencies: 
 
-``bash
+```bash
 bundle config set --local without 'dokken'
 bundle install
-``
+```
 
 ## Kitchen dokken
 
 ### Prerequisites
-- Docker
+- [Docker](https://docs.docker.com/get-docker/)
 - Depependencies: 
 
-``bash
+```bash
 bundle config set --local without 'vagrant'
 bundle install
-``
+```
 
 ## How to use?
 
