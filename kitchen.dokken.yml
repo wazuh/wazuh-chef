@@ -131,10 +131,12 @@ suites:
         cpus: 1
     attributes:
       ossec:
-        address: <%= ENV['MANAGER_IP'] %>
+        address: wazuh-manager
     verifier:
       inspec_tests:
         - name: manager and agent connection test
           path: cookbooks/wazuh_agent/test/integration/wazuh_agent/manager_agent_test.rb
       inputs:
-        manager_ip: <%= ENV['MANAGER_IP'] %>
+        manager_ip: wazuh-manager
+        manager_port: 1514
+        protocol: tcp
