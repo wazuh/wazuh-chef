@@ -1,35 +1,63 @@
-name: Kitchen tests for Wazuh Chef
+name: ODFE and ELK single node installation test
 
 on: [push, workflow_dispatch]
 
-jobs:
-  kitchen-test:
+jobs: 
+  odfe-single-node:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         os: [
-          centos-8,
+          centos-7,
           ubuntu-2004,
-        ]
-        suite: [
-          wazuh-server,
-          wazuh-server-oss,
-          wazuh-agent,
-          opendistro,
-          elastic-stack
         ]
     steps:
     - name: Check out code
       uses: actions/checkout@v2
+    - uses: actions/setup-ruby@v1
+      name: Setup Ruby
+    - name: Install dependancies
+      run: |
+        bundle config set --local without 'vagrant'
+        bundle install
     - name: Install Chef
       uses: actionshub/chef-install@main
-    - name: Test ${{ matrix.suite }} cookbook
+    - name: Test ODFE single node installation
+      uses: actionshub/test-kitchen@main	      
+      env:
+        CHEF_LICENSE: accept-no-persist
+        KITCHEN_LOCAL_YAML: kitchen.dokken.yml
+      with:	      
+        suite: odfe-single-node	        
+        os: ${{ matrix.os }}	        
+        action: test	        
+
+  elk-single-node:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [
+          centos-7,
+          ubuntu-2004
+        ]
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+    - uses: actions/setup-ruby@v1
+      name: Setup Ruby
+    - name: Install dependancies
+      run: |
+        bundle config set --local without 'vagrant'
+        bundle install
+    - name: Install Chef
+      uses: actionshub/chef-install@main
+    - name: Test ELK single node installation
       uses: actionshub/test-kitchen@main
       env:
         CHEF_LICENSE: accept-no-persist
-        KITCHEN_LOCAL_YAML: kitchen.yml
+        KITCHEN_LOCAL_YAML: kitchen.dokken.yml
       with:
-        suite: ${{ matrix.suite }}
+        suite: elk-single-node
         os: ${{ matrix.os }}
-        action: test
+        action: test 
         
