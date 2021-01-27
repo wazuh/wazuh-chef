@@ -100,6 +100,7 @@ execute 'wazuh agent auth' do
   timeout 30
   ignore_failure node['ossec']['ignore_failure']
   only_if { agent_auth['register'] == 'yes' && agent_auth['host'] && !File.size?("#{dir}/etc/client.keys") }
+  sensitive true
 end
 
 include_recipe 'wazuh_agent::common'
