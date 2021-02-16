@@ -14,7 +14,7 @@ default['elastic']['certs_path'] = "#{node['elastic']['config_path']}/certs"
 default['kibana']['package_path'] = '/usr/share/kibana'
 default['kibana']['config_path'] = '/etc/kibana'
 default['kibana']['certs_path'] = "#{node['kibana']['config_path']}/certs"
-default['kibana']['optimize_path'] = "#{node['kibana']['package_path']}/optimize"
+default['kibana']['data_path'] = "#{node['kibana']['package_path']}/data"
 default['kibana']['plugins_path'] = "#{node['kibana']['package_path']}/plugins"
 
 # Searchguard paths

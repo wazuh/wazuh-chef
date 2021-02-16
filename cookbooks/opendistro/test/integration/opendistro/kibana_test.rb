@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe directory '/usr/share/kibana/optimize' do
+describe directory '/usr/share/kibana/data' do
   its('owner') { should cmp 'kibana' }
   its('group') { should cmp 'kibana' }
 end
@@ -16,10 +16,10 @@ describe file('/etc/kibana/kibana.yml') do
   its('mode') { should cmp '0755' }
 end
 
-describe file('/usr/share/kibana/optimize/wazuh/config/wazuh.yml') do
+describe file('/usr/share/kibana/data/wazuh/config/wazuh.yml') do
   its('owner') { should cmp 'kibana' }
   its('group') { should cmp 'kibana' }
-  its('mode') { should cmp '0600' }
+  its('mode') { should cmp '0755' }
 end
 
 describe service('kibana') do
