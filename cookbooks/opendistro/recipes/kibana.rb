@@ -40,17 +40,17 @@ template "#{node['kibana']['config_path']}/kibana.yml" do
               server_host: (node['kibana']['yml']['server']['host']).to_s,
               elasticsearch_hosts: node['kibana']['yml']['elasticsearch']['hosts']
             })
-  mode 0o755
+  mode '0755'
 end
 
-# Update the optimize and plugins directories permissions
+# Create and change kibana data directory
 
-execute "Change #{node['kibana']['package_path']}/optimize owner" do
-  command "sudo chown -R kibana:kibana #{node['kibana']['package_path']}/optimize"
+directory (node['kibana']['data_path']).to_s do
+  action :create
 end
 
-execute "Change #{node['kibana']['package_path']}/plugins owner" do
-  command "sudo chown -R kibana:kibana #{node['kibana']['package_path']}/plugins"
+execute "Change #{node['kibana']['data_path']} owner" do
+  command "sudo chown -R kibana:kibana #{node['kibana']['data_path']}"
 end
 
 # Install the Wazuh Kibana plugin
@@ -65,21 +65,21 @@ end
 # Create Wazuh-Kibana plugin configuration file
 
 execute 'Create wazuh.yml parent folders' do
-  command "sudo -u kibana mkdir -p #{node['kibana']['package_path']}/optimize/wazuh && \
-           sudo -u kibana mkdir -p #{node['kibana']['package_path']}/optimize/wazuh/config"
+  command "sudo -u kibana mkdir -p #{node['kibana']['data_path']}/wazuh && \
+           sudo -u kibana mkdir -p #{node['kibana']['data_path']}/wazuh/config"
 end
 
-template "#{node['kibana']['optimize_path']}/wazuh/config/wazuh.yml" do
+template "#{node['kibana']['data_path']}/wazuh/config/wazuh.yml" do
   source 'wazuh.yml.erb'
   owner 'kibana'
   group 'kibana'
-  mode '0600'
+  mode '0755'
   action :create
   variables({
               api_credentials: node['kibana']['wazuh_api_credentials']
             })
   only_if {
-    Dir.exist?("#{node['kibana']['optimize_path']}/wazuh/config")
+    Dir.exist?("#{node['kibana']['data_path']}/wazuh/config")
   }
 end
 
