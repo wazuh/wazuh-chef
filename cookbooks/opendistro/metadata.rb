@@ -6,7 +6,7 @@ maintainer_email 'info@wazuh.com'
 license 'All rights reserved'
 description 'Install/Configures opendistro'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version '0.1.0'
+version '1.12.0'
 chef_version '>= 15.0'
 
 %w[redhat centos oracle].each do |el|
