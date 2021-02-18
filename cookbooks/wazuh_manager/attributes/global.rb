@@ -17,5 +17,7 @@ default['ossec']['conf']['global'] = {
         '127.0.0.1', 
         '^localhost.localdomain$', 
         '127.0.0.53'
-    ]
+    ],
+    'agents_disconnection_time' => '20s',
+    'agents_disconnection_alert_time' => '100s'
 }
