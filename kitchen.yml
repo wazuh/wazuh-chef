@@ -31,6 +31,9 @@ suites:
       - recipe[filebeat-oss::default]
     driver:
       hostname: odfe-single-node
+      customize:
+        memory: 4096
+        cpus: 2
     verifier:
       inspec_tests:
         - name: odfe test
@@ -39,10 +42,6 @@ suites:
           path: ./cookbooks/wazuh_manager/test/integration/wazuh_manager
         - name: filebeat tests
           path: ./cookbooks/filebeat-oss/test/integration/filebeat-oss
-    driver:
-      customize:
-        memory: 4096
-        cpus: 2
 
   - name: elk-single-node
     run_list:
@@ -51,6 +50,20 @@ suites:
       - recipe[filebeat::default]
     driver:
       hostname: elk-single-node
+      customize:
+        memory: 4096
+        cpus: 2
+    attributes:
+      network:
+        elasticsearch:
+          ip: elk-single-node
+          port: 9200
+          password: Fax3VKVoeTfQNnmBiqIQ
+        kibana:
+          ip: elk-single-node
+          port: 443
+        wazuh:
+          ip: elk-single-node
     verifier:
       inspec_tests:
         - name: ELK test
@@ -59,10 +72,6 @@ suites:
           path: ./cookbooks/wazuh_manager/test/integration/wazuh_manager
         - name: filebeat tests
           path: ./cookbooks/filebeat/test/integration/filebeat
-    driver:
-      customize:
-        memory: 4096
-        cpus: 2
 
   - name: wazuh-manager
     run_list:
