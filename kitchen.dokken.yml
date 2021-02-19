@@ -101,6 +101,17 @@ suites:
       customize:
         memory: 4096
         cpus: 2
+    attributes:
+      network:
+        elasticsearch:
+          ip: elk-single-node
+          port: 9200
+          password: Fax3VKVoeTfQNnmBiqIQ
+        kibana:
+          ip: elk-single-node
+          port: 443
+        wazuh:
+          ip: elk-single-node
     verifier:
       inspec_tests:
         - name: ELK test
