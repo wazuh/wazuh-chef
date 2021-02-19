@@ -7,12 +7,13 @@
 # Kibana configuration file
 default['kibana']['yml'] = {
   'server' => {
-    'host' => '0.0.0.0',
-    'port' => 5601
+    'host' => "#{node['network']['kibana']['ip']}",
+    'port' => "#{node['network']['kibana']['port']}"
   },
   'elasticsearch' => {
     'hosts' => [
-      "http://#{node['elastic']['yml']['network']['host']}:#{node['elastic']['yml']['http']['port']}"
-    ]
+      "#{node['elastic']['yml']['host']}:#{node['elastic']['yml']['port']}"
+    ],
+    'password' => "#{node['network']['elasticsearch']['password']}"
   }
 }
