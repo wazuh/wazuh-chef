@@ -1,5 +1,5 @@
 # Cookbook Name:: filebeat
-# Recipe:: default
+# Recipe:: filebeat
 # Author:: Wazuh <info@wazuh.com>
 
 # Install Filebeat package
@@ -35,7 +35,12 @@ template "#{node['filebeat']['config_path']}/filebeat.yml" do
   group 'root'
   mode '0640'
   variables(
-    hosts: node['filebeat']['yml']['output']['elasticsearch']['hosts']
+    ip: node['filebeat']['yml']['elasticsearch']['ip'],
+    port: node['filebeat']['yml']['elasticsearch']['port'],
+    password: node['filebeat']['yml']['elasticsearch']['password'],
+    xpack_cert: node['xpack']['cert'],
+    xpack_key: node['xpack']['key'],
+    xpack_ca: node['xpack']['ca']
   )
 end
 
@@ -53,6 +58,24 @@ end
 execute 'Extract Wazuh module' do
   command "curl -s https://packages.wazuh.com/#{node['wazuh']['major_version']}/filebeat/#{node['filebeat']['wazuh_module']} | tar -xvz -C #{node['filebeat']['wazuh_module_path']}"
   action :run
+end
+
+# Copy certs
+
+directory "#{node['filebeat']['certs_path']}" do
+  action :create
+end
+
+bash "Copy the certificate authorities, the certificate and key" do
+  code <<-EOH
+  mkdir #{node['filebeat']['certs_path']}/ca -p
+  cp -R /tmp/certs/ca/ /tmp/certs/filebeat/* #{node['filebeat']['certs_path']}
+  chmod -R 500 #{node['filebeat']['certs_path']}
+  chmod 400 #{node['filebeat']['certs_path']}/ca/ca.* #{node['filebeat']['certs_path']}/filebeat.*
+  EOH
+  only_if {
+    Dir.empty?("#{node['filebeat']['certs_path']}")
+  }
 end
 
 # Enable and start service
