@@ -6,6 +6,10 @@
 
 case node['platform']
 when 'debian', 'ubuntu'
+  apt_package 'unzip' do
+    action :install
+  end
+
   apt_package 'curl' do
     action :install
   end
@@ -15,6 +19,10 @@ when 'debian', 'ubuntu'
   end
 when 'redhat', 'centos', 'amazon', 'fedora', 'oracle'
   if node['platform_version'] >= '8'
+    dnf_package 'unzip' do
+      action :install
+    end
+
     dnf_package 'curl' do
       action :install
     end
@@ -23,6 +31,10 @@ when 'redhat', 'centos', 'amazon', 'fedora', 'oracle'
       action :install
     end
   else
+    yum_package 'unzip' do
+      action :install
+    end
+
     yum_package 'curl' do
       action :install
     end
@@ -32,6 +44,10 @@ when 'redhat', 'centos', 'amazon', 'fedora', 'oracle'
     end
   end
 when 'opensuseleap', 'suse'
+  zypper_package 'unzip' do
+    action :install
+  end
+
   zypper_package 'curl' do
     action :install
   end

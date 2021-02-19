@@ -29,24 +29,6 @@ else
   raise 'Currently platforn not supported yet. Feel free to open an issue on https://www.github.com/wazuh/wazuh-chef if you consider that support for a specific OS should be added'
 end
 
-# Set up elasticsearch config file
-
-template "#{node['elastic']['config_path']}/elasticsearch.yml" do
-  source 'elasticsearch.yml.erb'
-  owner 'root'
-  group 'elasticsearch'
-  mode '0660'
-  variables({
-              cluster_name: node['elastic']['yml']['cluster']['name'],
-              node_name: node['elastic']['yml']['node']['name'],
-              path_data: node['elastic']['yml']['path']['data'],
-              path_logs: node['elastic']['yml']['path']['logs'],
-              network_host: node['elastic']['yml']['network']['host'],
-              http_port: node['elastic']['yml']['http']['port'],
-              initial_master_nodes: node['elastic']['yml']['cluster']['initial_master_nodes']
-            })
-end
-
 # Set up jvm options
 
 template "#{node['elastic']['config_path']}/jvm.options" do
@@ -65,24 +47,72 @@ bash 'insert_line_limits.conf' do
   not_if 'grep -q elasticsearch /etc/security/limits.conf'
 end
 
-# Verify Elasticsearch folders owner
+# Set up elasticsearch config file
 
-directory (node['elastic']['config_path']).to_s do
-  owner 'elasticsearch'
+template "#{node['elastic']['config_path']}/elasticsearch.yml" do
+  source 'elasticsearch.yml.erb'
+  owner 'root'
   group 'elasticsearch'
-  recursive true
+  mode '0660'
+  variables({
+    host: node['elastic']['yml']['host'],
+    port: node['elastic']['yml']['port'],
+    node_name: node['elastic']['yml']['node_name'],
+    cluster_name: node['elastic']['yml']['cluster']['name'],
+    initial_master_nodes: node['elastic']['yml']['cluster']['initial_master_nodes'],
+    xpack_enabled: node['xpack']['enabled'],
+    xpack_ver_mode: node['xpack']['verification_mode'],
+    path_data: node['elastic']['yml']['path']['data'],
+    path_logs: node['elastic']['yml']['path']['logs'],
+    xpack_cert: node['xpack']['elasticsearch']['cert'],
+    xpack_ca: node['xpack']['elasticsearch']['ca'],
+    xpack_key: node['xpack']['elasticsearch']['key'],
+  })
 end
 
-directory '/usr/share/elasticsearch' do
-  owner 'elasticsearch'
+# Set up instance config file
+
+template "#{node['elastic']['package_path']}/instances.yml" do
+  source 'instances.yml.erb'
+  owner 'root'
   group 'elasticsearch'
-  recursive true
+  mode '0660'
+  variables({
+    elasticsearch_ip: node['instance']['yml']['elasticsearch_ip'],
+    filebeat_ip: node['instance']['yml']['filebeat_ip'],
+    kibana_ip: node['instance']['yml']['kibana_ip'],
+  })
 end
 
-directory '/var/lib/elasticsearch' do
+execute "Create the certificates using the elasticsearch-certutil tool" do
+  command "#{node['elastic']['package_path']}/bin/elasticsearch-certutil cert ca \
+  --pem --in #{node['elastic']['package_path']}/instances.yml --keep-ca-key --out /tmp/certs.zip"
+  not_if{
+    File.exist?('/tmp/certs.zip')
+  }
+end
+
+# Copy certs
+
+directory "#{node['elastic']['certs_path']}" do
   owner 'elasticsearch'
   group 'elasticsearch'
-  recursive true
+  mode '0755'
+  action :create
+end
+
+bash "Copy the certificate authorities, the certificate and key" do
+  code <<-EOH
+  unzip /tmp/certs.zip -d /tmp/certs
+  mkdir #{node['elastic']['certs_path']}/ca -p
+  cp -R /tmp/certs/ca/ /tmp/certs/elasticsearch/* #{node['elastic']['certs_path']}
+  chown -R elasticsearch: #{node['elastic']['certs_path']}
+  chmod -R 500 #{node['elastic']['certs_path']}
+  chmod 400 #{node['elastic']['certs_path']}/ca/ca.* #{node['elastic']['certs_path']}/elasticsearch.*
+  EOH
+  only_if {
+    Dir.empty?("#{node['elastic']['certs_path']}")
+  }
 end
 
 # Enable and start service
@@ -97,8 +127,8 @@ ruby_block 'Wait for elasticsearch' do
     loop do
       break if begin
         TCPSocket.open(
-          (node['elastic']['yml']['network']['host']).to_s,
-          node['elastic']['yml']['http']['port']
+          (node['elastic']['yml']['host']).to_s,
+          node['elastic']['yml']['port']
         )
       rescue StandardError
         nil
@@ -107,4 +137,11 @@ ruby_block 'Wait for elasticsearch' do
       puts 'Waiting for elasticsearch to start'; sleep 5
     end
   end
+end
+
+# Generate credentials for all the Elastic Stack pre-built roles and users
+
+log 'Set elastic password' do
+  message "Run #{node['elastic']['package_path']}/bin/elasticsearch-setup-passwords to set elastic password"
+  level :info
 end
