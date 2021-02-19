@@ -7,13 +7,18 @@ filebeat.modules:
       enabled: false
 
 setup.template.json.enabled: true
-setup.template.json.path: '/etc/filebeat/wazuh-template.json'
-setup.template.json.name: 'wazuh'
+setup.template.json.path: /etc/filebeat/wazuh-template.json
+setup.template.json.name: wazuh
 setup.template.overwrite: true
 setup.ilm.enabled: false
 
-output.elasticsearch.hosts: [
-  <% @hosts.each do |node| %>
-    "http://<%= node['ip'] %>:<%= node['port'] %>"
-  <% end %>
-]
+output.elasticsearch.hosts: "https://<%= @ip %>:<%= @port %>"
+output.elasticsearch.password: <%= @password %>
+
+<% if node['xpack']['enabled'] %>
+output.elasticsearch.protocol: https
+output.elasticsearch.ssl.certificate: <%= @xpack_cert %>
+output.elasticsearch.ssl.key: <%= @xpack_key %>
+output.elasticsearch.ssl.certificate_authorities: <%= @xpack_ca %>
+output.elasticsearch.username: elastic
+<% end %>
