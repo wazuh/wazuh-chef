@@ -188,8 +188,6 @@
       #   - false or not defined: get same permissions of Wazuh API user.
       # run_as: <true|false>
 
-
-
 hosts:
 <% @api_credentials.each do |api_user| %>
   - <%= api_user['id'] %>:
@@ -197,5 +195,6 @@ hosts:
      port: <%= api_user['port'] %>
      username: <%= api_user['username'] %>
      password: <%= api_user['password'] %>
+     run_as: <%= api_user['run_as'] %>
 <% end %>
   
