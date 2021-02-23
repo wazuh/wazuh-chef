@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 if os.family == 'debian'
-  describe package('elasticsearch-oss') do
+  describe package('elasticsearch') do
     it { should be_installed }
     its('version') { should eq "#{input('elk_version')}" }
   end
 elsif os.family == 'redhat'
-  describe package('elasticsearch-oss') do
+  describe package('elasticsearch') do
     it { should be_installed }
     its('version') { should eq "#{input('elk_version')}-1" }
   end
