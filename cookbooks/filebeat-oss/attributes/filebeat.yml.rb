@@ -7,8 +7,8 @@ default['filebeat']['yml'] = {
         'elasticsearch' => {
             'hosts' => [
                 {
-                    'ip' => '0.0.0.0',
-                    'port' => 9200
+                    'ip' => "#{node['network']['elasticsearch']['ip']}",
+                    'port' => "#{node['network']['elasticsearch']['port']}"
                 }
             ]
         }

@@ -10,14 +10,7 @@ default['network'] = {
     'elasticsearch' => {
         'ip' => '<ELASTICSEARCH_IP>',
         'port' => '<ELASTICSEARCH_PORT>',
-        'user' => '<ELASTICSEARCH_USER>',
+        'user' => '<ELASTICSEARCH_PASSWORD>',
         'password' => '<ELASTICSEARCH_PASSWORD>'
-    },
-    'kibana' => {
-        'ip' => '<KIBANA_IP>',
-        'port' => '<KIBANA_PORT>'
-    },
-    'wazuh' => {
-        'ip' => '<WAZUH_IP>'
     }
 }

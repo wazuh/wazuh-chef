@@ -7,8 +7,8 @@
 default['kibana']['wazuh_api_credentials'] = [
   {
     'id' => 'default',
-    'url' => "https://#{node['network']['elasticsearch']['ip']}",
-    'port' => 55000,
+    'url' => "https://#{node['network']['wazuh']['ip']}",
+    'port' => "#{node['network']['wazuh']['port']}",
     'username' => 'wazuh-wui',
     'password' => 'wazuh-wui',
     'run_as' => true

@@ -8,12 +8,12 @@
 
 default['kibana']['yml'] = {
   'server' => {
-    'host' => '0.0.0.0',
-    'port' => 443
+    'host' => "#{node['network']['kibana']['ip']}",
+    'port' => "#{node['network']['kibana']['port']}",
   },
   'elasticsearch' => {
     'hosts' => [
-      "https://#{node['elastic']['yml']['network']['host']}:#{node['elastic']['yml']['http']['port']}"
+      "https://#{node['network']['elasticsearch']['ip']}:#{node['network']['elasticsearch']['port']}"
     ]
   }
 }

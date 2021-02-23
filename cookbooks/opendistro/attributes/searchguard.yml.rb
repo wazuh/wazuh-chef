@@ -10,12 +10,12 @@ default['search_guard']['yml'] = {
   'nodes' => {
     'elasticsearch' => {
       'ip' => [
-        (node['elastic']['yml']['network']['host']).to_s
+        (node['network']['elasticsearch']['ip']).to_s
       ]
     },
     'kibana' => {
       'ip' => [
-        (node['kibana']['yml']['server']['host']).to_s
+        (node['network']['kibana']['ip']).to_s
       ]
     }
   }

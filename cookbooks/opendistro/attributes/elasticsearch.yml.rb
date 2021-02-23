@@ -8,10 +8,10 @@
 
 default['elastic']['yml'] = {
   'network' => {
-    'host' => '0.0.0.0'
+    'host' => "#{node['network']['elasticsearch']['ip']}"
   },
   'http' => {
-    'port' => 9200
+    'port' => "#{node['network']['elasticsearch']['port']}",
   },
   'node' => {
     'name' => 'odfe-node-1'
