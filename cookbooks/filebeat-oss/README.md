@@ -8,7 +8,7 @@ This cookbook installs and configures Filebeat OSS on the specified node.
 * `paths.rb`: initialize some main paths
 * `versions.rb`: initialize versions for Wazuh and ELK
 * `filebeat.yml.rb`: customize YAML configuration file for Filebeat
-
+* ``network.rb``: network parameters and auth credentials
 ## Usage
 
 See `wazuh-manager` cookbook documentation.

@@ -10,6 +10,7 @@ This cookbook installs and configures Elastic Stack. Please note that it's not o
 * ``versions.rb``: versions for Wazuh and ELK
 * ``elasticsearch.yml.rb``: customize YAML configuration file for Elasticsearch
 * ``filebeat.yml.rb``: customize YAML configuration file for Filebeat
+* ``network.rb``: network parameters and auth credentials
 
 ### Usage
 
@@ -21,7 +22,21 @@ Create a role, `elastic-stack`. Modify attributes to customize the installation.
     "description": "Elastic Stack role",
     "json_class": "Chef::Role",
     "default_attributes": {
-
+        "network": {
+            "elasticsearch": {
+                "ip": "<ELASTICSEARCH_IP>",
+                "port": "9200",
+                "user": "elastic",
+                "password": "<ELASTICSEARCH_PASSWORD>",
+            },
+            "kibana": {
+                "ip": "<KIBANA_IP>",
+                "port": 443
+            },
+            "wazuh": {
+                "ip": "<WAZUH_API_IP>",
+                "port": 55000
+            }
     },
     "override_attributes": {
 

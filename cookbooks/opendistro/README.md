@@ -12,6 +12,7 @@ This cookbook installs and configures Opendistroforleasticsearch. Please note th
 * ``elasticsearch.yml.rb``: customize YAML configuration file for Elasticsearch
 * ``filebeat.yml.rb``: customize YAML configuration file for Filebeat
 * ``searchguard.yml.rb``: customize YAML configuration file for Search Guard
+* ``network.rb``: network parameters and auth credentials
 
 ### Usage
 
@@ -23,7 +24,21 @@ Create a role, `opendistro`. Modify attributes to customize the installation.
     "description": "Opendistro Role",
     "json_class": "Chef::Role",
     "default_attributes": {
-
+        "network": {
+            "elasticsearch": {
+                "ip": "<ELASTICSEARCH_IP>",
+                "port": "9200",
+                "user": "elastic",
+                "password": "<ELASTICSEARCH_PASSWORD>",
+            },
+            "kibana": {
+                "ip": "<KIBANA_IP>",
+                "port": 443
+            },
+            "wazuh": {
+                "ip": "<WAZUH_API_IP>",
+                "port": 55000
+            }
     },
     "override_attributes": {
 
