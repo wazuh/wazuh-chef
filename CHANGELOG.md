@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Wazuh Chef v4.1.1_1.12.0
+
+### Changed
+- Bump to Wazuh [v4.1.1](https://github.com/wazuh/wazuh/blob/v4.1.1/CHANGELOG.md#v411)
+
 ## Wazuh Chef v4.1.0_1.12.0
 
 ### Added
