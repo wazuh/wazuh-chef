@@ -10,6 +10,7 @@ default['network'] = {
     'elasticsearch' => {
         'ip' => '<ELASTICSEARCH_IP>',
         'port' => '<ELASTICSEARCH_PORT>',
+        'user' => '<ELASTICSEARCH_PASSWORD>',
         'password' => '<ELASTICSEARCH_PASSWORD>'
     }
 }
