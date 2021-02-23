@@ -45,22 +45,22 @@ end
 
 template "#{node['elastic']['config_path']}/elasticsearch.yml" do
   source 'elasticsearch.yml.erb'
-  owner 'root'
+  owner 'elasticsearch'
   group 'elasticsearch'
   mode '0660'
   variables({
-              network_host: node['elastic']['yml']['network']['host'],
-              http_port: node['elastic']['yml']['http']['port'],
-              node_name: node['elastic']['yml']['node']['name'],
-              initial_master_nodes: node['elastic']['yml']['cluster']['initial_master_nodes']
-            })
+    network_host: node['elastic']['yml']['network']['host'],
+    http_port: node['elastic']['yml']['http']['port'],
+    node_name: node['elastic']['yml']['node']['name'],
+    initial_master_nodes: node['elastic']['yml']['cluster']['initial_master_nodes']
+  })
 end
 
 # Set up jvm options
 
 template "#{node['elastic']['config_path']}/jvm.options" do
   source 'jvm.options.erb'
-  owner 'root'
+  owner 'elasticsearch'
   group 'elasticsearch'
   mode '0660'
   variables({ memmory: node['jvm']['memory'] })
@@ -132,13 +132,13 @@ end
 
 template "#{node['searchguard']['config_path']}/search-guard.yml" do
   source 'search-guard.yml.erb'
-  owner 'root'
+  owner 'elasticsearch'
   group 'elasticsearch'
   mode '0660'
   variables({
-              elastic_node_ip: node['search_guard']['yml']['nodes']['elasticsearch']['ip'],
-              kibana_node_ip: node['search_guard']['yml']['nodes']['kibana']['ip']
-            })
+    elastic_node_ip: node['search_guard']['yml']['nodes']['elasticsearch']['ip'],
+    kibana_node_ip: node['search_guard']['yml']['nodes']['kibana']['ip']
+  })
 end
 
 execute 'Run the Search Guard’s script to create the certificates' do
@@ -220,13 +220,7 @@ directory (node['elastic']['config_path']).to_s do
   recursive true
 end
 
-directory '/usr/share/elasticsearch' do
-  owner 'elasticsearch'
-  group 'elasticsearch'
-  recursive true
-end
-
-directory '/var/lib/elasticsearch' do
+directory (node['elastic']['package_path']).to_s do
   owner 'elasticsearch'
   group 'elasticsearch'
   recursive true
@@ -266,11 +260,19 @@ execute 'Run the Elasticsearch’s securityadmin script' do
           -h #{node['elastic']['yml']['network']['host']}"
 end
 
-bash 'Waiting for elasticsearch curl response...' do
-  code <<-EOH
-  until (curl -XGET https://#{node['elastic']['yml']['network']['host']}:#{node['elastic']['yml']['http']['port']} -u admin:admin -k); do
-    printf 'Waiting for elasticsearch....'
-    sleep 5
-  done
-  EOH
+ruby_block 'Wait for elasticsearch' do
+  block do
+    loop do
+      break if begin
+        TCPSocket.open(
+          (node['elastic']['yml']['network']['host']).to_s,
+          node['elastic']['yml']['http']['port']
+        )
+      rescue StandardError
+        nil
+      end
+
+      puts 'Waiting for elasticsearch to start'; sleep 5
+    end
+  end
 end

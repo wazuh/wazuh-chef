@@ -33,7 +33,7 @@ end
 
 template "#{node['elastic']['config_path']}/jvm.options" do
   source 'jvm.options.erb'
-  owner 'root'
+  owner 'elasticsearch'
   group 'elasticsearch'
   mode '0660'
   variables({ memmory: node['jvm']['memory'] })
@@ -51,7 +51,7 @@ end
 
 template "#{node['elastic']['config_path']}/elasticsearch.yml" do
   source 'elasticsearch.yml.erb'
-  owner 'root'
+  owner 'elasticsearch'
   group 'elasticsearch'
   mode '0660'
   variables({
@@ -63,10 +63,7 @@ template "#{node['elastic']['config_path']}/elasticsearch.yml" do
     xpack_enabled: node['xpack']['enabled'],
     xpack_ver_mode: node['xpack']['verification_mode'],
     path_data: node['elastic']['yml']['path']['data'],
-    path_logs: node['elastic']['yml']['path']['logs'],
-    xpack_cert: node['xpack']['elasticsearch']['cert'],
-    xpack_ca: node['xpack']['elasticsearch']['ca'],
-    xpack_key: node['xpack']['elasticsearch']['key'],
+    path_logs: node['elastic']['yml']['path']['logs']
   })
 end
 
@@ -74,7 +71,7 @@ end
 
 template "#{node['elastic']['package_path']}/instances.yml" do
   source 'instances.yml.erb'
-  owner 'root'
+  owner 'elasticsearch'
   group 'elasticsearch'
   mode '0660'
   variables({
@@ -115,6 +112,21 @@ bash "Copy the certificate authorities, the certificate and key" do
   }
 end
 
+# Change elasticsearch path owner
+
+directory "Change #{node['elastic']['config_path']} owner" do
+  owner 'elasticsearch'
+  group 'elasticsearch'
+  recursive true
+end 
+
+
+directory "Change #{node['elastic']['package_path']} owner" do
+  owner 'elasticsearch'
+  group 'elasticsearch'
+  recursive true
+end 
+
 # Enable and start service
 
 service 'elasticsearch' do
@@ -141,7 +153,26 @@ end
 
 # Generate credentials for all the Elastic Stack pre-built roles and users
 
-log 'Set elastic password' do
-  message "Run #{node['elastic']['package_path']}/bin/elasticsearch-setup-passwords to set elastic password"
-  level :info
+execute 'Create random Elastic passwords' do 
+  command "#{node['elastic']['package_path']}/bin/elasticsearch-setup-passwords auto -b > #{node['log']['passwd']}"
+  not_if{
+    File.exist?("#{node['log']['passwd']}")
+  }
+end
+
+bash 'Set up Elastic password' do
+  code <<-EOH
+  ELASTIC_PASSWORD=`grep -E \"PASSWORD #{node['network']['elasticsearch']['user']} = [a-zA-Z0-9]*\" #{node['log']['passwd']} | awk -F[' '] '{print $4}'`
+  if [ #{node['xpack']['enabled']} ]; 
+  then
+    curl -XPOST https://#{node['network']['elasticsearch']['ip']}:#{node['network']['elasticsearch']['port']}/_security/user/elastic/_password \
+    -k -u elastic:$ELASTIC_PASSWORD -H \"Content-Type: application/json\" \
+    -d '{\"password\" : \"#{node['network']['elasticsearch']['password']}\"}'
+  else
+    curl -XPOST http://#{node['network']['elasticsearch']['ip']}:#{node['network']['elasticsearch']['port']}/_security/user/elastic/_password \
+    -u elastic:$ELASTIC_PASSWORD -H \"Content-Type: application/json\" \
+    -d '{\"password\" : \"#{node['network']['elasticsearch']['password']}\"}'
+  fi
+  EOH
+  
 end
