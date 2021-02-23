@@ -8,19 +8,21 @@ cluster.initial_master_nodes: [
     <% end %>
 ] 
 
+<% if node['xpack']['enabled'] %>
 # Transport layer
 xpack.security.transport.ssl.enabled: <%= @xpack_enabled %>
 xpack.security.transport.ssl.verification_mode: <%= @xpack_ver_mode %>
-xpack.security.transport.ssl.key: <%= @xpack_key %>
-xpack.security.transport.ssl.certificate: <%= @xpack_cert %>
-xpack.security.transport.ssl.certificate_authorities: <%= @xpack_ca %>
+xpack.security.transport.ssl.key: /etc/elasticsearch/certs/elasticsearch.key
+xpack.security.transport.ssl.certificate: /etc/elasticsearch/certs/elasticsearch.crt
+xpack.security.transport.ssl.certificate_authorities: /etc/elasticsearch/certs/ca/ca.crt
 
 # HTTP layer
 xpack.security.http.ssl.enabled: <%= @xpack_enabled %>
 xpack.security.http.ssl.verification_mode: <%= @xpack_ver_mode %>
-xpack.security.http.ssl.key: <%= @xpack_key %>
-xpack.security.http.ssl.certificate: <%= @xpack_cert %>
-xpack.security.http.ssl.certificate_authorities: <%= @xpack_ca %>
+xpack.security.http.ssl.key: /etc/elasticsearch/certs/elasticsearch.key
+xpack.security.http.ssl.certificate: /etc/elasticsearch/certs/elasticsearch.crt
+xpack.security.http.ssl.certificate_authorities: /etc/elasticsearch/certs/ca/ca.crt
+<% end %>
 
 # Elasticsearch authentication
 xpack.security.enabled: <%= @xpack_enabled %>

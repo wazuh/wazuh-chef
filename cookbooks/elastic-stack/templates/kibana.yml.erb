@@ -4,7 +4,7 @@ elasticsearch.hosts: [
 <% if node['xpack']['enabled'] %>
 <% @elasticsearch_hosts.each do |node| %>
   "https://<%= node %>"
-<% end %>    
+<% end %>
 <% else %>
 <% @elasticsearch_hosts.each do |node| %>
   "http://<%= node %>"
@@ -13,16 +13,18 @@ elasticsearch.hosts: [
 ]
 elasticsearch.password: <%= @elasticsearch_password %>
 
+<% if node['xpack']['enabled'] %>
 # Elasticsearch from/to Kibana
 
-elasticsearch.ssl.certificateAuthorities: <%= @xpack_ca %>
-elasticsearch.ssl.certificate: <%= @xpack_cert %>
-elasticsearch.ssl.key: <%= @xpack_key %>
+elasticsearch.ssl.certificateAuthorities: /etc/kibana/certs/ca/ca.crt
+elasticsearch.ssl.certificate: /etc/kibana/certs/kibana.crt
+elasticsearch.ssl.key: /etc/kibana/certs/kibana.key
 
 # Browser from/to Kibana
 server.ssl.enabled: <%= @ssl_enabled %>
-server.ssl.certificate: <%= @xpack_cert %>
-server.ssl.key: <%= @xpack_key %>
+server.ssl.certificate: /etc/kibana/certs/kibana.crt
+server.ssl.key: /etc/kibana/certs/kibana.key
+<% end %>
 
 # Elasticsearch authentication
 xpack.security.enabled: <%= @xpack_enabled %>
