@@ -1,19 +1,20 @@
 # frozen_string_literal: true
 
-describe package('elasticsearch-oss') do
-  it { should be_installed }
-  its('version') { should eq "#{input('elk_version')}-1" }
+if os.family == 'debian'
+  describe package('elasticsearch-oss') do
+    it { should be_installed }
+    its('version') { should eq "#{input('elk_version')}" }
+  end
+elsif os.family == 'redhat'
+  describe package('elasticsearch-oss') do
+    it { should be_installed }
+    its('version') { should eq "#{input('elk_version')}-1" }
+  end
 end
 
 describe package('opendistroforelasticsearch') do
   it { should be_installed }
   its('version') { should eq "#{input('odfe_version')}-1" }
-end
-
-describe elasticsearch do
-  its('node_name') { should cmp 'es-node-01' }
-  its('cluster_name') { should cmp 'es-wazuh' }
-  its('url') { should cmp 'http://localhost:9200' }
 end
 
 describe directory '/etc/elasticsearch' do
@@ -61,6 +62,9 @@ describe service('elasticsearch') do
 
 end
 
-describe port("#{input('elastic_port')}") do
-  it { should be_listening }
-end
+describe http("https://#{input('node_ip')}:#{input('elastic_port')}",
+              auth: {user: "#{input('elastic_user')}", pass: "#{input('elastic_password')}"},
+              ssl_verify: false,
+              method: 'GET') do
+  its('status') { should cmp 200 }
+end 
