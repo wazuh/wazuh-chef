@@ -32,12 +32,10 @@ end
 
 # Set up Kibana port
 
-ruby_block 'Set up Kibana port' do
+ruby_block 'Set up Kibana port to 443 if xpack enabled' do
   block do
-    if node['xpack']['enabled']
+    if node['xpack']['enabled'] and node.default['kibana']['yml']['server']['port'] != 443 
       node.default['kibana']['yml']['server']['port'] = 443
-    else
-      node.default['kibana']['yml']['server']['port'] = 5601
     end
   end
   action :run
@@ -81,10 +79,7 @@ template "#{node['kibana']['config_path']}/kibana.yml" do
     elasticsearch_hosts: node['kibana']['yml']['elasticsearch']['hosts'],
     elasticsearch_password: node['kibana']['yml']['elasticsearch']['password'],
     ssl_enabled: true,
-    xpack_enabled: node['xpack']['enabled'],
-    xpack_ca: node['xpack']['kibana']['ca'],
-    xpack_cert: node['xpack']['kibana']['cert'],
-    xpack_key: node['xpack']['kibana']['key']
+    xpack_enabled: node['xpack']['enabled']
   })
 end
 
