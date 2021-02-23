@@ -1,34 +1,14 @@
 # frozen_string_literal: true
 
-describe package('elasticsearch') do
-  it { should be_installed }
+describe packages('elasticsearch') do
+  its('statuses') { should cmp 'installed' }
+  its('versions') { should cmp "#{input('elk_version')}-1" }
 end 
 
 describe file('/etc/elasticsearch/elasticsearch.yml') do
-  its('owner') { should cmp 'root' }
+  its('owner') { should cmp 'elasticsearch' }
   its('group') { should cmp 'elasticsearch' }
   its('mode') { should cmp '0660' }
-end
-
-describe elasticsearch do
-  its('node_name') { should cmp 'es-node-01' }
-  its('cluster_name') { should cmp 'es-wazuh' }
-  its('url') { should cmp 'http://localhost:9200' }
-end
-
-describe directory '/etc/elasticsearch' do
-  its('owner') { should cmp 'elasticsearch' }
-  its('group') { should cmp 'elasticsearch' }
-end
-
-describe directory '/usr/share/elasticsearch' do
-  its('owner') { should cmp 'elasticsearch' }
-  its('group') { should cmp 'elasticsearch' }
-end
-
-describe directory '/var/lib/elasticsearch' do
-  its('owner') { should cmp 'elasticsearch' }
-  its('group') { should cmp 'elasticsearch' }
 end
 
 describe service('elasticsearch') do
@@ -37,6 +17,9 @@ describe service('elasticsearch') do
   it { should be_running }
 end
 
-describe port(9200) do
-  it { should be_listening }
-end
+describe http("https://#{input('node_ip')}:#{input('elastic_port')}/_cluster/health?wait_for_status=green",
+              auth: {user: "#{input('elastic_user')}", pass: "#{input('elastic_password')}"},
+              ssl_verify: false,
+              method: 'GET') do
+  its('status') { should cmp 200 }
+end 

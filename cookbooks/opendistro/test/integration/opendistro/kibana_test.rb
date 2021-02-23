@@ -19,7 +19,7 @@ end
 describe file('/usr/share/kibana/data/wazuh/config/wazuh.yml') do
   its('owner') { should cmp 'kibana' }
   its('group') { should cmp 'kibana' }
-  its('mode') { should cmp '0600' }
+  its('mode') { should cmp '0755' }
 end
 
 describe service('kibana') do

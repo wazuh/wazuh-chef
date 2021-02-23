@@ -2,10 +2,12 @@
 
 describe package('elasticsearch-oss') do
   it { should be_installed }
+  its('version') { should eq "#{input('elk_version')}-1" }
 end
 
 describe package('opendistroforelasticsearch') do
   it { should be_installed }
+  its('version') { should eq "#{input('odfe_version')}-1" }
 end
 
 describe elasticsearch do
@@ -24,13 +26,8 @@ describe directory '/usr/share/elasticsearch' do
   its('group') { should cmp 'elasticsearch' }
 end
 
-describe directory '/var/lib/elasticsearch' do
-  its('owner') { should cmp 'elasticsearch' }
-  its('group') { should cmp 'elasticsearch' }
-end
-
 describe file('/etc/elasticsearch/elasticsearch.yml') do
-  its('owner') { should cmp 'root' }
+  its('owner') { should cmp 'elasticsearch' }
   its('group') { should cmp 'elasticsearch' }
   its('mode') { should cmp '0660' }
 end
@@ -48,7 +45,7 @@ describe file('/usr/share/elasticsearch/plugins/opendistro_security/securityconf
 end
 
 describe file('/etc/searchguard/search-guard.yml') do
-  its('owner') { should cmp 'root' }
+  its('owner') { should cmp 'elasticsearch' }
   its('group') { should cmp 'elasticsearch' }
   its('mode') { should cmp '0660' }
 end
@@ -64,6 +61,6 @@ describe service('elasticsearch') do
 
 end
 
-describe port(9200) do
+describe port("#{input('elastic_port')}") do
   it { should be_listening }
 end
