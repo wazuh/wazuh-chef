@@ -82,6 +82,19 @@ suites:
       customize:
         memory: 4096
         cpus: 2
+    attributes:
+      network:
+        elasticsearch:
+          ip: odfe-single-node
+          port: 9200
+          user: admin
+          password: admin
+        kibana:
+          ip: odfe-single-node
+          port: 443
+        wazuh:
+          ip: odfe-single-node
+          port: 55000
     verifier:
       inspec_tests:
         - name: odfe test
@@ -90,6 +103,11 @@ suites:
           path: ./cookbooks/wazuh_manager/test/integration/wazuh_manager
         - name: filebeat tests
           path: ./cookbooks/filebeat-oss/test/integration/filebeat-oss
+      inputs:
+        odfe_version: 1.12.0
+        elk_version: 7.10.0
+        node_ip: odfe-single-node
+        elastic_port: 9200
 
   - name: elk-single-node
     run_list:
@@ -106,12 +124,14 @@ suites:
         elasticsearch:
           ip: elk-single-node
           port: 9200
-          password: Fax3VKVoeTfQNnmBiqIQ
+          user: elastic
+          password: changeme
         kibana:
           ip: elk-single-node
           port: 443
         wazuh:
           ip: elk-single-node
+          port: 55000
     verifier:
       inspec_tests:
         - name: ELK test
@@ -120,6 +140,13 @@ suites:
           path: ./cookbooks/wazuh_manager/test/integration/wazuh_manager
         - name: filebeat tests
           path: ./cookbooks/filebeat/test/integration/filebeat
+      inputs:
+        elk_version: 7.10.2
+        node_ip: elk-single-node
+        elastic_port: 9200
+        elastic_user: elastic
+        elastic_password: changeme
+        kibana_port: 443
 
   - name: wazuh-manager
     run_list:
