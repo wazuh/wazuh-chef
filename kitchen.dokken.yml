@@ -107,6 +107,8 @@ suites:
         odfe_version: 1.12.0
         elk_version: 7.10.0
         node_ip: odfe-single-node
+        elastic_user: admin
+        elastic_password: admin
         elastic_port: 9200
 
   - name: elk-single-node
