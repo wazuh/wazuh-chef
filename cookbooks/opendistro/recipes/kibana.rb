@@ -36,10 +36,10 @@ template "#{node['kibana']['config_path']}/kibana.yml" do
   owner 'root'
   group 'kibana'
   variables({
-              server_port: (node['kibana']['yml']['server']['port']).to_s,
-              server_host: (node['kibana']['yml']['server']['host']).to_s,
-              elasticsearch_hosts: node['kibana']['yml']['elasticsearch']['hosts']
-            })
+    server_port: (node['kibana']['yml']['server']['port']).to_s,
+    server_host: (node['kibana']['yml']['server']['host']).to_s,
+    elasticsearch_hosts: node['kibana']['yml']['elasticsearch']['hosts']
+  })
   mode '0755'
 end
 
@@ -76,11 +76,8 @@ template "#{node['kibana']['data_path']}/wazuh/config/wazuh.yml" do
   mode '0755'
   action :create
   variables({
-              api_credentials: node['kibana']['wazuh_api_credentials']
-            })
-  only_if {
-    Dir.exist?("#{node['kibana']['data_path']}/wazuh/config")
-  }
+    api_credentials: node['kibana']['wazuh_api_credentials']
+  })
 end
 
 # Certificates placement
@@ -160,18 +157,9 @@ ruby_block 'Wait for kibana' do
   end
 end
 
-bash 'Waiting for kibana curl response...' do
-  code <<-EOH
-  until (curl -XGET https://#{node['kibana']['yml']['server']['host']}:#{node['kibana']['yml']['server']['port']} -u admin:admin -k); do
-    printf 'Waiting for kibana....'
-    sleep 5
-  done
-  EOH
-end
-
 log 'Access Kibana web interface' do
   message "URL: https://#{node['kibana']['yml']['server']['host']}
-  user: admin
-  password: admin"
+  user: #{node['network']['elasticsearch']['user']}
+  password: #{node['network']['elasticsearch']['password']}"
   level :info
 end
