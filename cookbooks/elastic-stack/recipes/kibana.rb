@@ -30,17 +30,6 @@ else
   raise 'Currently platforn not supported yet. Feel free to open an issue on https://www.github.com/wazuh/wazuh-chef if you consider that support for a specific OS should be added'
 end
 
-# Set up Kibana port
-
-ruby_block 'Set up Kibana port to 443 if xpack enabled' do
-  block do
-    if node['xpack']['enabled'] and node.default['kibana']['yml']['server']['port'] != 443 
-      node.default['kibana']['yml']['server']['port'] = 443
-    end
-  end
-  action :run
-end
-
 # Copy certs
 
 directory "#{node['kibana']['certs_path']}" do
