@@ -9,14 +9,14 @@ ruby_block 'ossec install_type' do
     else
       type = "test"
 
-      File.open('/var/ossec/etc/ossec-init.conf') do |file|
-        file.each_line do |line|
-          if line =~ /^TYPE="([^"]+)"/
-            type = Regexp.last_match(1)
-            break
-          end
-        end
-       end
+#      File.open('/var/ossec/etc/ossec-init.conf') do |file|
+#        file.each_line do |line|
+#          if line =~ /^TYPE="([^"]+)"/
+#            type = Regexp.last_match(1)
+#            break
+#          end
+#        end
+#       end
     end
 
     node.normal['ossec']['install_type'] = type

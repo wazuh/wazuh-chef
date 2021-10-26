@@ -27,9 +27,9 @@ end
 
 # Check OSSEC dir
 
-describe file('/var/ossec/etc/ossec-init.conf') do
-    it { should be_symlink }
-end
+#describe file('/var/ossec/etc/ossec-init.conf') do
+#    it { should be_symlink }
+#end
 
 describe file('/var/ossec') do
     it { should be_directory }
@@ -45,12 +45,12 @@ describe file('/var/ossec/etc') do
     its('group') { should cmp 'ossec' }
 end
 
-describe file('/etc/ossec-init.conf') do 
-    it { should exist }
-    its('owner') { should cmp 'root' }
-    its('group') { should cmp 'ossec' }
-    its('mode') { should cmp '0640' }
-end
+#describe file('/etc/ossec-init.conf') do 
+#    it { should exist }
+#    its('owner') { should cmp 'root' }
+#    its('group') { should cmp 'ossec' }
+#    its('mode') { should cmp '0640' }
+#end
 
 describe file('/var/ossec/etc/ossec.conf') do 
     it { should exist }

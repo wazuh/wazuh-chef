@@ -17,18 +17,18 @@
 # limitations under the License.
 #
 
-ruby_block 'ossec install_type' do
-  block do
-    File.open('/var/ossec/etc/ossec-init.conf') do |file|
-      file.each_line do |line|
-        if line =~ /^TYPE="([^"]+)"/
-          type = Regexp.last_match(1)
-          break
-        end
-      end
-    end
-  end
-end
+#ruby_block 'ossec install_type' do
+#  block do
+#    File.open('/var/ossec/etc/ossec-init.conf') do |file|
+#      file.each_line do |line|
+#        if line =~ /^TYPE="([^"]+)"/
+#          type = Regexp.last_match(1)
+#          break
+#        end
+#      end
+#    end
+#  end
+#end
 
 # Gyoku renders the XML.
 chef_gem 'gyoku' do

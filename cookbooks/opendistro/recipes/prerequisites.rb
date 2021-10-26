@@ -52,19 +52,19 @@ when 'redhat', 'centos', 'amazon', 'fedora', 'oracle'
 
   if node['platform_version'] >= '8'
     dnf_package 'Install prerequisites packages' do
-      package_name %w[java-11-openjdk-devel libcap]
+      package_name %w[java-11-openjdk libcap]
       action :install
     end
   else
     yum_package 'Install prerequisites packages' do
-      package_name %w[java-11-openjdk-devel libcap]
+      package_name %w[java-11-openjdk libcap]
       action :install
     end
   end
 when 'opensuseleap', 'suse'
   # Install zypper prerequisites
   zypper_package 'Install prerequisites packages' do
-    package_name %w[libcap2 java-11-openjdk-devel]
+    package_name %w[libcap2 java-11-openjdk]
   end
 else
   raise 'Currently platforn not supported yet. Feel free to open an issue on https://www.github.com/wazuh/wazuh-chef if you consider that support for a specific OS should be added'
