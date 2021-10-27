@@ -15,10 +15,10 @@ end
 
 describe port(1515) do
     it { should be_listening }
-    its('processes') {should include 'ossec-authd'}
+    its('processes') {should include 'wazuh-authd'}
 end
 
 describe port(1514) do
     it { should be_listening }
-    its('processes') {should include 'ossec-remoted'}
+    its('processes') {should include 'wazuh-remoted'}
 end

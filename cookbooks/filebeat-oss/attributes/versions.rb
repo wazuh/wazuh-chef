@@ -4,7 +4,7 @@
 
 # ELK 
 default['elk']['major_version'] = "7.x" 
-default['elk']['patch_version'] = "7.11.2"
+default['elk']['patch_version'] = "7.10.2"
 
 # Wazuh
 default['wazuh']['major_version'] = "4.x"

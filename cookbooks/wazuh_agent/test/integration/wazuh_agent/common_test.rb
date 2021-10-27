@@ -9,19 +9,19 @@ describe command('ps -ef | grep wazuh-modulesd') do
     its('exit_status') { should eq 0 }
 end 
 
-describe command('ps -ef | grep ossec-logcollector') do
+describe command('ps -ef | grep wazuh-logcollector') do
     its('exit_status') { should eq 0 }
 end 
 
-describe command('ps -ef | grep ossec-syscheckd') do
+describe command('ps -ef | grep wazuh-syscheckd') do
     its('exit_status') { should eq 0 }
 end 
 
-describe command('ps -ef | grep ossec-execd') do
+describe command('ps -ef | grep wazuh-execd') do
     its('exit_status') { should eq 0 }
 end 
 
-describe command('ps -ef | grep ossec-agentd') do
+describe command('ps -ef | grep wazuh-agentd') do
     its('exit_status') { should eq 0 }
 end 
 

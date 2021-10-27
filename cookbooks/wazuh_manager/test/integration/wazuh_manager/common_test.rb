@@ -17,27 +17,27 @@ describe command('ps -ef | grep wazuh-modulesd') do
     its('exit_status') { should eq 0 }
 end 
 
-describe command('ps -ef | grep ossec-monitord') do
+describe command('ps -ef | grep wazuh-monitord') do
     its('exit_status') { should eq 0 }
 end 
 
-describe command('ps -ef | grep ossec-logcollector') do
+describe command('ps -ef | grep wazuh-logcollector') do
     its('exit_status') { should eq 0 }
 end 
 
-describe command('ps -ef | grep ossec-remoted') do
+describe command('ps -ef | grep wazuh-remoted') do
     its('exit_status') { should eq 0 }
 end 
 
-describe command('ps -ef | grep ossec-syscheckd') do
+describe command('ps -ef | grep wazuh-syscheckd') do
     its('exit_status') { should eq 0 }
 end 
 
-describe command('ps -ef | grep ossec-analysisd') do
+describe command('ps -ef | grep wazuh-analysisd') do
     its('exit_status') { should eq 0 }
 end 
 
-describe command('ps -ef | grep ossec-execd') do
+describe command('ps -ef | grep wazuh-execd') do
     its('exit_status') { should eq 0 }
 end 
 
@@ -45,11 +45,11 @@ describe command('ps -ef | grep wazuh-db') do
     its('exit_status') { should eq 0 }
 end 
 
-describe command('ps -ef | grep ossec-authd') do
+describe command('ps -ef | grep wazuh-authd') do
     its('exit_status') { should eq 0 }
 end 
 
-describe command('ps -ef | grep ossec-apid') do
+describe command('ps -ef | grep wazuh-apid') do
     its('exit_status') { should eq 0 }
 end 
 
