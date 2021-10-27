@@ -40,7 +40,7 @@ template "#{node['kibana']['config_path']}/kibana.yml" do
               server_host: (node['kibana']['yml']['server']['host']).to_s,
               elasticsearch_hosts: node['kibana']['yml']['elasticsearch']['hosts']
             })
-  mode 0o755
+  mode 0755
 end
 
 # Update the optimize and plugins directories permissions
