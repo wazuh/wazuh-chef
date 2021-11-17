@@ -7,8 +7,12 @@ default['ossec']['conf']['auth'] = {
     'disabled' => false,
     'port' => 1515,
     'use_source_ip' => false,
-    'force_insert' => true,
-    'force_time' => 0,
+    'force' => {
+        'enabled' => 'yes'
+        'key_mismatch' => 'yes'
+        'disconnected_time enabled="yes"' => '1h'
+        'after_registration_time' => '1h'
+    }
     'purge' => true,
     'use_password' => false,
     'limit_maxagents' => true,
