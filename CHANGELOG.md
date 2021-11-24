@@ -1,6 +1,14 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Wazuh Chef v4.2.5
+
+### Added
+
+- Update to Wazuh [v4.2.5](https://github.com/wazuh/wazuh/blob/v4.2.5/CHANGELOG.md#v425) 
+
+### Fixed
+
 ## Wazuh Chef v4.2.4
 
 ### Added

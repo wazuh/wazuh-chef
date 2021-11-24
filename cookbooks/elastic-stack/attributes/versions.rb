@@ -11,7 +11,7 @@ default['elk']['patch_version'] = '7.11.2'
 # Wazuh
 default['wazuh']['major_version'] = '4.x'
 default['wazuh']['minor_version'] = '4.2'
-default['wazuh']['patch_version'] = '4.2.4'
+default['wazuh']['patch_version'] = '4.2.5'
 
 # Kibana
-default['wazuh']['kibana_plugin_version'] = '4.2.4_7.10.2'
+default['wazuh']['kibana_plugin_version'] = '4.2.5_7.10.2'
