@@ -35,7 +35,7 @@ template "#{node['kibana']['config_path']}/kibana.yml" do
   source 'kibana.yml.erb'
   owner 'kibana'
   group 'kibana'
-  mode 0o755
+  mode 0755
   variables({
               server_port: node['kibana']['yml']['server']['port'],
               server_host: node['kibana']['yml']['server']['host'],

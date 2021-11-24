@@ -36,7 +36,7 @@ describe 'elastic-stack::prerequisites' do
       it { should be_installed }
     end
 
-    describe package('java-11-openjdk-devel') do
+    describe package('java-11-openjdk') do
       it { should be_installed }
     end
   when 'suse'
@@ -44,7 +44,7 @@ describe 'elastic-stack::prerequisites' do
       it { should be_installed }
     end
 
-    describe package('java-11-openjdk-devel') do
+    describe package('java-11-openjdk') do
       it { should be_installed }
     end
   end

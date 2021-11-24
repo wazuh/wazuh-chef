@@ -11,6 +11,8 @@ Deploy the Wazuh platform using Chef cookbooks. Chef recipes are prepared for in
 
 | Wazuh version | Elastic | ODFE   |
 |---------------|---------|--------|
+| v4.2.5        | v7.10.2 | v1.13.2|
+| v4.2.4        | v7.10.2 | v1.13.2|
 | v4.0.4        | v7.9.3  | v1.11.0|
 
 ## Dependencies
