@@ -17,27 +17,27 @@ describe command('ps -ef | grep wazuh-modulesd') do
     its('exit_status') { should eq 0 }
 end 
 
-describe command('ps -ef | grep ossec-monitord') do
+describe command('ps -ef | grep wazuh-monitord') do
     its('exit_status') { should eq 0 }
 end 
 
-describe command('ps -ef | grep ossec-logcollector') do
+describe command('ps -ef | grep wazuh-logcollector') do
     its('exit_status') { should eq 0 }
 end 
 
-describe command('ps -ef | grep ossec-remoted') do
+describe command('ps -ef | grep wazuh-remoted') do
     its('exit_status') { should eq 0 }
 end 
 
-describe command('ps -ef | grep ossec-syscheckd') do
+describe command('ps -ef | grep wazuh-syscheckd') do
     its('exit_status') { should eq 0 }
 end 
 
-describe command('ps -ef | grep ossec-analysisd') do
+describe command('ps -ef | grep wazuh-analysisd') do
     its('exit_status') { should eq 0 }
 end 
 
-describe command('ps -ef | grep ossec-execd') do
+describe command('ps -ef | grep wazuh-execd') do
     its('exit_status') { should eq 0 }
 end 
 
@@ -45,19 +45,15 @@ describe command('ps -ef | grep wazuh-db') do
     its('exit_status') { should eq 0 }
 end 
 
-describe command('ps -ef | grep ossec-authd') do
+describe command('ps -ef | grep wazuh-authd') do
     its('exit_status') { should eq 0 }
 end 
 
-describe command('ps -ef | grep ossec-apid') do
+describe command('ps -ef | grep wazuh-apid') do
     its('exit_status') { should eq 0 }
 end 
 
 # Check OSSEC dir
-
-describe file('/var/ossec/etc/ossec-init.conf') do
-    it { should be_symlink }
-end
 
 describe file('/var/ossec') do
     it { should be_directory }
@@ -71,13 +67,6 @@ describe file('/var/ossec/etc') do
     its('mode') { should cmp '0770' }
     its('owner') { should cmp 'ossec' }
     its('group') { should cmp 'ossec' }
-end
-
-describe file('/etc/ossec-init.conf') do 
-    it { should exist }
-    its('owner') { should cmp 'root' }
-    its('group') { should cmp 'ossec' }
-    its('mode') { should cmp '0640' }
 end
 
 describe file('/var/ossec/etc/shared/default/agent.conf') do 
