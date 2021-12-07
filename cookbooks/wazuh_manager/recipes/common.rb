@@ -22,7 +22,7 @@ end
 ## Generate Ossec.conf
 file "#{node['ossec']['dir']}/etc/ossec.conf" do
   owner 'root'
-  group 'ossec'
+  group 'wazuh'
   mode '0440'
   manage_symlink_source true
   notifies :restart, 'service[wazuh]'
@@ -40,7 +40,7 @@ if node['ossec']['centralized_configuration']['enabled'] == 'yes' && !node['osse
 
   file "#{node['ossec']['centralized_configuration']['path']}/agent.conf" do
     owner 'root'
-    group 'ossec'
+    group 'wazuh'
     mode '0440'
     content lazy {
       all_conf = node['ossec']['centralized_configuration']['conf'].to_hash
