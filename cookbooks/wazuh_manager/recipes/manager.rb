@@ -55,14 +55,14 @@ include_recipe 'wazuh_manager::common'
 template "#{node['ossec']['dir']}/etc/local_internal_options.conf" do
   source 'var/ossec/etc/manager_local_internal_options.conf'
   owner 'root'
-  group 'ossec'
+  group 'wazuh'
   mode '0640'
 end
 
 template "#{node['ossec']['dir']}/etc/rules/local_rules.xml" do
   source 'ossec_local_rules.xml.erb'
   owner 'root'
-  group 'ossec'
+  group 'wazuh'
   mode '0640'
 end
 
@@ -70,7 +70,7 @@ end
 template "#{node['ossec']['dir']}/etc/decoders/local_decoder.xml" do
   source 'ossec_local_decoder.xml.erb'
   owner 'root'
-  group 'ossec'
+  group 'wazuh'
   mode '0640'
 end
 
@@ -78,7 +78,7 @@ end
 template "#{node['ossec']['dir']}/api/configuration/api.yaml" do
   source 'api.yaml.erb'
   owner 'root'
-  group 'ossec'
+  group 'wazuh'
   mode '0660'
   variables(
     host: "#{node['api']['ip']}",
