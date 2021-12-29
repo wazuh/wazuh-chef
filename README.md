@@ -18,9 +18,9 @@ Deploy the Wazuh platform using Chef cookbooks. Chef recipes are prepared for in
 ## Dependencies
 
 All the dependencies necessary to install cookbooks are listed inside the following files: 
-- *Berksfile*: has defined the cookbooks path for Kitchen tests
-- *metadata.rb*: minimum distributions verions 
-- *Gemfile.rb*: Ruby gems for testing
+- *Berksfile*: has defined the cookbooks path for Kitchen tests.
+- *metadata.rb*: minimum distributions verions.
+- *Gemfile.rb*: Ruby gems for testing.
 
 There is software that must be installed to ensure the correct installation.
 
