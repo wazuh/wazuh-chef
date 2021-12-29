@@ -15,8 +15,6 @@ jobs:
           wazuh-server,
           wazuh-server-oss,
           wazuh-agent
- --         opendistro,
- --         elastic-stack
         ]
     steps:
     - name: Check out code
