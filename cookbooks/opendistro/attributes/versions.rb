@@ -13,10 +13,10 @@ default['odfe']['patch_version'] = '1.13.2'
 # Wazuh
 default['wazuh']['major_version'] = '4.x'
 default['wazuh']['minor_version'] = '4.2'
-default['wazuh']['patch_version'] = '4.2.5'
+default['wazuh']['patch_version'] = '4.2.7'
 
 # Kibana
-default['wazuh']['kibana_plugin_version'] = '4.2.5_7.10.2'
+default['wazuh']['kibana_plugin_version'] = '4.2.7_7.10.2'
 
 # Search guard
 default['searchguard']['version'] = '1.8'

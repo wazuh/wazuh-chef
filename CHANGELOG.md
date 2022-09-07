@@ -1,19 +1,29 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## Wazuh Chef v4.2.7
+
+### Added
+
+- Update to Wazuh [v4.2.7](https://github.com/wazuh/wazuh/blob/v4.2.7/CHANGELOG.md#v427)
+
+## Wazuh Chef v4.2.6
+
+### Added
+
+- Update to Wazuh [v4.2.6](https://github.com/wazuh/wazuh/blob/v4.2.6/CHANGELOG.md#v426)
+
 ## Wazuh Chef v4.2.5
 
 ### Added
 
-- Update to Wazuh [v4.2.5](https://github.com/wazuh/wazuh/blob/v4.2.5/CHANGELOG.md#v425) 
-
-### Fixed
+- Update to Wazuh [v4.2.5](https://github.com/wazuh/wazuh/blob/v4.2.5/CHANGELOG.md#v425)
 
 ## Wazuh Chef v4.2.4
 
 ### Added
 
-- Update to Wazuh [v4.2.4](https://github.com/wazuh/wazuh/blob/v4.2.4/CHANGELOG.md#v424) 
+- Update to Wazuh [v4.2.4](https://github.com/wazuh/wazuh/blob/v4.2.4/CHANGELOG.md#v424)
 
 ### Fixed
 
@@ -23,14 +33,14 @@ All notable changes to this project will be documented in this file.
 ## Wazuh Chef v4.0.4_1.11.0
 
 ### Added
-- Update to Wazuh [v4.0.4](https://github.com/wazuh/wazuh/blob/v4.0.4/CHANGELOG.md#v404) ([@sergiogp98](https://github.com/sergiogp98) [PR#124](https://github.com/wazuh/wazuh-chef/pull/124)) 
+- Update to Wazuh [v4.0.4](https://github.com/wazuh/wazuh/blob/v4.0.4/CHANGELOG.md#v404) ([@sergiogp98](https://github.com/sergiogp98) [PR#124](https://github.com/wazuh/wazuh-chef/pull/124))
 - Support for new Wazuh API config options.
 
 ## Wazuh Chef v4.0.3_1.11.0
 
 ### Added
 - Add feature-cookbooks ([@sergiogp98](https://github.com/sergiogp98)) [PR#115](https://github.com/wazuh/wazuh-chef/pull/115)
-    -  Update to Wazuh version 4.0.3 
+    -  Update to Wazuh version 4.0.3
     - Add Opendistro with version 1.11.0
     - Update Elastic Stack to version 7.9.3
     - Install Wazuh Kibana plugin 4.0.3_7.9.3 version

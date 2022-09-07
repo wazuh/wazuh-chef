@@ -1,4 +1,4 @@
-# Wazuh - Chef 
+# Wazuh - Chef
 
 [![Slack](https://img.shields.io/badge/slack-join-blue.svg)](https://goo.gl/forms/M2AoZC4b2R9A9Zy12)
 [![Email](https://img.shields.io/badge/email-join-blue.svg)](https://groups.google.com/forum/#!forum/wazuh)
@@ -11,20 +11,22 @@ Deploy the Wazuh platform using Chef cookbooks. Chef recipes are prepared for in
 
 | Wazuh version | Elastic | ODFE   |
 |---------------|---------|--------|
+| v4.2.7        | v7.10.2 | v1.13.2|
+| v4.2.6        | v7.10.2 | v1.13.2|
 | v4.2.5        | v7.10.2 | v1.13.2|
 | v4.2.4        | v7.10.2 | v1.13.2|
 | v4.0.4        | v7.9.3  | v1.11.0|
 
 ## Dependencies
 
-All the dependencies necessary to install cookbooks are listed inside the following files: 
+All the dependencies necessary to install cookbooks are listed inside the following files:
 - *Berksfile*: has defined the cookbooks path for Kitchen tests
-- *metadata.rb*: minimum distributions verions 
+- *metadata.rb*: minimum distributions verions
 - *Gemfile.rb*: Ruby gems for testing
 
 There is software that must be installed to ensure the correct installation.
 
-## Chef 
+## Chef
 
 Chef gives plenty of software packages solution depending on how you want to distribute the software. Please
 refer to the [platform overview documentation](https://docs.chef.io/platform_overview/) for further information.
@@ -76,7 +78,7 @@ You can specify tags, branches, and revisions. More info on https://docs.chef.io
 
 The following describes how to define the needed JSON files to generate an encrypted data bag.
 
-**Important**: If API user secret is declared will be installed. Otherwise, the default user will be *foo:bar*. 
+**Important**: If API user secret is declared will be installed. Otherwise, the default user will be *foo:bar*.
 
 ##### api.json
 
@@ -148,9 +150,9 @@ After that, the vault will be created and synced with the server. The defined no
 You can check Chef Official Documentation about [Chef Vault](https://docs.chef.io/chef_vault.html) for detailed info.
 
 ## Choose to register an agent into a manager or not
-Now we give the possibility to choose to register an agent after being configured and installed in a manager. 
+Now we give the possibility to choose to register an agent after being configured and installed in a manager.
 
-To connect an agent with the manager simply modify the `wazuh-chef/roles/wazuh_agent.json` with the 
+To connect an agent with the manager simply modify the `wazuh-chef/roles/wazuh_agent.json` with the
 manager IP address:
 
 ```
