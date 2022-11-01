@@ -42,6 +42,9 @@ elsif platform_family?('rhel', 'redhat', 'centos', 'amazon')
     baseurl "https://packages.wazuh.com/#{node['wazuh']['major_version']}/yum/"
     action :create
   end
+elsif platform_family?('mac_os_x')
+  #nothing to do
+  end
 elsif
    zypper_repository 'wazuh' do
     description 'WAZUH Yum Repository - www.wazuh.com'

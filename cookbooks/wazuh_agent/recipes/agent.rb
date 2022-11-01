@@ -38,6 +38,14 @@ when 'opensuseleap', 'suse'
   zypper_package 'wazuh-agent' do
     version "#{node['wazuh']['patch_version']}"
   end
+when 'mac_os_x'
+  bash 'install wazuh agent' do
+    user 'root'
+    code <<-EOH
+    curl -o https://packages.wazuh.com/4.x/macos/wazuh-agent-#{node['wazuh']['patch_version']}-1.pkg && \
+    installer -pkg wazuh-agent-#{node['wazuh']['patch_version']}-1.pkg -target /
+    EOH
+  end
 else
   raise "Currently platforn not supported yet. Feel free to open an issue on https://www.github.com/wazuh/wazuh-chef if you consider that support for a specific OS should be added"
 end
