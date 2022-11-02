@@ -47,7 +47,6 @@ else
   raise "Currently platforn not supported yet. Feel free to open an issue on https://www.github.com/wazuh/wazuh-chef if you consider that support for a specific OS should be added"
 end
 
-if
 dir = node['ossec']['dir']
 agent_auth = node['ossec']['agent_auth']
 
@@ -112,7 +111,8 @@ end
 include_recipe 'wazuh_agent::common'
 
 template "#{node['ossec']['dir']}/etc/local_internal_options.conf" do
-  source "#{node['ossec']['dir']}/etc/agent_local_internal_options.conf"
+  ##source "#{node['ossec']['dir']}/etc/agent_local_internal_options.conf"
+  source '/Library/ossec/etc/agent_local_internal_options.conf'
   owner 'root'
   group 'wazuh'
   action :create
