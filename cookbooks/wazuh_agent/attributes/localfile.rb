@@ -1,5 +1,5 @@
 
-if platform_family?('ubuntu', 'debian')
+if platform_family?('ubuntu', 'debian', 'mac_os_x')
   default['ossec']['conf']['localfile'] = [
     {
       'log_format' => 'command',
