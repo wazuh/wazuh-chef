@@ -42,7 +42,7 @@ when 'mac_os_x'
   bash 'install wazuh agent' do
     user 'root'
     code <<-EOH
-    curl -o https://packages.wazuh.com/4.x/macos/wazuh-agent-#{node['wazuh']['patch_version']}-1.pkg && \
+    curl https://packages.wazuh.com/4.x/macos/wazuh-agent-#{node['wazuh']['patch_version']}-1.pkg --output wazuh-agent-#{node['wazuh']['patch_version']}-1.pkg && \
     installer -pkg wazuh-agent-#{node['wazuh']['patch_version']}-1.pkg -target /
     EOH
   end
