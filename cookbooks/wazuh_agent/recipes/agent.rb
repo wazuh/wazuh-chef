@@ -118,8 +118,16 @@ template "#{node['ossec']['dir']}/etc/local_internal_options.conf" do
   action :create
 end
 
-service 'wazuh' do
-  service_name 'wazuh-agent'
-  supports status: true, restart: true
-  action [:enable, :restart]
+if platform_family?('mac_os_x')
+  service 'com.wazuh.agent' do
+    service_name 'wazuh-agent'
+    supports status: true, restart: true
+    action [:enable, :restart]
+  end
+else
+  service 'wazuh' do
+    service_name 'wazuh-agent'
+    supports status: true, restart: true
+    action [:enable, :restart]
+  end
 end
