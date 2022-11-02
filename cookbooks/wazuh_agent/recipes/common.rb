@@ -22,19 +22,32 @@ chef_gem 'gyoku' do
   compile_time false if respond_to?(:compile_time)
 end
 
-file "#{node['ossec']['dir']}/etc/ossec.conf" do
-  owner 'root'
-  group 'wazuh'
-  mode '0440'
-  manage_symlink_source true
-  notifies :restart, 'service[com.wazuh.agent]'
-
-  content lazy {
-    all_conf = node['ossec']['conf'].to_hash
-    Chef::OSSEC::Helpers.ossec_to_xml('ossec_config' => all_conf)
-  }
-
+if platform_family?('mac_os_x')
+  file "#{node['ossec']['dir']}/etc/ossec.conf" do
+    owner 'root'
+    group 'wazuh'
+    mode '0440'
+    manage_symlink_source true
+    notifies :restart, 'service[com.wazuh.agent]'
+    content lazy {
+      all_conf = node['ossec']['conf'].to_hash
+      Chef::OSSEC::Helpers.ossec_to_xml('ossec_config' => all_conf)
+    }
+  end
+else
+  file "#{node['ossec']['dir']}/etc/ossec.conf" do
+    owner 'root'
+    group 'wazuh'
+    mode '0440'
+    manage_symlink_source true
+    notifies :restart, 'service[wazuh]'
+    content lazy {
+      all_conf = node['ossec']['conf'].to_hash
+      Chef::OSSEC::Helpers.ossec_to_xml('ossec_config' => all_conf)
+    }
+  end
 end
+
 
 file "#{node['ossec']['dir']}/etc/shared/agent.conf" do
   owner 'root'
