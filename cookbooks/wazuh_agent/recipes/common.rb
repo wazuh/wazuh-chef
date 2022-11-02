@@ -48,11 +48,20 @@ else
   end
 end
 
-
-file "#{node['ossec']['dir']}/etc/shared/agent.conf" do
-  owner 'root'
-  group 'wazuh'
-  mode '0440'
-  notifies :restart, 'service[wazuh]'
-  action :create
+if platform_family?('mac_os_x')
+  file "#{node['ossec']['dir']}/etc/shared/agent.conf" do
+    owner 'root'
+    group 'wazuh'
+    mode '0440'
+    notifies :restart, 'service[com.wazuh.agent]'
+    action :create
+  end
+else
+  file "#{node['ossec']['dir']}/etc/shared/agent.conf" do
+    owner 'root'
+    group 'wazuh'
+    mode '0440'
+    notifies :restart, 'service[wazuh]'
+    action :create
+  end
 end
