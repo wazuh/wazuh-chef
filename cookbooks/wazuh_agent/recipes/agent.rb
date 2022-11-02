@@ -111,20 +111,11 @@ end
 
 include_recipe 'wazuh_agent::common'
 
-if platform_family?('mac_os_x')
-  template "#{node['ossec']['dir']}/etc/local_internal_options.conf" do
-    source '/Library/ossec/etc/agent_local_internal_options.conf'
-    owner 'root'
-    group 'wazuh'
-    action :create
-  end
-else
-  template "#{node['ossec']['dir']}/etc/local_internal_options.conf" do
-    source '/var/ossec/etc/agent_local_internal_options.conf'
-    owner 'root'
-    group 'wazuh'
-    action :create
-  end
+template "#{node['ossec']['dir']}/etc/local_internal_options.conf" do
+  source "#{node['ossec']['dir']}/etc/agent_local_internal_options.conf"
+  owner 'root'
+  group 'wazuh'
+  action :create
 end
 
 service 'wazuh' do
