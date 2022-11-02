@@ -120,7 +120,7 @@ end
 
 if platform_family?('mac_os_x')
   launchd 'com.wazuh.agent' do
-    service_name 'com.wazuh.agent'
+    name 'com.wazuh.agent'
     action [:enable, :restart]
   end
 else
