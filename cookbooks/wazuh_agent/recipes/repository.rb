@@ -43,7 +43,7 @@ elsif platform_family?('rhel', 'redhat', 'centos', 'amazon')
     action :create
   end
 elsif platform_family?('mac_os_x')
-  echo "no repository needed"
+  repository_flag = "False"
 elsif
    zypper_repository 'wazuh' do
     description 'WAZUH Yum Repository - www.wazuh.com'
