@@ -17,6 +17,12 @@
 # limitations under the License.
 #
 # general settings
-default['ossec']['dir'] = '/var/ossec'
-default['ossec']['address'] = '172.19.0.211'
-default['ossec']['ignore_failure'] = true
+if platform_family?('mac_os_x')
+    default['ossec']['dir'] = '/Library/ossec'
+    default['ossec']['address'] = '172.19.0.211'
+    default['ossec']['ignore_failure'] = true
+else
+    default['ossec']['dir'] = '/var/ossec'
+    default['ossec']['address'] = '172.19.0.211'
+    default['ossec']['ignore_failure'] = true
+end
