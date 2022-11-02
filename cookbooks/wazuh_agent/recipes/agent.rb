@@ -119,9 +119,8 @@ template "#{node['ossec']['dir']}/etc/local_internal_options.conf" do
 end
 
 if platform_family?('mac_os_x')
-  service 'com.wazuh.agent' do
-    service_name 'wazuh-agent'
-    supports status: true, restart: true
+  launchd 'com.wazuh.agent' do
+    service_name 'com.wazuh.agent'
     action [:enable, :restart]
   end
 else

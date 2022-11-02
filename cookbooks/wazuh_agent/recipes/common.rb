@@ -53,7 +53,7 @@ if platform_family?('mac_os_x')
     owner 'root'
     group 'wazuh'
     mode '0440'
-    notifies :restart, 'service[com.wazuh.agent]'
+    notifies :restart, 'launchd[com.wazuh.agent]'
     action :create
   end
 else
