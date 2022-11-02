@@ -27,7 +27,7 @@ file "#{node['ossec']['dir']}/etc/ossec.conf" do
   group 'wazuh'
   mode '0440'
   manage_symlink_source true
-  notifies :restart, 'service[wazuh]'
+  notifies :restart, 'service[com.wazuh.agent]'
 
   content lazy {
     all_conf = node['ossec']['conf'].to_hash
