@@ -41,7 +41,7 @@ when 'opensuseleap', 'suse'
 when 'mac_os_x'
   execute 'install wazuh agent' do
     user 'root'
-    command "curl https://packages.wazuh.com/4.x/macos/wazuh-agent-#{node['wazuh']['patch_version']}-1.pkg --output wazuh-agent-#{node['wazuh']['patch_version']}-1.pkg && installer -pkg wazuh-agent-#{node['wazuh']['patch_version']}-1.pkg -target /"
+    command "curl https://packages.wazuh.com/4.x/macos/wazuh-agent-#{node['wazuh']['patch_version']}-1.pkg --output /tmp/wazuh-agent-#{node['wazuh']['patch_version']}-1.pkg && installer -pkg /tmp/wazuh-agent-#{node['wazuh']['patch_version']}-1.pkg -target /"
   end
 else
   raise "Currently platforn not supported yet. Feel free to open an issue on https://www.github.com/wazuh/wazuh-chef if you consider that support for a specific OS should be added"
